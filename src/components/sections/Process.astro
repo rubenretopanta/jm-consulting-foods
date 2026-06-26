@@ -1,0 +1,71 @@
+---
+const pasos = [
+  { num: '01', titulo: 'Diagnóstico', texto: 'Revisamos tu operación e identificamos qué te falta para cumplir la norma.' },
+  { num: '02', titulo: 'Implementación', texto: 'Elaboramos manuales y registros, y capacitamos a tu equipo.' },
+  { num: '03', titulo: 'Certificación', texto: 'Te preparamos y acompañamos en la auditoría hasta lograrla.' },
+  { num: '04', titulo: 'Acompañamiento', texto: 'Mantenemos tu sistema vigente con asesoría continua.' },
+];
+---
+
+<section class="process section" id="proceso">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow">Cómo trabajamos</p>
+      <h2>Un camino claro hacia tu certificación</h2>
+      <p class="sec-sub">Cuatro etapas simples para que sepas en todo momento dónde estás.</p>
+    </header>
+
+    <div class="steps">
+      {pasos.map((paso) => (
+        <article class="step">
+          <span class="num">{paso.num}</span>
+          <h3>{paso.titulo}</h3>
+          <p>{paso.texto}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec-head { max-width: 620px; margin-bottom: var(--space-5); text-align: center; margin-inline: auto; }
+  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { font-size: var(--fs-lg); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+  .step { position: relative; padding-top: var(--space-2); }
+  .num {
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-3xl);
+    color: var(--color-primary);
+    opacity: 0.4;
+    line-height: 1;
+  }
+  .step h3 { font-size: var(--fs-lg); margin-block: var(--space-1) 0.4rem; color: var(--color-primary-deep); }
+  .step p { font-size: var(--fs-sm); }
+
+  /* línea punteada entre pasos */
+  .step::before {
+    content: '';
+    position: absolute;
+    top: 26px;
+    left: 70px;
+    right: -12px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--color-line) 0 8px, transparent 8px 14px);
+  }
+  .step:last-child::before { display: none; }
+
+  @media (max-width: 920px) {
+    .steps { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
+    .step::before { display: none; }
+  }
+  @media (max-width: 560px) {
+    .steps { grid-template-columns: 1fr; }
+  }
+</style>
