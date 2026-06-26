@@ -19,7 +19,6 @@ const navLinks = [
     </a>
 
     <!-- checkbox que controla el menú (funciona sin JS) -->
-    <input type="checkbox" id="navToggle" class="nav-toggle" aria-hidden="true" tabindex="-1" />
 
     <nav class="nav-links" id="navlinks">
       {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
@@ -28,9 +27,9 @@ const navLinks = [
 
     <div class="nav-cta">
       <a href={waLink('Hola J&M, quiero información.')} class="btn btn-primary desktop-cta">Escríbenos</a>
-      <label for="navToggle" class="menu-btn" aria-label="Abrir menú" role="button" tabindex="0">
+     <button type="button" id="menuBtn" class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
         <span></span><span></span><span></span>
-      </label>
+      </button>
     </div>
   </div>
 </header>
@@ -111,9 +110,9 @@ const navLinks = [
   .menu-btn span:nth-child(1) { top: 15px; }
   .menu-btn span:nth-child(2) { top: 21px; }
   .menu-btn span:nth-child(3) { top: 27px; }
-  .nav-toggle:checked ~ .nav-cta .menu-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .nav-toggle:checked ~ .nav-cta .menu-btn span:nth-child(2) { opacity: 0; }
-  .nav-toggle:checked ~ .nav-cta .menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .menu-btn.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .menu-btn.is-open span:nth-child(2) { opacity: 0; }
+  .menu-btn.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
   .menu-cta { display: none; }
 
@@ -123,7 +122,7 @@ const navLinks = [
     .menu-btn { display: block; }
     .desktop-cta { display: none; }
 
-    .nav-toggle:checked ~ .nav-links {
+    .nav-links.is-open {
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -151,18 +150,27 @@ const navLinks = [
 </style>
 
 <script>
-  // Mejora progresiva: cerrar el menú al elegir opción, al tocar fuera o con Escape.
-  // (El menú ya abre/cierra solo con CSS aunque este script no corra.)
-  const toggle = document.getElementById('navToggle') as HTMLInputElement | null;
+  const btn = document.getElementById('menuBtn');
   const nav = document.getElementById('navlinks');
-  if (toggle && nav) {
-    const close = () => (toggle.checked = false);
-    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+
+  function toggleMenu() {
+    const open = nav.classList.toggle('is-open');
+    btn.classList.toggle('is-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function closeMenu() {
+    nav.classList.remove('is-open');
+    btn.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  if (btn && nav) {
+    btn.addEventListener('click', toggleMenu);
+    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
     document.addEventListener('click', (e) => {
-      const t = e.target as Node;
-      if (toggle.checked && !nav.contains(t) && !(t as HTMLElement).closest('.menu-btn')) close();
+      if (!nav.contains(e.target) && !btn.contains(e.target)) closeMenu();
     });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-    window.addEventListener('resize', () => { if (window.innerWidth > 920) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+    window.addEventListener('resize', () => { if (window.innerWidth > 920) closeMenu(); });
   }
 </script>
