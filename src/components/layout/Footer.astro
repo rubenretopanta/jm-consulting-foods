@@ -1,0 +1,47 @@
+---
+import { SITE, waLink } from '../../data/site.ts';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container foot-top">
+    <div class="foot-brand">
+      <div class="brand-row">
+        <img src="/logo-mark.svg" alt="" width="34" height="34" />
+        <span>{SITE.name}</span>
+      </div>
+      <p>Consultoría en calidad e inocuidad alimentaria. Te ayudamos a cumplir la norma y crecer con confianza.</p>
+      <a class="wa" href={waLink('Hola J&M, quiero información.')}>Escríbenos por WhatsApp →</a>
+    </div>
+
+    <div class="foot-data">
+      <div><small>Razón social</small><strong>{SITE.legalName}</strong></div>
+      <div><small>RUC</small><strong>{SITE.ruc}</strong></div>
+      <div><small>Correo</small><strong>{SITE.email}</strong></div>
+      <div><small>Ubicación</small><strong>{SITE.city}</strong></div>
+    </div>
+  </div>
+
+  <div class="container foot-bottom">
+    <span>© {year} {SITE.legalName}. Todos los derechos reservados.</span>
+    <span>Hecho con cuidado para negocios de alimentos.</span>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--color-primary-deep); color: rgba(255,255,255,0.72); padding-block: var(--space-5) var(--space-3); }
+  .foot-top { display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; padding-bottom: var(--space-3); border-bottom: 1px solid rgba(255,255,255,0.12); }
+
+  .brand-row { display: flex; align-items: center; gap: 0.6rem; color: #fff; font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-lg); }
+  .foot-brand p { color: rgba(255,255,255,0.7); font-size: var(--fs-sm); max-width: 36ch; margin-block: var(--space-2); }
+  .wa { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: var(--fs-sm); }
+  .wa:hover { text-decoration: underline; }
+
+  .foot-data { display: grid; grid-template-columns: repeat(2, auto); gap: var(--space-2) var(--space-5); }
+  .foot-data small { display: block; color: rgba(255,255,255,0.5); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; }
+  .foot-data strong { color: #fff; font-weight: var(--fw-semibold); font-size: var(--fs-sm); }
+
+  .foot-bottom { padding-top: var(--space-3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1); font-size: var(--fs-xs); }
+
+  @media (max-width: 700px) { .foot-data { grid-template-columns: 1fr; } }
+</style>

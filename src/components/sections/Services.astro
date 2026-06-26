@@ -27,7 +27,7 @@ const services = (await getCollection('services')).sort(
 </section>
 
 <style>
-  .services { background: var(--color-surface); border-block: 1px solid var(--color-line); }
+  .services { background: var(--color-bg); }
   .sec-head { max-width: 620px; margin-bottom: var(--space-5); }
   .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
   .sec-sub { font-size: var(--fs-lg); }
@@ -37,7 +37,7 @@ const services = (await getCollection('services')).sort(
     gap: var(--space-3);
   }
   .card {
-    background: var(--color-bg);
+    background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
     padding: var(--space-4) var(--space-3);

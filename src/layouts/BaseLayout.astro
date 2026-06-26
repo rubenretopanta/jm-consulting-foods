@@ -4,6 +4,7 @@ import Header from '../components/layout/Header.astro';
 import { SITE } from '../data/site.ts';
 import '../styles/tokens.css';
 import '../styles/base.css';
+import Footer from '../components/layout/Footer.astro';
 
 interface Props {
   title?: string;
@@ -46,5 +47,6 @@ const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.tagline}` : `${
    <body>
     <Header />
     <slot />
+     <Footer />
   </body>
 </html>
