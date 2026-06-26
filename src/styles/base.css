@@ -104,4 +104,10 @@ p { color: var(--color-muted); }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+
+  /* Deja espacio bajo el header sticky al saltar a una sección con # */
+:target,
+section[id] {
+  scroll-margin-top: 90px;
+}
 }

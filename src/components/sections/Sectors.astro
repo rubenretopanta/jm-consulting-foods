@@ -1,0 +1,63 @@
+---
+const sectores = [
+  'Restaurantes y servicios afines',
+  'Panificación y pastelería',
+  'Agroindustria',
+  'Pesquería',
+  'Bebidas y agua de mesa',
+  'Programas sociales (Qali Warma)',
+];
+---
+
+<section class="sectors section" id="sectores">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow">A quiénes ayudamos</p>
+      <h2>Sectores que atendemos</h2>
+      <p class="sec-sub">Trabajamos con negocios de alimentos de todos los tamaños.</p>
+    </header>
+
+    <div class="grid">
+      {sectores.map((sector) => (
+        <div class="sector">
+          <span class="dot"></span>
+          {sector}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec-head { max-width: 620px; margin-bottom: var(--space-5); }
+  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { font-size: var(--fs-lg); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+  }
+  .sector {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary-deep);
+    transition: transform var(--transition), border-color var(--transition);
+  }
+  .sector:hover { border-color: var(--color-accent); transform: translateX(4px); }
+  .dot {
+    flex: none;
+    width: 12px; height: 12px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+  }
+
+  @media (max-width: 920px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,111 @@
+---
+import { SITE, waLink } from '../../data/site.ts';
+---
+
+<section class="contact section" id="contacto">
+  <div class="container">
+    <header class="sec-head">
+      <p class="eyebrow accent">Hablemos</p>
+      <h2>Cuéntanos qué necesita tu negocio</h2>
+      <p class="sec-sub">Te respondemos con una propuesta a tu medida, sin compromiso.</p>
+    </header>
+
+    <div class="grid">
+      <div class="info">
+        <a class="info-item" href={waLink('Hola J&M, quiero información.')}>
+          <span class="ic">WA</span>
+          <span><small>WhatsApp</small>{SITE.whatsappDisplay}</span>
+        </a>
+        <a class="info-item" href={`mailto:${SITE.email}`}>
+          <span class="ic">@</span>
+          <span><small>Correo</small>{SITE.email}</span>
+        </a>
+        <div class="info-item">
+          <span class="ic">◉</span>
+          <span><small>Ubicación</small>{SITE.city}</span>
+        </div>
+        <div class="info-item">
+          <span class="ic">RUC</span>
+          <span><small>Empresa</small>{SITE.legalName}</span>
+        </div>
+      </div>
+
+      <div class="form">
+        <label>Nombre<input type="text" id="f-nombre" placeholder="Tu nombre" /></label>
+        <label>Empresa<input type="text" id="f-empresa" placeholder="Nombre de tu negocio" /></label>
+        <label>¿Qué necesitas?
+          <select id="f-servicio">
+            <option>Registro Sanitario (DIGESA)</option>
+            <option>Plan HACCP</option>
+            <option>Buenas Prácticas (BPM)</option>
+            <option>Higiene y Saneamiento (PHS)</option>
+            <option>Normas ISO 9001 / 22000</option>
+            <option>Capacitaciones</option>
+            <option>Aún no estoy seguro/a</option>
+          </select>
+        </label>
+        <label>Mensaje<textarea id="f-mensaje" placeholder="Cuéntanos brevemente sobre tu negocio..."></textarea></label>
+        <button id="f-enviar" class="btn-send">Enviar por WhatsApp</button>
+        <p class="form-note">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact { background: linear-gradient(160deg, var(--color-primary), var(--color-primary-deep)); color: #fff; }
+  .sec-head { max-width: 620px; margin-bottom: var(--space-5); }
+  .sec-head h2 { color: #fff; margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { color: rgba(255,255,255,0.78); font-size: var(--fs-lg); }
+  .eyebrow.accent { color: var(--color-accent); }
+
+  .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: var(--space-5); align-items: start; }
+
+  .info { display: grid; gap: var(--space-3); }
+  .info-item { display: flex; gap: var(--space-2); align-items: center; color: #fff; }
+  .info-item .ic {
+    flex: none; width: 44px; height: 44px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.12);
+    display: grid; place-items: center;
+    font-size: var(--fs-xs); font-weight: var(--fw-bold);
+  }
+  .info-item small { display: block; color: rgba(255,255,255,0.6); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; }
+  .info-item span span, .info-item > span { font-weight: var(--fw-semibold); }
+
+  .form { background: #fff; border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow); display: grid; gap: var(--space-2); }
+  .form label { display: grid; gap: 6px; font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--color-primary-deep); }
+  .form input, .form select, .form textarea {
+    padding: 0.8rem 1rem; border: 1.5px solid var(--color-line);
+    border-radius: var(--radius-sm); background: var(--color-bg);
+    color: var(--color-ink); font-size: var(--fs-sm);
+  }
+  .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--color-primary); }
+  .form textarea { resize: vertical; min-height: 90px; }
+  .btn-send {
+    background: var(--color-accent); color: var(--color-accent-ink);
+    font-weight: var(--fw-semibold); padding: 0.9rem; border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm); transition: background var(--transition), transform var(--transition);
+  }
+  .btn-send:hover { background: var(--color-accent-deep); color: #fff; transform: translateY(-2px); }
+  .form-note { font-size: var(--fs-xs); color: var(--color-muted); text-align: center; }
+
+  @media (max-width: 920px) { .grid { grid-template-columns: 1fr; gap: var(--space-4); } }
+</style>
+
+<script define:vars={{ phone: SITE.whatsapp }}>
+  const btn = document.getElementById('f-enviar');
+  btn?.addEventListener('click', () => {
+    const n = document.getElementById('f-nombre').value.trim();
+    const e = document.getElementById('f-empresa').value.trim();
+    const s = document.getElementById('f-servicio').value;
+    const m = document.getElementById('f-mensaje').value.trim();
+    let txt = `Hola J&M Consulting Foods, soy ${n || '[nombre]'}`;
+    if (e) txt += ` de ${e}`;
+    txt += `. Me interesa: ${s}.`;
+    if (m) txt += ` ${m}`;
+    const wa = `https://wa.me/${phone}?text=${encodeURIComponent(txt)}`;
+    const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
+    if (isMobile) { window.location.href = wa; } else { window.open(wa, '_blank'); }
+  });
+</script>
