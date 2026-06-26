@@ -1,0 +1,35 @@
+---
+import { SITE, waLink } from '../../data/site.ts';
+---
+
+<section class="hero section" id="inicio">
+  <div class="container">
+    <p class="eyebrow">{SITE.tagline} · {SITE.city}</p>
+    <h1>Tu negocio de alimentos,<br /><span class="hl">en regla y certificado.</span></h1>
+    <p class="lead">{SITE.description}</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href={waLink('Hola J&M, quiero información sobre sus servicios.')}>
+        Conversemos por WhatsApp
+      </a>
+      <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--space-7) var(--space-6); }
+  .hero h1 { margin-block: var(--space-2) var(--space-3); }
+  .hl { color: var(--color-primary); }
+  .lead { font-size: var(--fs-lg); max-width: 38ch; }
+  .hero-cta { display: flex; gap: var(--space-2); margin-top: var(--space-4); flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-weight: var(--fw-semibold); padding: 0.85rem 1.5rem;
+    border-radius: var(--radius-full); border: 1.5px solid transparent;
+    transition: transform var(--transition), background var(--transition);
+  }
+  .btn-primary { background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-sm); }
+  .btn-primary:hover { background: var(--color-accent-deep); color: #fff; transform: translateY(-2px); }
+  .btn-ghost { border-color: var(--color-line); color: var(--color-primary); }
+  .btn-ghost:hover { background: var(--color-primary-soft); transform: translateY(-2px); }
+</style>

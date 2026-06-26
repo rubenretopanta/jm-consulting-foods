@@ -1,0 +1,71 @@
+:root {
+  /* ============================================
+     COLORES — extraídos de la marca J&M
+     ============================================ */
+
+  /* Base neutra (el crema cálido del fondo del logo) */
+  --color-bg:        #F3EFE9;   /* fondo general, cálido como el logo */
+  --color-surface:   #FFFFFF;   /* tarjetas y secciones elevadas */
+  --color-ink:       #3A3A37;   /* gris del wordmark "J&M" — texto principal */
+  --color-muted:     #6E6E68;   /* texto secundario */
+  --color-line:      #E4DED4;   /* bordes y separadores */
+
+  /* Color institucional (ancla de confianza) */
+  --color-primary:        #2E7D4F;   /* verde — del emblema, transmite inocuidad */
+  --color-primary-deep:   #1F5C39;   /* verde oscuro para footer / hover */
+  --color-primary-soft:   #E6F0E9;   /* verde muy claro para fondos suaves */
+
+  /* Acento cálido (CTAs, lo "amistoso") */
+  --color-accent:         #F4B63F;   /* ámbar — del emblema */
+  --color-accent-deep:    #D9971C;   /* ámbar oscuro para hover */
+  --color-accent-ink:     #4A3508;   /* texto sobre ámbar */
+
+  /* Acentos del emblema (uso puntual, por categoría) */
+  --color-blue:   #3F6AD8;
+  --color-red:    #E24640;
+  --color-green:  #2E9E4F;
+  --color-yellow: #F4B63F;
+
+  /* ============================================
+     TIPOGRAFÍA
+     ============================================ */
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;  /* títulos, elegante como el logo */
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;            /* cuerpo, legible */
+
+  --fs-xs:   0.8rem;
+  --fs-sm:   0.9rem;
+  --fs-base: 1rem;
+  --fs-lg:   1.15rem;
+  --fs-xl:   1.5rem;
+  --fs-2xl:  2.2rem;
+  --fs-3xl:  3rem;
+  --fs-display: clamp(2.5rem, 5vw, 4rem);
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold:600;
+  --fw-bold:    700;
+
+  /* ============================================
+     ESPACIADO, RADIOS, SOMBRAS, LAYOUT
+     ============================================ */
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4.5rem;
+  --space-7: 6rem;
+
+  --radius-sm: 10px;
+  --radius:    18px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 6px 18px -12px rgba(31, 92, 57, 0.4);
+  --shadow:    0 18px 40px -24px rgba(31, 92, 57, 0.35);
+
+  --container: 1140px;
+
+  --transition: 0.18s ease;
+}

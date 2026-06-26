@@ -1,0 +1,89 @@
+---
+const diferenciadores = [
+  { titulo: 'Acompañamiento real', texto: 'No te entregamos solo documentos: te guiamos hasta que logras tu objetivo.' },
+  { titulo: 'Soluciones a tu medida', texto: 'Adaptamos cada sistema al tamaño y la realidad de tu negocio.' },
+  { titulo: 'Cumplimiento garantizado', texto: 'Trabajamos en base a la normativa de DIGESA y estándares internacionales.' },
+  { titulo: 'Empresa formal y verificable', texto: 'RUC 20607994359 · activa, habida y registrada como MYPE.' },
+];
+---
+
+<section class="about section" id="nosotros">
+  <div class="container about-grid">
+    <div class="about-card">
+      <div class="avatar">IG</div>
+      <h3>Ing. Isabel Guerrero <span class="mag">(Mag.)</span></h3>
+      <p class="role">Consultora principal</p>
+      <p class="bio">
+        Te asesora directamente una especialista en gestión de la calidad e inocuidad alimentaria,
+        con conocimiento de la normativa peruana vigente y trato cercano con cada cliente.
+      </p>
+    </div>
+
+    <div class="about-text">
+      <p class="eyebrow">Quiénes somos</p>
+      <h2>Asesoría personalizada, según el rubro de tu empresa</h2>
+      <ul class="features">
+        {diferenciadores.map((d) => (
+          <li>
+            <span class="tick">✓</span>
+            <div>
+              <strong>{d.titulo}</strong>
+              <span>{d.texto}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  .about-card {
+    background: linear-gradient(150deg, var(--color-primary), var(--color-primary-deep));
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow);
+  }
+  .avatar {
+    width: 78px; height: 78px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-xl);
+    margin-bottom: var(--space-2);
+  }
+  .about-card h3 { color: #fff; font-size: var(--fs-xl); }
+  .mag { font-size: var(--fs-base); font-weight: var(--fw-regular); opacity: 0.7; }
+  .role { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: var(--fs-sm); margin-block: 0.2rem var(--space-2); }
+  .bio { color: rgba(255,255,255,0.85); font-size: var(--fs-sm); }
+
+  .about-text h2 { margin-block: var(--space-1) var(--space-3); }
+  .features { display: grid; gap: var(--space-3); }
+  .features li { display: flex; gap: var(--space-2); align-items: flex-start; }
+  .tick {
+    flex: none;
+    width: 30px; height: 30px;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-deep);
+    display: grid; place-items: center;
+    font-weight: var(--fw-bold);
+    margin-top: 2px;
+  }
+  .features strong { display: block; font-family: var(--font-display); font-size: var(--fs-lg); color: var(--color-ink); }
+  .features span { color: var(--color-muted); font-size: var(--fs-sm); }
+
+  @media (max-width: 920px) {
+    .about-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+  }
+</style>
