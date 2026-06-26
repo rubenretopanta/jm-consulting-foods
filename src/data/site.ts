@@ -14,7 +14,7 @@ export const SITE = {
 
   // Contacto
   whatsapp: '51991000494',              // formato internacional sin "+" ni espacios
-  whatsappDisplay: '+51 991 000 494',    // como se muestra al usuario
+  whatsappDisplay: '+51 933 214 520',   // como se muestra al usuario
   email: 'jmconsulting03@gmail.com',   // PENDIENTE: confirmar correo real
   city: 'Lima, Perú',
   address: 'San Martín de Porres, Lima', // PENDIENTE: dirección exacta
@@ -23,10 +23,10 @@ export const SITE = {
   foundedYear: 2021,
 
   // Redes (rellenar cuando las tengas)
-  social: {
+ social: {
     facebook: 'https://www.facebook.com/jmconsulting03/',
+    linkedin: 'https://pe.linkedin.com/company/j-m-consulting-sac',
     instagram: '',
-    linkedin: '',
   },
 } as const;
 
