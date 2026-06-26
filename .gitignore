@@ -1,0 +1,13 @@
+# dependencias
+node_modules/
+
+# salida del build
+dist/
+
+# archivos de entorno y locales
+.env
+.env.*
+.DS_Store
+
+# caché de Astro
+.astro/
