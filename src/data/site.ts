@@ -13,8 +13,8 @@ export const SITE = {
     'Te acompañamos paso a paso para obtener tu Registro Sanitario, implementar HACCP y BPM, y pasar tus auditorías de DIGESA con tranquilidad.',
 
   // Contacto
-  whatsapp: '51991000494',              // formato internacional sin "+" ni espacios
-  whatsappDisplay: '+51 933 214 520',   // como se muestra al usuario
+  whatsapp: '51960973971',              // formato internacional sin "+" ni espacios
+  whatsappDisplay: '+51 960 973 971',   // como se muestra al usuario
   email: 'jmconsulting03@gmail.com',   // PENDIENTE: confirmar correo real
   city: 'Lima, Perú',
   address: 'San Martín de Porres, Lima', // PENDIENTE: dirección exacta
