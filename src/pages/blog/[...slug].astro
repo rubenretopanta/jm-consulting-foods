@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const fmt = (d) =>
+  d.toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <main class="section">
+    <article class="container article">
+      <a class="back" href="/blog/">← Volver al blog</a>
+      <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+      <h1>{post.data.title}</h1>
+      <p class="lead">{post.data.description}</p>
+      {post.data.image && <img class="cover" src={post.data.image} alt={post.data.title} />}
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .article { max-width: 760px; }
+  .back { color: var(--color-primary); font-weight: var(--fw-semibold); font-size: var(--fs-sm); }
+  .article time { display: block; margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .article h1 { margin-block: var(--space-1) var(--space-2); }
+  .article .lead { font-size: var(--fs-lg); margin-bottom: var(--space-3); }
+  .cover { width: 100%; border-radius: var(--radius); margin-bottom: var(--space-4); }
+
+  .prose :global(h2) { font-size: var(--fs-xl); color: var(--color-primary-deep); margin-block: var(--space-4) var(--space-2); }
+  .prose :global(h3) { font-size: var(--fs-lg); color: var(--color-primary-deep); margin-block: var(--space-3) var(--space-1); }
+  .prose :global(p) { margin-bottom: var(--space-2); }
+  .prose :global(ul) { list-style: disc; padding-left: 1.4rem; margin-bottom: var(--space-2); color: var(--color-muted); }
+  .prose :global(li) { margin-bottom: 0.4rem; }
+  .prose :global(a) { color: var(--color-primary); text-decoration: underline; }
+  .prose :global(strong) { color: var(--color-ink); }
+  .prose :global(img) { border-radius: var(--radius); margin-block: var(--space-3); }
+</style>

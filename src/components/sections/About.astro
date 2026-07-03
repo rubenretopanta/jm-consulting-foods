@@ -1,27 +1,23 @@
 ---
-const diferenciadores = [
-  { titulo: 'Acompañamiento real', texto: 'No te entregamos solo documentos: te guiamos hasta que logras tu objetivo.' },
-  { titulo: 'Soluciones a tu medida', texto: 'Adaptamos cada sistema al tamaño y la realidad de tu negocio.' },
-  { titulo: 'Cumplimiento garantizado', texto: 'Trabajamos en base a la normativa de DIGESA y estándares internacionales.' },
-  { titulo: 'Empresa formal y verificable', texto: 'RUC 20607994359 · activa, habida y registrada como MYPE.' },
-];
+import home from '../../data/home.json';
+const { nosotros } = home;
+const diferenciadores = nosotros.diferenciadores;
 ---
 
 <section class="about section" id="nosotros">
   <div class="container about-grid">
     <div class="about-card">
-      <div class="avatar">IG</div>
-      <h3>Ing. Isabel Guerrero <span class="mag">(Mag.)</span></h3>
-      <p class="role">Consultora principal</p>
+      <div class="avatar">{nosotros.consultoraIniciales}</div>
+      <h3>{nosotros.consultoraNombre} <span class="mag">{nosotros.consultoraGrado}</span></h3>
+      <p class="role">{nosotros.consultoraRol}</p>
       <p class="bio">
-        Te asesora directamente una especialista en gestión de la calidad e inocuidad alimentaria,
-        con conocimiento de la normativa peruana vigente y trato cercano con cada cliente.
+        {nosotros.consultoraBio}
       </p>
     </div>
 
     <div class="about-text">
-      <p class="eyebrow">Quiénes somos</p>
-      <h2>Asesoría personalizada, según el rubro de tu empresa</h2>
+      <p class="eyebrow">{nosotros.eyebrow}</p>
+      <h2>{nosotros.titulo}</h2>
       <ul class="features">
         {diferenciadores.map((d) => (
           <li>

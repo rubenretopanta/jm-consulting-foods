@@ -3,17 +3,18 @@
 import { SITE, waLink } from '../../data/site.ts';
 
 const navLinks = [
-  { label: 'Servicios', href: '#servicios' },
-  { label: 'Nosotros', href: '#nosotros' },
-  { label: 'Proceso', href: '#proceso' },
-  { label: 'Sectores', href: '#sectores' },
-  { label: 'Contacto', href: '#contacto' },
+  { label: 'Servicios', href: '/#servicios' },
+  { label: 'Nosotros', href: '/#nosotros' },
+  { label: 'Proceso', href: '/#proceso' },
+  { label: 'Sectores', href: '/#sectores' },
+  { label: 'Blog', href: '/blog/' },
+  { label: 'Contacto', href: '/#contacto' },
 ];
 ---
 
 <header class="header">
   <div class="container nav">
-   <a href="#inicio" class="brand">
+   <a href="/#inicio" class="brand">
       <img src="/logo-mark.svg" alt={SITE.name} class="mark" width="38" height="38" />
       <span>{SITE.name}</span>
     </a>

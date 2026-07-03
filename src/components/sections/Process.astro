@@ -1,18 +1,15 @@
 ---
-const pasos = [
-  { num: '01', titulo: 'Diagnóstico', texto: 'Revisamos tu operación e identificamos qué te falta para cumplir la norma.' },
-  { num: '02', titulo: 'Implementación', texto: 'Elaboramos manuales y registros, y capacitamos a tu equipo.' },
-  { num: '03', titulo: 'Certificación', texto: 'Te preparamos y acompañamos en la auditoría hasta lograrla.' },
-  { num: '04', titulo: 'Acompañamiento', texto: 'Mantenemos tu sistema vigente con asesoría continua.' },
-];
+import home from '../../data/home.json';
+const { proceso } = home;
+const pasos = proceso.pasos;
 ---
 
 <section class="process section" id="proceso">
   <div class="container">
     <header class="sec-head">
-      <p class="eyebrow">Cómo trabajamos</p>
-      <h2>Un camino claro hacia tu certificación</h2>
-      <p class="sec-sub">Cuatro etapas simples para que sepas en todo momento dónde estás.</p>
+      <p class="eyebrow">{proceso.eyebrow}</p>
+      <h2>{proceso.titulo}</h2>
+      <p class="sec-sub">{proceso.subtitulo}</p>
     </header>
 
     <div class="steps">

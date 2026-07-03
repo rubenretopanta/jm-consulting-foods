@@ -1,13 +1,15 @@
 ---
 import { SITE, waLink } from '../../data/site.ts';
+import home from '../../data/home.json';
+const { contacto } = home;
 ---
 
 <section class="contact section" id="contacto">
   <div class="container">
     <header class="sec-head">
-      <p class="eyebrow accent">Hablemos</p>
-      <h2>Cuéntanos qué necesita tu negocio</h2>
-      <p class="sec-sub">Te respondemos con una propuesta a tu medida, sin compromiso.</p>
+      <p class="eyebrow accent">{contacto.eyebrow}</p>
+      <h2>{contacto.titulo}</h2>
+      <p class="sec-sub">{contacto.subtitulo}</p>
     </header>
 
     <div class="grid">
@@ -35,13 +37,7 @@ import { SITE, waLink } from '../../data/site.ts';
         <label>Empresa<input type="text" id="f-empresa" placeholder="Nombre de tu negocio" /></label>
         <label>¿Qué necesitas?
           <select id="f-servicio">
-            <option>Registro Sanitario (DIGESA)</option>
-            <option>Plan HACCP</option>
-            <option>Buenas Prácticas (BPM)</option>
-            <option>Higiene y Saneamiento (PHS)</option>
-            <option>Normas ISO 9001 / 22000</option>
-            <option>Capacitaciones</option>
-            <option>Aún no estoy seguro/a</option>
+            {contacto.opcionesServicio.map((op) => <option>{op}</option>)}
           </select>
         </label>
         <label>Mensaje<textarea id="f-mensaje" placeholder="Cuéntanos brevemente sobre tu negocio..."></textarea></label>

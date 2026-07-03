@@ -1,0 +1,66 @@
+{
+  "hero": {
+    "tituloLinea1": "Tu negocio de alimentos,",
+    "tituloDestacado": "en regla y certificado.",
+    "botonWhatsapp": "Conversemos por WhatsApp",
+    "botonServicios": "Ver servicios"
+  },
+  "serviciosSeccion": {
+    "eyebrow": "Lo que hacemos",
+    "titulo": "Servicios que ponen tu operación a la altura de la norma",
+    "subtitulo": "Soluciones adaptadas al rubro de tu empresa, desde el diagnóstico hasta la certificación."
+  },
+  "nosotros": {
+    "eyebrow": "Quiénes somos",
+    "titulo": "Asesoría personalizada, según el rubro de tu empresa",
+    "consultoraIniciales": "IG",
+    "consultoraNombre": "Ing. Isabel Guerrero",
+    "consultoraGrado": "(Mag.)",
+    "consultoraRol": "Consultora principal",
+    "consultoraBio": "Te asesora directamente una especialista en gestión de la calidad e inocuidad alimentaria, con conocimiento de la normativa peruana vigente y trato cercano con cada cliente.",
+    "diferenciadores": [
+      { "titulo": "Acompañamiento real", "texto": "No te entregamos solo documentos: te guiamos hasta que logras tu objetivo." },
+      { "titulo": "Soluciones a tu medida", "texto": "Adaptamos cada sistema al tamaño y la realidad de tu negocio." },
+      { "titulo": "Cumplimiento garantizado", "texto": "Trabajamos en base a la normativa de DIGESA y estándares internacionales." },
+      { "titulo": "Empresa formal y verificable", "texto": "RUC 20607994359 · activa, habida y registrada como MYPE." }
+    ]
+  },
+  "proceso": {
+    "eyebrow": "Cómo trabajamos",
+    "titulo": "Un camino claro hacia tu certificación",
+    "subtitulo": "Cuatro etapas simples para que sepas en todo momento dónde estás.",
+    "pasos": [
+      { "num": "01", "titulo": "Diagnóstico", "texto": "Revisamos tu operación e identificamos qué te falta para cumplir la norma." },
+      { "num": "02", "titulo": "Implementación", "texto": "Elaboramos manuales y registros, y capacitamos a tu equipo." },
+      { "num": "03", "titulo": "Certificación", "texto": "Te preparamos y acompañamos en la auditoría hasta lograrla." },
+      { "num": "04", "titulo": "Acompañamiento", "texto": "Mantenemos tu sistema vigente con asesoría continua." }
+    ]
+  },
+  "sectores": {
+    "eyebrow": "A quiénes ayudamos",
+    "titulo": "Sectores que atendemos",
+    "subtitulo": "Trabajamos con negocios de alimentos de todos los tamaños.",
+    "lista": [
+      "Restaurantes y servicios afines",
+      "Panificación y pastelería",
+      "Agroindustria",
+      "Pesquería",
+      "Bebidas y agua de mesa",
+      "Programas sociales (Qali Warma)"
+    ]
+  },
+  "contacto": {
+    "eyebrow": "Hablemos",
+    "titulo": "Cuéntanos qué necesita tu negocio",
+    "subtitulo": "Te respondemos con una propuesta a tu medida, sin compromiso.",
+    "opcionesServicio": [
+      "Registro Sanitario (DIGESA)",
+      "Plan HACCP",
+      "Buenas Prácticas (BPM)",
+      "Higiene y Saneamiento (PHS)",
+      "Normas ISO 9001 / 22000",
+      "Capacitaciones",
+      "Aún no estoy seguro/a"
+    ]
+  }
+}

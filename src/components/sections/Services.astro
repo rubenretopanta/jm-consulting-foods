@@ -1,6 +1,8 @@
 ---
 // Services.astro — lee los servicios desde la content collection
 import { getCollection } from 'astro:content';
+import home from '../../data/home.json';
+const { serviciosSeccion } = home;
 
 const services = (await getCollection('services')).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
@@ -10,9 +12,9 @@ const services = (await getCollection('services')).sort(
 <section class="services section" id="servicios">
   <div class="container">
     <header class="sec-head">
-      <p class="eyebrow">Lo que hacemos</p>
-      <h2>Servicios que ponen tu operación a la altura de la norma</h2>
-      <p class="sec-sub">Soluciones adaptadas al rubro de tu empresa, desde el diagnóstico hasta la certificación.</p>
+      <p class="eyebrow">{serviciosSeccion.eyebrow}</p>
+      <h2>{serviciosSeccion.titulo}</h2>
+      <p class="sec-sub">{serviciosSeccion.subtitulo}</p>
     </header>
 
     <div class="cards">

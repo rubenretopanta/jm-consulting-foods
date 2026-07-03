@@ -1,0 +1,176 @@
+# ============================================================
+#  Configuración del panel de administración (Sveltia CMS)
+#  Edita este sitio desde: https://TU-DOMINIO/admin/
+# ============================================================
+
+backend:
+  name: github
+  repo: rubenretopanta/jm-consulting-foods
+  branch: main
+
+# Idioma del panel y de los mensajes de commit
+publish_mode: simple
+
+# Carpeta de respaldo para archivos subidos (si algún día no usas Cloudinary)
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+# --- Biblioteca de imágenes: CLOUDINARY ---
+# Reemplaza TU_CLOUD_NAME y TU_API_KEY con los datos de tu cuenta.
+# (Están en el Dashboard de Cloudinary; api_key es pública, no es secreta.)
+media_library:
+  name: cloudinary
+  config:
+    cloud_name: TU_CLOUD_NAME
+    api_key: TU_API_KEY
+
+collections:
+  # ----------------------------------------------------------
+  # 1) DATOS DE LA EMPRESA (contacto, redes, RUC…)
+  # ----------------------------------------------------------
+  - name: "empresa"
+    label: "Datos de la empresa"
+    delete: false
+    editor: { preview: false }
+    files:
+      - name: "site"
+        label: "Datos generales"
+        file: "src/data/site.json"
+        fields:
+          - { label: "Nombre corto", name: "name", widget: "string" }
+          - { label: "Razón social", name: "legalName", widget: "string" }
+          - { label: "RUC", name: "ruc", widget: "string" }
+          - { label: "Eslogan (tagline)", name: "tagline", widget: "string" }
+          - { label: "Descripción", name: "description", widget: "text" }
+          - { label: "WhatsApp (formato internacional, sin +)", name: "whatsapp", widget: "string", hint: "Ej: 51960973971" }
+          - { label: "WhatsApp (como se muestra)", name: "whatsappDisplay", widget: "string", hint: "Ej: +51 960 973 971" }
+          - { label: "Correo", name: "email", widget: "string" }
+          - { label: "Ciudad", name: "city", widget: "string" }
+          - { label: "Dirección", name: "address", widget: "string" }
+          - { label: "Año de fundación", name: "foundedYear", widget: "number", value_type: "int" }
+          - label: "Redes sociales"
+            name: "social"
+            widget: "object"
+            fields:
+              - { label: "Facebook (URL)", name: "facebook", widget: "string", required: false }
+              - { label: "LinkedIn (URL)", name: "linkedin", widget: "string", required: false }
+              - { label: "Instagram (URL)", name: "instagram", widget: "string", required: false }
+
+  # ----------------------------------------------------------
+  # 2) TEXTOS DE LA PÁGINA DE INICIO
+  # ----------------------------------------------------------
+  - name: "inicio"
+    label: "Página de inicio"
+    delete: false
+    editor: { preview: false }
+    files:
+      - name: "home"
+        label: "Secciones de la home"
+        file: "src/data/home.json"
+        fields:
+          - label: "Portada (Hero)"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string" }
+              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string" }
+              - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string" }
+              - { label: "Botón secundario", name: "botonServicios", widget: "string" }
+
+          - label: "Encabezado de Servicios"
+            name: "serviciosSeccion"
+            widget: "object"
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+
+          - label: "Nosotros"
+            name: "nosotros"
+            widget: "object"
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string" }
+              - { label: "Nombre de la consultora", name: "consultoraNombre", widget: "string" }
+              - { label: "Grado (ej. Mag.)", name: "consultoraGrado", widget: "string" }
+              - { label: "Rol", name: "consultoraRol", widget: "string" }
+              - { label: "Biografía", name: "consultoraBio", widget: "text" }
+              - label: "Diferenciadores"
+                name: "diferenciadores"
+                widget: "list"
+                fields:
+                  - { label: "Título", name: "titulo", widget: "string" }
+                  - { label: "Texto", name: "texto", widget: "text" }
+
+          - label: "Proceso"
+            name: "proceso"
+            widget: "object"
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - label: "Pasos"
+                name: "pasos"
+                widget: "list"
+                fields:
+                  - { label: "Número", name: "num", widget: "string", hint: "Ej: 01" }
+                  - { label: "Título", name: "titulo", widget: "string" }
+                  - { label: "Texto", name: "texto", widget: "text" }
+
+          - label: "Sectores"
+            name: "sectores"
+            widget: "object"
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - label: "Lista de sectores"
+                name: "lista"
+                widget: "list"
+                field: { label: "Sector", name: "sector", widget: "string" }
+
+          - label: "Contacto"
+            name: "contacto"
+            widget: "object"
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - label: "Opciones del formulario (¿Qué necesitas?)"
+                name: "opcionesServicio"
+                widget: "list"
+                field: { label: "Opción", name: "opcion", widget: "string" }
+
+  # ----------------------------------------------------------
+  # 3) SERVICIOS (tarjetas)
+  # ----------------------------------------------------------
+  - name: "servicios"
+    label: "Servicios"
+    label_singular: "Servicio"
+    folder: "src/content/services"
+    create: true
+    slug: "{{slug}}"
+    editor: { preview: false }
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Descripción", name: "description", widget: "text" }
+      - { label: "Orden", name: "order", widget: "number", value_type: "int", required: false, hint: "Menor número = aparece primero" }
+      - { label: "Contenido (opcional)", name: "body", widget: "markdown", required: false }
+
+  # ----------------------------------------------------------
+  # 4) BLOG (artículos con foto)
+  # ----------------------------------------------------------
+  - name: "blog"
+    label: "Blog"
+    label_singular: "Artículo"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Resumen", name: "description", widget: "text" }
+      - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Foto de portada", name: "image", widget: "image", required: false }
+      - { label: "Borrador (no publicar aún)", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }

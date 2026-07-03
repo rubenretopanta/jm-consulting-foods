@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+
+const fmt = (d) =>
+  d.toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout title="Blog">
+  <main class="section">
+    <div class="container">
+      <header class="sec-head">
+        <p class="eyebrow">Recursos</p>
+        <h1>Blog</h1>
+        <p class="sec-sub">Guías prácticas sobre inocuidad alimentaria y cumplimiento normativo.</p>
+      </header>
+
+      {posts.length === 0 ? (
+        <p class="empty">Muy pronto publicaremos nuestros primeros artículos.</p>
+      ) : (
+        <div class="posts">
+          {posts.map((post) => (
+            <a class="post-card" href={`/blog/${post.id}/`}>
+              {post.data.image && <img src={post.data.image} alt={post.data.title} loading="lazy" />}
+              <div class="post-body">
+                <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+                <h2>{post.data.title}</h2>
+                <p>{post.data.description}</p>
+                <span class="more">Leer más →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .sec-head { max-width: 640px; margin-bottom: var(--space-5); }
+  .sec-head h1 { margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { font-size: var(--fs-lg); }
+  .empty { font-size: var(--fs-lg); }
+
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .post-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--color-primary); }
+  .post-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .post-body { padding: var(--space-3); display: grid; gap: 0.5rem; }
+  .post-body time { font-size: var(--fs-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .post-body h2 { font-size: var(--fs-lg); color: var(--color-primary-deep); }
+  .post-body p { font-size: var(--fs-sm); }
+  .more { color: var(--color-primary); font-weight: var(--fw-semibold); font-size: var(--fs-sm); margin-top: 0.3rem; }
+
+  @media (max-width: 920px) { .posts { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .posts { grid-template-columns: 1fr; } }
+</style>

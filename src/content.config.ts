@@ -16,6 +16,8 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.date(),
+    image: z.string().optional(),      // URL de Cloudinary (portada)
+    draft: z.boolean().optional(),     // true = no se publica todavía
   }),
 });
 

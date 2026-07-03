@@ -1,34 +1,13 @@
 /**
  * FUENTE ÚNICA DE VERDAD — datos de J&M Consulting Foods S.A.C.
- * Cualquier dato de la empresa se edita AQUÍ y se refleja en todo el sitio.
+ *
+ * Los datos viven en `site.json` (editable desde el panel /admin).
+ * Este archivo solo los importa y expone el helper waLink().
+ * No edites los valores aquí: hazlo en site.json o desde el panel.
  */
+import site from './site.json';
 
-export const SITE = {
-  // Identidad
-  name: 'J&M Consulting Foods',
-  legalName: 'J&M Consulting Foods S.A.C.',
-  ruc: '20607994359',
-  tagline: 'Consultoría en calidad e inocuidad alimentaria',
-  description:
-    'Te acompañamos paso a paso para obtener tu Registro Sanitario, implementar HACCP y BPM, y pasar tus auditorías de DIGESA con tranquilidad.',
-
-  // Contacto
-  whatsapp: '51960973971',              // formato internacional sin "+" ni espacios
-  whatsappDisplay: '+51 960 973 971',   // como se muestra al usuario
-  email: 'jmconsulting03@gmail.com',   // PENDIENTE: confirmar correo real
-  city: 'Lima, Perú',
-  address: 'San Martín de Porres, Lima', // PENDIENTE: dirección exacta
-
-  // Operación
-  foundedYear: 2021,
-
-  // Redes (rellenar cuando las tengas)
- social: {
-    facebook: 'https://www.facebook.com/jmconsulting03/',
-    linkedin: 'https://pe.linkedin.com/company/j-m-consulting-sac',
-    instagram: '',
-  },
-} as const;
+export const SITE = site;
 
 /**
  * Construye un enlace de WhatsApp con mensaje opcional pre-escrito.

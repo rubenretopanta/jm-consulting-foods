@@ -1,20 +1,15 @@
 ---
-const sectores = [
-  'Restaurantes y servicios afines',
-  'Panificación y pastelería',
-  'Agroindustria',
-  'Pesquería',
-  'Bebidas y agua de mesa',
-  'Programas sociales (Qali Warma)',
-];
+import home from '../../data/home.json';
+const { sectores: sectoresData } = home;
+const sectores = sectoresData.lista;
 ---
 
 <section class="sectors section" id="sectores">
   <div class="container">
     <header class="sec-head">
-      <p class="eyebrow">A quiénes ayudamos</p>
-      <h2>Sectores que atendemos</h2>
-      <p class="sec-sub">Trabajamos con negocios de alimentos de todos los tamaños.</p>
+      <p class="eyebrow">{sectoresData.eyebrow}</p>
+      <h2>{sectoresData.titulo}</h2>
+      <p class="sec-sub">{sectoresData.subtitulo}</p>
     </header>
 
     <div class="grid">

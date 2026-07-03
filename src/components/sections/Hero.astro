@@ -1,17 +1,19 @@
 ---
 import { SITE, waLink } from '../../data/site.ts';
+import home from '../../data/home.json';
+const { hero } = home;
 ---
 
 <section class="hero section" id="inicio">
   <div class="container">
     <p class="eyebrow">{SITE.tagline} · {SITE.city}</p>
-    <h1>Tu negocio de alimentos,<br /><span class="hl">en regla y certificado.</span></h1>
+    <h1>{hero.tituloLinea1}<br /><span class="hl">{hero.tituloDestacado}</span></h1>
     <p class="lead">{SITE.description}</p>
     <div class="hero-cta">
       <a class="btn btn-primary" href={waLink('Hola J&M, quiero información sobre sus servicios.')}>
-        Conversemos por WhatsApp
+        {hero.botonWhatsapp}
       </a>
-      <a class="btn btn-ghost" href="#servicios">Ver servicios</a>
+      <a class="btn btn-ghost" href="#servicios">{hero.botonServicios}</a>
     </div>
   </div>
 </section>
