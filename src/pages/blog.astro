@@ -24,7 +24,7 @@ const fmt = (d) =>
       ) : (
         <div class="posts">
           {posts.map((post) => (
-            <a class="post-card" href={`/blog/${post.id}/`}>
+            <a class="post-card" href={`/blog/${post.id.replace(/\.md$/, '')}/`}>
               {post.data.image && <img src={post.data.image} alt={post.data.title} loading="lazy" />}
               <div class="post-body">
                 <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
