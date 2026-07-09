@@ -1,28 +1,34 @@
 # ============================================================
-#  Configuración del panel de administración (Sveltia CMS)
-#  Edita este sitio desde: https://TU-DOMINIO/admin/
+#  Configuración del panel de administración (Decap CMS)
+#  Login por correo/contraseña vía DecapBridge.
+#  Edita este sitio desde: https://jm-consulting-foods.netlify.app/admin/
 # ============================================================
 
+# --- Login por correo/contraseña: DECAPBRIDGE ---
 backend:
-  name: github
+  name: git-gateway
   repo: rubenretopanta/jm-consulting-foods
   branch: main
+  identity_url: https://auth.decapbridge.com/sites/39b0d814-f8f0-43cf-8ec0-afc4caaf7d49
+  gateway_url: https://gateway.decapbridge.com
 
-# Idioma del panel y de los mensajes de commit
-publish_mode: simple
+# Idioma del panel
+locale: es
+
+# Dirección del sitio (para el botón "Ver sitio en vivo")
+site_url: https://jm-consulting-foods.netlify.app
 
 # Carpeta de respaldo para archivos subidos (si algún día no usas Cloudinary)
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
 # --- Biblioteca de imágenes: CLOUDINARY ---
-# Reemplaza TU_CLOUD_NAME y TU_API_KEY con los datos de tu cuenta.
-# (Están en el Dashboard de Cloudinary; api_key es pública, no es secreta.)
+# api_key es pública (no es secreta). El API Secret NO va aquí, va en el .env.
 media_library:
   name: cloudinary
   config:
-    cloud_name: TU_CLOUD_NAME
-    api_key: TU_API_KEY
+    cloud_name: aox8u9aa
+    api_key: "835665922119437"
 
 collections:
   # ----------------------------------------------------------
