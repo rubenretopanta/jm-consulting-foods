@@ -1,6 +1,6 @@
 ---
-title: Buenas Prácticas (BPM)
+title: Buenas Prácticas (BPM)EXELCENTE
 description: Manuales y prácticas de manufactura y manipulación para producir
-  alimentos seguros.
+  alimentos seguros. MUY SEGUROS
 order: 3
 ---
