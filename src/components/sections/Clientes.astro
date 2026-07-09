@@ -1,0 +1,71 @@
+---
+// Clientes.astro — muestra los clientes desde la content collection.
+// La sección solo se renderiza si hay al menos un cliente publicado (no borrador).
+import { getCollection } from 'astro:content';
+
+const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+---
+
+{clientes.length > 0 && (
+  <section class="clients section" id="clientes">
+    <div class="container">
+      <header class="sec-head">
+        <p class="eyebrow">Confían en nosotros</p>
+        <h2>Clientes que ya trabajan con nosotros</h2>
+        <p class="sec-sub">Negocios de alimentos que acompañamos en su camino a la certificación.</p>
+      </header>
+
+      <div class="grid">
+        {clientes.map((cliente) => (
+          <article class="client-card">
+            {cliente.data.image && (
+              <img class="logo" src={cliente.data.image} alt={cliente.data.name} loading="lazy" />
+            )}
+            <h3>{cliente.data.name}</h3>
+            {cliente.data.description && <p>{cliente.data.description}</p>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .clients { background: var(--color-bg); }
+  .sec-head { max-width: 620px; margin-bottom: var(--space-5); text-align: center; margin-inline: auto; }
+  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { font-size: var(--fs-lg); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+  .client-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    text-align: center;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .client-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--color-primary);
+  }
+  .logo {
+    width: 96px; height: 96px;
+    object-fit: cover;
+    border-radius: var(--radius-full);
+    margin: 0 auto var(--space-2);
+    background: var(--color-primary-soft);
+  }
+  .client-card h3 { font-size: var(--fs-lg); color: var(--color-primary-deep); }
+  .client-card p { font-size: var(--fs-sm); margin-top: 0.25rem; }
+
+  @media (max-width: 920px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>

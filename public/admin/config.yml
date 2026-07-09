@@ -12,6 +12,11 @@ backend:
   identity_url: https://auth.decapbridge.com/sites/39b0d814-f8f0-43cf-8ec0-afc4caaf7d49
   gateway_url: https://gateway.decapbridge.com
 
+# Modo local para probar el panel sin login desde tu computadora.
+# Solo se activa en localhost (con el proxy `npx decap-server` corriendo);
+# en el sitio publicado se ignora, así que es seguro dejarlo aquí.
+local_backend: true
+
 # Idioma del panel
 locale: es
 
@@ -176,7 +181,24 @@ collections:
       - { label: "Contenido (opcional)", name: "body", widget: "markdown", required: false, hint: "Contenido adicional del servicio (opcional). Puedes dejarlo vacío." }
 
   # ----------------------------------------------------------
-  # 4) BLOG (artículos con foto)
+  # 4) CLIENTES (logos/fotos de clientes)
+  # ----------------------------------------------------------
+  - name: "clientes"
+    label: "Clientes"
+    label_singular: "Cliente"
+    folder: "src/content/clientes"
+    create: true
+    slug: "{{slug}}"
+    editor: { preview: true }
+    fields:
+      - { label: "Nombre", name: "name", widget: "string", hint: "Nombre del cliente o de la empresa. Se muestra debajo de la foto en la sección Clientes." }
+      - { label: "Foto o logo", name: "image", widget: "image", required: false, hint: "Foto del cliente o su logo (se sube a Cloudinary). Se muestra en un círculo. Recomendado: imagen cuadrada." }
+      - { label: "Rubro o descripción", name: "description", widget: "string", required: false, hint: "Texto corto opcional debajo del nombre. Ej: Panadería · Lima" }
+      - { label: "Orden", name: "order", widget: "number", value_type: "int", required: false, hint: "Controla la posición. Menor número = aparece primero." }
+      - { label: "Borrador (no mostrar aún)", name: "draft", widget: "boolean", default: false, required: false, hint: "Actívalo para guardar el cliente SIN mostrarlo todavía en el sitio." }
+
+  # ----------------------------------------------------------
+  # 5) BLOG (artículos y cursos, con foto)
   # ----------------------------------------------------------
   - name: "blog"
     label: "Blog"

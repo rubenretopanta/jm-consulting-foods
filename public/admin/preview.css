@@ -145,6 +145,19 @@ body {
 .pv-socials { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
 .pv-social-chip { background: rgba(255,255,255,0.12); color: #fff; border-radius: var(--radius-sm); padding: 6px 12px; font-size: 0.8rem; }
 
+/* ---------- CLIENTES ---------- */
+.pv-clients { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.pv-client-card {
+  background: var(--color-surface); border: 1px solid var(--color-line);
+  border-radius: var(--radius); padding: 22px; text-align: center;
+}
+.pv-client-logo {
+  width: 96px; height: 96px; object-fit: cover; border-radius: var(--radius-full);
+  margin: 0 auto 14px; background: var(--color-primary-soft); display: block;
+}
+.pv-client-card h3 { font-size: 1.15rem; color: var(--color-primary-deep); }
+.pv-client-card p { font-size: 0.9rem; color: var(--color-muted); margin: 4px 0 0; }
+
 /* ---------- BLOG / ARTÍCULO ---------- */
 .pv-article { max-width: 760px; margin: 0 auto; padding: 28px; }
 .pv-article time { display: block; font-size: 0.75rem; color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }

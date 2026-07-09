@@ -182,6 +182,29 @@
   });
 
   // ==========================================================
+  //  CLIENTES (tarjeta individual)
+  // ==========================================================
+  var ClientePreview = createClass({
+    render: function () {
+      var e = this.props.entry;
+      var image = val(e, ['image']);
+      var desc = val(e, ['description']);
+      return el('div', 'pv', [
+        h('div', { key: 'wrap', className: 'pv-section' }, [
+          el('div', 'pv-note', 'Así se verá esta tarjeta en la sección «Clientes» del inicio:'),
+          h('div', { key: 'g', className: 'pv-clients', style: { marginTop: '16px' } }, [
+            el('article', 'pv-client-card', [
+              image ? h('img', { key: 'img', className: 'pv-client-logo', src: image, alt: '' }) : h('div', { key: 'ph', className: 'pv-client-logo' }),
+              h('h3', { key: 'n' }, val(e, ['name'])),
+              desc ? h('p', { key: 'd' }, desc) : null
+            ])
+          ])
+        ])
+      ]);
+    }
+  });
+
+  // ==========================================================
   //  DATOS DE LA EMPRESA (site.json) → cómo se ve en el pie
   // ==========================================================
   var EmpresaPreview = createClass({
@@ -227,5 +250,6 @@
   CMS.registerPreviewTemplate('inicio', InicioPreview);
   CMS.registerPreviewTemplate('servicios', ServicioPreview);
   CMS.registerPreviewTemplate('blog', BlogPreview);
+  CMS.registerPreviewTemplate('clientes', ClientePreview);
   CMS.registerPreviewTemplate('empresa', EmpresaPreview);
 })();

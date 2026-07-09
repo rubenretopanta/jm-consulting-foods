@@ -21,4 +21,15 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { services, blog };
+const clientes = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/clientes' }),
+  schema: z.object({
+    name: z.string(),                  // nombre del cliente / empresa
+    image: z.string().optional(),      // URL de Cloudinary (foto o logo)
+    description: z.string().optional(),// rubro o breve descripción
+    order: z.number().optional(),      // menor = aparece primero
+    draft: z.boolean().optional(),     // true = no se muestra todavía
+  }),
+});
+
+export const collections = { services, blog, clientes };
