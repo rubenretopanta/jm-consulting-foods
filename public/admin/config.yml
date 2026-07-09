@@ -37,30 +37,31 @@ collections:
   - name: "empresa"
     label: "Datos de la empresa"
     delete: false
-    editor: { preview: false }
+    editor: { preview: true }
     files:
       - name: "site"
         label: "Datos generales"
         file: "src/data/site.json"
         fields:
-          - { label: "Nombre corto", name: "name", widget: "string" }
-          - { label: "Razón social", name: "legalName", widget: "string" }
-          - { label: "RUC", name: "ruc", widget: "string" }
-          - { label: "Eslogan (tagline)", name: "tagline", widget: "string" }
-          - { label: "Descripción", name: "description", widget: "text" }
-          - { label: "WhatsApp (formato internacional, sin +)", name: "whatsapp", widget: "string", hint: "Ej: 51960973971" }
-          - { label: "WhatsApp (como se muestra)", name: "whatsappDisplay", widget: "string", hint: "Ej: +51 960 973 971" }
-          - { label: "Correo", name: "email", widget: "string" }
-          - { label: "Ciudad", name: "city", widget: "string" }
-          - { label: "Dirección", name: "address", widget: "string" }
-          - { label: "Año de fundación", name: "foundedYear", widget: "number", value_type: "int" }
+          - { label: "Nombre corto", name: "name", widget: "string", hint: "Nombre corto de la marca. Aparece arriba a la izquierda (junto al logo) y en el pie de página." }
+          - { label: "Razón social", name: "legalName", widget: "string", hint: "Nombre legal completo de la empresa. Aparece en el pie de página y en el aviso de derechos (© ...)." }
+          - { label: "RUC", name: "ruc", widget: "string", hint: "Número de RUC. Se muestra en el pie de página y en la sección de contacto." }
+          - { label: "Eslogan (tagline)", name: "tagline", widget: "string", hint: "Frase corta que resume lo que hace la empresa. Aparece como antetítulo en la portada." }
+          - { label: "Descripción", name: "description", widget: "text", hint: "Párrafo que describe la empresa. Aparece debajo del título grande de la portada." }
+          - { label: "WhatsApp (formato internacional, sin +)", name: "whatsapp", widget: "string", hint: "Solo números, con código de país y sin el signo +. Es el número al que llegan los mensajes de todos los botones de WhatsApp. Ej: 51960973971" }
+          - { label: "WhatsApp (como se muestra)", name: "whatsappDisplay", widget: "string", hint: "El número tal como quieres que se lea en pantalla, en la sección de contacto. Ej: +51 960 973 971" }
+          - { label: "Correo", name: "email", widget: "string", hint: "Correo de contacto. Aparece en el pie de página y en la sección de contacto." }
+          - { label: "Ciudad", name: "city", widget: "string", hint: "Ciudad/país. Aparece en el antetítulo de la portada y en el pie de página. Ej: Lima, Perú" }
+          - { label: "Dirección", name: "address", widget: "string", hint: "Dirección o distrito. Se usa como dato de ubicación de la empresa." }
+          - { label: "Año de fundación", name: "foundedYear", widget: "number", value_type: "int", hint: "Año en que se fundó la empresa (solo el número). Ej: 2021" }
           - label: "Redes sociales"
             name: "social"
             widget: "object"
+            hint: "Enlaces a tus redes. Cada ícono aparece en el pie de página SOLO si pegas su enlace; si lo dejas vacío, ese ícono no se muestra."
             fields:
-              - { label: "Facebook (URL)", name: "facebook", widget: "string", required: false }
-              - { label: "LinkedIn (URL)", name: "linkedin", widget: "string", required: false }
-              - { label: "Instagram (URL)", name: "instagram", widget: "string", required: false }
+              - { label: "Facebook (URL)", name: "facebook", widget: "string", required: false, hint: "Pega la dirección completa de tu página de Facebook. Déjalo vacío para ocultar el ícono." }
+              - { label: "LinkedIn (URL)", name: "linkedin", widget: "string", required: false, hint: "Pega la dirección completa de tu perfil de LinkedIn. Déjalo vacío para ocultar el ícono." }
+              - { label: "Instagram (URL)", name: "instagram", widget: "string", required: false, hint: "Pega la dirección completa de tu perfil de Instagram. Déjalo vacío para ocultar el ícono." }
 
   # ----------------------------------------------------------
   # 2) TEXTOS DE LA PÁGINA DE INICIO
@@ -68,7 +69,7 @@ collections:
   - name: "inicio"
     label: "Página de inicio"
     delete: false
-    editor: { preview: false }
+    editor: { preview: true }
     files:
       - name: "home"
         label: "Secciones de la home"
@@ -77,76 +78,86 @@ collections:
           - label: "Portada (Hero)"
             name: "hero"
             widget: "object"
+            hint: "Es lo primero que se ve al abrir el sitio, arriba de todo."
             fields:
-              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string" }
-              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string" }
-              - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string" }
-              - { label: "Botón secundario", name: "botonServicios", widget: "string" }
+              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string", hint: "Primera línea del título grande de la portada (en color oscuro)." }
+              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string", hint: "Segunda línea del título, que se muestra resaltada en verde." }
+              - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string", hint: "Texto del botón amarillo principal de la portada (abre WhatsApp)." }
+              - { label: "Botón secundario", name: "botonServicios", widget: "string", hint: "Texto del botón secundario de la portada (lleva a la sección de servicios)." }
 
           - label: "Encabezado de Servicios"
             name: "serviciosSeccion"
             widget: "object"
+            hint: "Los textos que encabezan la sección de Servicios. Las tarjetas se editan aparte, en la sección «Servicios»."
             fields:
-              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
-              - { label: "Título", name: "titulo", widget: "string" }
-              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas que va encima del título de la sección." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Servicios." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título de Servicios." }
 
           - label: "Nosotros"
             name: "nosotros"
             widget: "object"
+            hint: "Sección «Quiénes somos», con la tarjeta de la consultora y la lista de diferenciadores."
             fields:
-              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
-              - { label: "Título", name: "titulo", widget: "string" }
-              - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string" }
-              - { label: "Nombre de la consultora", name: "consultoraNombre", widget: "string" }
-              - { label: "Grado (ej. Mag.)", name: "consultoraGrado", widget: "string" }
-              - { label: "Rol", name: "consultoraRol", widget: "string" }
-              - { label: "Biografía", name: "consultoraBio", widget: "text" }
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título de la sección." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Nosotros." }
+              - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string", hint: "1 o 2 letras que se muestran en el círculo amarillo (avatar). Ej: IG" }
+              - { label: "Nombre de la consultora", name: "consultoraNombre", widget: "string", hint: "Nombre que aparece en la tarjeta verde de la consultora." }
+              - { label: "Grado (ej. Mag.)", name: "consultoraGrado", widget: "string", hint: "Grado académico entre paréntesis, se muestra al lado del nombre en letra más tenue. Ej: (Mag.)" }
+              - { label: "Rol", name: "consultoraRol", widget: "string", hint: "Cargo o rol, en amarillo debajo del nombre. Ej: Consultora principal" }
+              - { label: "Biografía", name: "consultoraBio", widget: "text", hint: "Breve descripción de la consultora, dentro de la tarjeta verde." }
               - label: "Diferenciadores"
                 name: "diferenciadores"
                 widget: "list"
+                hint: "Lista con palomita (✓) al lado derecho de la sección. Puedes agregar, quitar o reordenar cada punto."
                 fields:
-                  - { label: "Título", name: "titulo", widget: "string" }
-                  - { label: "Texto", name: "texto", widget: "text" }
+                  - { label: "Título", name: "titulo", widget: "string", hint: "Título corto del punto (en negrita)." }
+                  - { label: "Texto", name: "texto", widget: "text", hint: "Explicación breve del punto." }
 
           - label: "Proceso"
             name: "proceso"
             widget: "object"
+            hint: "Sección «Cómo trabajamos», con los pasos numerados."
             fields:
-              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
-              - { label: "Título", name: "titulo", widget: "string" }
-              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Proceso." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
               - label: "Pasos"
                 name: "pasos"
                 widget: "list"
+                hint: "Cada paso del proceso. Se muestran en fila, numerados. Puedes agregar, quitar o reordenar."
                 fields:
-                  - { label: "Número", name: "num", widget: "string", hint: "Ej: 01" }
-                  - { label: "Título", name: "titulo", widget: "string" }
-                  - { label: "Texto", name: "texto", widget: "text" }
+                  - { label: "Número", name: "num", widget: "string", hint: "Número grande del paso (como texto). Ej: 01" }
+                  - { label: "Título", name: "titulo", widget: "string", hint: "Nombre corto del paso." }
+                  - { label: "Texto", name: "texto", widget: "text", hint: "Explicación breve del paso." }
 
           - label: "Sectores"
             name: "sectores"
             widget: "object"
+            hint: "Sección «A quiénes ayudamos», con la lista de rubros que atiende la empresa."
             fields:
-              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
-              - { label: "Título", name: "titulo", widget: "string" }
-              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Sectores." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
               - label: "Lista de sectores"
                 name: "lista"
                 widget: "list"
-                field: { label: "Sector", name: "sector", widget: "string" }
+                hint: "Cada rubro se muestra como una tarjeta con un punto verde. Agrega uno por línea."
+                field: { label: "Sector", name: "sector", widget: "string", hint: "Nombre del rubro. Ej: Panificación y pastelería" }
 
           - label: "Contacto"
             name: "contacto"
             widget: "object"
+            hint: "Sección final de contacto (fondo verde) con el formulario de WhatsApp."
             fields:
-              - { label: "Antetítulo", name: "eyebrow", widget: "string" }
-              - { label: "Título", name: "titulo", widget: "string" }
-              - { label: "Subtítulo", name: "subtitulo", widget: "text" }
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en amarillo y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Contacto." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
               - label: "Opciones del formulario (¿Qué necesitas?)"
                 name: "opcionesServicio"
                 widget: "list"
-                field: { label: "Opción", name: "opcion", widget: "string" }
+                hint: "Las opciones que el cliente puede elegir en el menú desplegable «¿Qué necesitas?» del formulario."
+                field: { label: "Opción", name: "opcion", widget: "string", hint: "Un servicio que puede elegir el visitante. Ej: Plan HACCP" }
 
   # ----------------------------------------------------------
   # 3) SERVICIOS (tarjetas)
@@ -157,12 +168,12 @@ collections:
     folder: "src/content/services"
     create: true
     slug: "{{slug}}"
-    editor: { preview: false }
+    editor: { preview: true }
     fields:
-      - { label: "Título", name: "title", widget: "string" }
-      - { label: "Descripción", name: "description", widget: "text" }
-      - { label: "Orden", name: "order", widget: "number", value_type: "int", required: false, hint: "Menor número = aparece primero" }
-      - { label: "Contenido (opcional)", name: "body", widget: "markdown", required: false }
+      - { label: "Título", name: "title", widget: "string", hint: "Nombre del servicio. Es el título de la tarjeta (en verde)." }
+      - { label: "Descripción", name: "description", widget: "text", hint: "Texto corto que explica el servicio, dentro de la tarjeta." }
+      - { label: "Orden", name: "order", widget: "number", value_type: "int", required: false, hint: "Controla la posición de la tarjeta. Menor número = aparece primero." }
+      - { label: "Contenido (opcional)", name: "body", widget: "markdown", required: false, hint: "Contenido adicional del servicio (opcional). Puedes dejarlo vacío." }
 
   # ----------------------------------------------------------
   # 4) BLOG (artículos con foto)
@@ -173,10 +184,11 @@ collections:
     folder: "src/content/blog"
     create: true
     slug: "{{slug}}"
+    editor: { preview: true }
     fields:
-      - { label: "Título", name: "title", widget: "string" }
-      - { label: "Resumen", name: "description", widget: "text" }
-      - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "Foto de portada", name: "image", widget: "image", required: false }
-      - { label: "Borrador (no publicar aún)", name: "draft", widget: "boolean", default: false, required: false }
-      - { label: "Contenido", name: "body", widget: "markdown" }
+      - { label: "Título", name: "title", widget: "string", hint: "Título del artículo. Aparece grande arriba del artículo y en el listado del blog." }
+      - { label: "Resumen", name: "description", widget: "text", hint: "Frase corta que resume el artículo. Se muestra debajo del título y en el listado del blog." }
+      - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, hint: "Fecha de publicación del artículo." }
+      - { label: "Foto de portada", name: "image", widget: "image", required: false, hint: "Imagen principal del artículo (se sube a Cloudinary). Opcional: si la dejas vacía, el artículo se muestra sin foto." }
+      - { label: "Borrador (no publicar aún)", name: "draft", widget: "boolean", default: false, required: false, hint: "Actívalo para guardar el artículo SIN publicarlo todavía en el sitio." }
+      - { label: "Contenido", name: "body", widget: "markdown", hint: "El cuerpo del artículo. Puedes usar títulos, negritas, listas e imágenes." }

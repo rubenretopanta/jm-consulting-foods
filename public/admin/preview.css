@@ -1,0 +1,167 @@
+/* ============================================================
+   Estilos de la VISTA PREVIA del panel (Decap CMS).
+   Se cargan SOLO dentro del iframe de preview, no afectan al sitio.
+   Replican los tokens de marca de J&M para que la preview se parezca
+   al sitio real (src/styles/tokens.css).
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-bg:        #F3EFE9;
+  --color-surface:   #FFFFFF;
+  --color-ink:       #3A3A37;
+  --color-muted:     #6E6E68;
+  --color-line:      #E4DED4;
+  --color-primary:        #2E7D4F;
+  --color-primary-deep:   #1F5C39;
+  --color-primary-soft:   #E6F0E9;
+  --color-accent:         #F4B63F;
+  --color-accent-deep:    #D9971C;
+  --color-accent-ink:     #4A3508;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --radius-sm: 10px;
+  --radius:    18px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+  --shadow-sm: 0 6px 18px -12px rgba(31, 92, 57, 0.4);
+  --shadow:    0 18px 40px -24px rgba(31, 92, 57, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+.pv { max-width: 900px; margin: 0 auto; }
+.pv h1, .pv h2, .pv h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.1; color: var(--color-ink); margin: 0; }
+
+.pv-eyebrow {
+  font-family: var(--font-body); font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-primary); margin: 0;
+}
+.pv-eyebrow.accent { color: var(--color-accent); }
+
+.pv-section { padding: 40px 28px; border-bottom: 1px solid var(--color-line); }
+.pv-head { max-width: 620px; margin-bottom: 28px; }
+.pv-head.center { margin-inline: auto; text-align: center; }
+.pv-head h2 { font-size: 2.2rem; margin: 6px 0 10px; }
+.pv-sub { font-size: 1.15rem; color: var(--color-muted); margin: 0; }
+
+.pv-note {
+  font-size: 0.85rem; color: var(--color-muted); font-style: italic;
+  background: var(--color-primary-soft); border-radius: var(--radius-sm);
+  padding: 10px 14px; margin-top: 12px;
+}
+
+/* ---------- HERO ---------- */
+.pv-hero { padding: 48px 28px; }
+.pv-hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin: 14px 0 18px; }
+.pv-hero .hl { color: var(--color-primary); }
+.pv-lead { font-size: 1.15rem; color: var(--color-muted); max-width: 40ch; }
+.pv-btns { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+.pv-btn {
+  display: inline-flex; align-items: center; font-weight: 600;
+  padding: 0.8rem 1.4rem; border-radius: var(--radius-full); border: 1.5px solid transparent;
+}
+.pv-btn-primary { background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-sm); }
+.pv-btn-ghost { border-color: var(--color-line); color: var(--color-primary); }
+
+/* ---------- SERVICIOS (tarjetas) ---------- */
+.pv-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.pv-card {
+  background: var(--color-surface); border: 1px solid var(--color-line);
+  border-radius: var(--radius); padding: 26px 22px;
+}
+.pv-card h3 { font-size: 1.5rem; margin-bottom: 8px; color: var(--color-primary-deep); }
+.pv-card p { font-size: 0.9rem; color: var(--color-muted); margin: 0; }
+
+/* ---------- NOSOTROS ---------- */
+.pv-about { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: center; }
+.pv-about-card {
+  background: linear-gradient(150deg, var(--color-primary), var(--color-primary-deep));
+  color: #fff; border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow);
+}
+.pv-avatar {
+  width: 78px; height: 78px; border-radius: var(--radius-full);
+  background: var(--color-accent); color: var(--color-accent-ink);
+  display: grid; place-items: center; font-family: var(--font-display);
+  font-weight: 700; font-size: 1.5rem; margin-bottom: 14px;
+}
+.pv-about-card h3 { color: #fff; font-size: 1.5rem; }
+.pv-mag { font-size: 1rem; font-weight: 400; opacity: 0.7; }
+.pv-role { color: var(--color-accent); font-weight: 600; font-size: 0.9rem; margin: 4px 0 14px; }
+.pv-bio { color: rgba(255,255,255,0.85); font-size: 0.9rem; margin: 0; }
+.pv-about-text h2 { font-size: 2.2rem; margin: 6px 0 22px; }
+.pv-features { display: grid; gap: 20px; padding: 0; margin: 0; list-style: none; }
+.pv-features li { display: flex; gap: 14px; align-items: flex-start; }
+.pv-tick {
+  flex: none; width: 30px; height: 30px; border-radius: var(--radius-sm);
+  background: var(--color-primary-soft); color: var(--color-primary-deep);
+  display: grid; place-items: center; font-weight: 700; margin-top: 2px;
+}
+.pv-features strong { display: block; font-family: var(--font-display); font-size: 1.15rem; color: var(--color-ink); }
+.pv-features span { color: var(--color-muted); font-size: 0.9rem; }
+
+/* ---------- PROCESO ---------- */
+.pv-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; }
+.pv-step { padding-top: 8px; }
+.pv-num { font-family: var(--font-display); font-weight: 700; font-size: 3rem; color: var(--color-primary); opacity: 0.4; line-height: 1; }
+.pv-step h3 { font-size: 1.15rem; margin: 8px 0 6px; color: var(--color-primary-deep); }
+.pv-step p { font-size: 0.9rem; color: var(--color-muted); margin: 0; }
+
+/* ---------- SECTORES ---------- */
+.pv-sectors { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.pv-sector {
+  background: var(--color-surface); border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm); padding: 18px; display: flex; align-items: center; gap: 12px;
+  font-weight: 600; color: var(--color-primary-deep);
+}
+.pv-dot { flex: none; width: 12px; height: 12px; border-radius: var(--radius-full); background: var(--color-primary); }
+
+/* ---------- CONTACTO ---------- */
+.pv-contact { padding: 40px 28px; background: linear-gradient(160deg, var(--color-primary), var(--color-primary-deep)); color: #fff; border-radius: var(--radius); }
+.pv-contact .pv-head h2 { color: #fff; }
+.pv-contact .pv-sub { color: rgba(255,255,255,0.78); }
+.pv-form { background: #fff; border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow); display: grid; gap: 12px; max-width: 460px; }
+.pv-form label { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--color-primary-deep); }
+.pv-form select, .pv-form input {
+  padding: 0.7rem 0.9rem; border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm); background: var(--color-bg); color: var(--color-ink); font-size: 0.9rem;
+}
+
+/* ---------- EMPRESA (pie de página) ---------- */
+.pv-footer { background: var(--color-primary-deep); color: rgba(255,255,255,0.72); border-radius: var(--radius); padding: 30px; }
+.pv-footer .brand { color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; }
+.pv-footer p { color: rgba(255,255,255,0.7); font-size: 0.9rem; max-width: 40ch; }
+.pv-foot-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px 30px; margin-top: 18px; }
+.pv-foot-data small { display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+.pv-foot-data strong { color: #fff; font-weight: 600; font-size: 0.9rem; }
+.pv-socials { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.pv-social-chip { background: rgba(255,255,255,0.12); color: #fff; border-radius: var(--radius-sm); padding: 6px 12px; font-size: 0.8rem; }
+
+/* ---------- BLOG / ARTÍCULO ---------- */
+.pv-article { max-width: 760px; margin: 0 auto; padding: 28px; }
+.pv-article time { display: block; font-size: 0.75rem; color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.pv-article h1 { font-size: clamp(2rem, 4vw, 3rem); margin: 8px 0 12px; }
+.pv-article .pv-lead { font-size: 1.15rem; margin-bottom: 18px; }
+.pv-cover { width: 100%; border-radius: var(--radius); margin-bottom: 24px; display: block; }
+
+/* Contenido markdown (blog y servicios) */
+.pv-prose { color: var(--color-ink); }
+.pv-prose h2 { font-size: 1.5rem; color: var(--color-primary-deep); margin: 28px 0 12px; }
+.pv-prose h3 { font-size: 1.15rem; color: var(--color-primary-deep); margin: 20px 0 8px; }
+.pv-prose p { margin-bottom: 12px; color: var(--color-muted); }
+.pv-prose ul { padding-left: 1.4rem; margin-bottom: 12px; color: var(--color-muted); list-style: disc; }
+.pv-prose a { color: var(--color-primary); text-decoration: underline; }
+.pv-prose strong { color: var(--color-ink); }
+.pv-prose img { border-radius: var(--radius); margin: 18px 0; max-width: 100%; }
+
+@media (max-width: 700px) {
+  .pv-about { grid-template-columns: 1fr; gap: 24px; }
+}
