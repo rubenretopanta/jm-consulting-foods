@@ -1,0 +1,71 @@
+---
+// Beneficios.astro — beneficios de implementar el sistema HACCP (brochure, pág. 2)
+import home from '../../data/home.json';
+const { beneficios } = home;
+---
+
+<section class="benefits section" id="beneficios">
+  <div class="container benefits-grid">
+    <div class="benefits-text">
+      <p class="eyebrow">{beneficios.eyebrow}</p>
+      <h2>{beneficios.titulo}</h2>
+      <p class="sec-sub">{beneficios.subtitulo}</p>
+
+      <ul class="list">
+        {beneficios.lista.map((item) => (
+          <li><span class="tick">✓</span><span>{item}</span></li>
+        ))}
+      </ul>
+    </div>
+
+    {beneficios.imagen && (
+      <figure class="benefits-media">
+        <img src={beneficios.imagen} alt="Consumidores eligiendo alimentos en el punto de venta" loading="lazy" decoding="async" />
+      </figure>
+    )}
+  </div>
+</section>
+
+<style>
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--space-5);
+    align-items: center;
+  }
+  .benefits-text h2 { margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { font-size: var(--fs-lg); }
+
+  .list { display: grid; gap: var(--space-2); margin-top: var(--space-4); }
+  .list li {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    font-size: var(--fs-sm);
+    color: var(--color-ink);
+  }
+  .tick {
+    flex: none;
+    width: 24px; height: 24px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-deep);
+    display: grid; place-items: center;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    margin-top: 1px;
+  }
+
+  .benefits-media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .benefits-media img { display: block; width: 100%; height: 100%; max-height: 480px; object-fit: cover; }
+
+  @media (max-width: 920px) {
+    .benefits-grid { grid-template-columns: 1fr; gap: var(--space-4); }
+    .benefits-media { order: -1; }
+    .benefits-media img { max-height: 260px; }
+  }
+</style>

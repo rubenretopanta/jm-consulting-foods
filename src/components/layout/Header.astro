@@ -1,12 +1,18 @@
 ---
 // Header.astro — navegación principal con menú hamburguesa (móvil)
 import { SITE, waLink } from '../../data/site.ts';
+import { getCollection } from 'astro:content';
+
+// El enlace "Clientes" solo se muestra si hay clientes publicados (no borrador),
+// igual que la sección: así nunca queda un enlace que no lleve a nada.
+const hayClientes = (await getCollection('clientes', ({ data }) => !data.draft)).length > 0;
 
 const navLinks = [
   { label: 'Servicios', href: '/#servicios' },
   { label: 'Nosotros', href: '/#nosotros' },
   { label: 'Proceso', href: '/#proceso' },
   { label: 'Sectores', href: '/#sectores' },
+  ...(hayClientes ? [{ label: 'Clientes', href: '/#clientes' }] : []),
   { label: 'Blog', href: '/blog/' },
   { label: 'Contacto', href: '/#contacto' },
 ];

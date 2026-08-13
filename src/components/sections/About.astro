@@ -5,35 +5,90 @@ const diferenciadores = nosotros.diferenciadores;
 ---
 
 <section class="about section" id="nosotros">
-  <div class="container about-grid">
-    <div class="about-card">
-      <div class="avatar">{nosotros.consultoraIniciales}</div>
-      <h3>{nosotros.consultoraNombre} <span class="mag">{nosotros.consultoraGrado}</span></h3>
-      <p class="role">{nosotros.consultoraRol}</p>
-      <p class="bio">
-        {nosotros.consultoraBio}
-      </p>
+  <div class="container">
+    <!-- Fila 1: foto del equipo + quiénes somos y misión -->
+    <div class="intro-grid">
+      {nosotros.foto && (
+        <figure class="team-photo">
+          <img src={nosotros.foto} alt="Equipo de J&M Consulting Foods" loading="lazy" decoding="async" />
+        </figure>
+      )}
+
+      <div class="intro-text">
+        <p class="eyebrow">{nosotros.eyebrow}</p>
+        <h2>{nosotros.titulo}</h2>
+        <p class="intro-lead">{nosotros.quienesSomos}</p>
+        {nosotros.mision && (
+          <div class="mision">
+            <p class="mision-label">{nosotros.misionTitulo}</p>
+            <p>{nosotros.mision}</p>
+          </div>
+        )}
+      </div>
     </div>
 
-    <div class="about-text">
-      <p class="eyebrow">{nosotros.eyebrow}</p>
-      <h2>{nosotros.titulo}</h2>
-      <ul class="features">
-        {diferenciadores.map((d) => (
-          <li>
-            <span class="tick">✓</span>
-            <div>
-              <strong>{d.titulo}</strong>
-              <span>{d.texto}</span>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <!-- Fila 2: tarjeta de la consultora + diferenciadores -->
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="avatar">{nosotros.consultoraIniciales}</div>
+        <h3>{nosotros.consultoraNombre} <span class="mag">{nosotros.consultoraGrado}</span></h3>
+        <p class="role">{nosotros.consultoraRol}</p>
+        <p class="bio">
+          {nosotros.consultoraBio}
+        </p>
+      </div>
+
+      <div class="about-text">
+        <ul class="features">
+          {diferenciadores.map((d) => (
+            <li>
+              <span class="tick">✓</span>
+              <div>
+                <strong>{d.titulo}</strong>
+                <span>{d.texto}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+    align-items: center;
+    margin-bottom: var(--space-6);
+  }
+  .team-photo {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .team-photo img { display: block; width: 100%; height: auto; }
+
+  .intro-text h2 { margin-block: var(--space-1) var(--space-3); }
+  .intro-lead { font-size: var(--fs-lg); }
+  .mision {
+    margin-top: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-primary-soft);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+  }
+  .mision-label {
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: var(--fw-bold);
+    color: var(--color-primary-deep);
+    margin-bottom: 0.35rem;
+  }
+  .mision p:last-child { font-size: var(--fs-sm); color: var(--color-ink); }
+
   .about-grid {
     display: grid;
     grid-template-columns: 0.9fr 1.1fr;
@@ -63,7 +118,6 @@ const diferenciadores = nosotros.diferenciadores;
   .role { color: var(--color-accent); font-weight: var(--fw-semibold); font-size: var(--fs-sm); margin-block: 0.2rem var(--space-2); }
   .bio { color: rgba(255,255,255,0.85); font-size: var(--fs-sm); }
 
-  .about-text h2 { margin-block: var(--space-1) var(--space-3); }
   .features { display: grid; gap: var(--space-3); }
   .features li { display: flex; gap: var(--space-2); align-items: flex-start; }
   .tick {
@@ -80,6 +134,7 @@ const diferenciadores = nosotros.diferenciadores;
   .features span { color: var(--color-muted); font-size: var(--fs-sm); }
 
   @media (max-width: 920px) {
+    .intro-grid { grid-template-columns: 1fr; gap: var(--space-4); margin-bottom: var(--space-5); }
     .about-grid { grid-template-columns: 1fr; gap: var(--space-4); }
   }
 </style>

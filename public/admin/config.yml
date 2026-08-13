@@ -55,6 +55,8 @@ collections:
           - { label: "Descripción", name: "description", widget: "text", hint: "Párrafo que describe la empresa. Aparece debajo del título grande de la portada." }
           - { label: "WhatsApp (formato internacional, sin +)", name: "whatsapp", widget: "string", hint: "Solo números, con código de país y sin el signo +. Es el número al que llegan los mensajes de todos los botones de WhatsApp. Ej: 51960973971" }
           - { label: "WhatsApp (como se muestra)", name: "whatsappDisplay", widget: "string", hint: "El número tal como quieres que se lea en pantalla, en la sección de contacto. Ej: +51 960 973 971" }
+          - { label: "Teléfono adicional (solo números)", name: "phoneAlt", widget: "string", required: false, hint: "Segundo número de contacto, sin espacios ni signos. Ej: 991000494. Si lo dejas vacío, no se muestra en ningún lado." }
+          - { label: "Teléfono adicional (como se muestra)", name: "phoneAltDisplay", widget: "string", required: false, hint: "El segundo número tal como quieres que se lea en pantalla. Ej: +51 991 000 494" }
           - { label: "Correo", name: "email", widget: "string", hint: "Correo de contacto. Aparece en el pie de página y en la sección de contacto." }
           - { label: "Ciudad", name: "city", widget: "string", hint: "Ciudad/país. Aparece en el antetítulo de la portada y en el pie de página. Ej: Lima, Perú" }
           - { label: "Dirección", name: "address", widget: "string", hint: "Dirección o distrito. Se usa como dato de ubicación de la empresa." }
@@ -89,6 +91,7 @@ collections:
               - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string", hint: "Segunda línea del título, que se muestra resaltada en verde." }
               - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string", hint: "Texto del botón amarillo principal de la portada (abre WhatsApp)." }
               - { label: "Botón secundario", name: "botonServicios", widget: "string", hint: "Texto del botón secundario de la portada (lleva a la sección de servicios)." }
+              - { label: "Foto de la portada", name: "imagen", widget: "image", required: false, hint: "Foto grande que acompaña al título de la portada, al lado derecho. Si la dejas vacía, la portada se muestra solo con texto." }
 
           - label: "Encabezado de Servicios"
             name: "serviciosSeccion"
@@ -99,13 +102,32 @@ collections:
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Servicios." }
               - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título de Servicios." }
 
+          - label: "Beneficios (HACCP)"
+            name: "beneficios"
+            widget: "object"
+            hint: "Sección que explica los beneficios de implementar el sistema HACCP. Va justo después de los servicios."
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de beneficios." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
+              - { label: "Foto", name: "imagen", widget: "image", required: false, hint: "Foto que acompaña la lista, al lado derecho. Opcional." }
+              - label: "Lista de beneficios"
+                name: "lista"
+                widget: "list"
+                hint: "Cada beneficio aparece con una palomita (✓). Puedes agregar, quitar o reordenar."
+                field: { label: "Beneficio", name: "beneficio", widget: "string", hint: "Un beneficio. Ej: Reducir la aparición de enfermedades causadas por los alimentos." }
+
           - label: "Nosotros"
             name: "nosotros"
             widget: "object"
-            hint: "Sección «Quiénes somos», con la tarjeta de la consultora y la lista de diferenciadores."
+            hint: "Sección «Quiénes somos»: foto del equipo, misión, tarjeta de la consultora y lista de diferenciadores."
             fields:
               - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título de la sección." }
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Nosotros." }
+              - { label: "Foto del equipo", name: "foto", widget: "image", required: false, hint: "Foto grande del equipo, al lado izquierdo de la sección. Si la dejas vacía, no se muestra." }
+              - { label: "Quiénes somos", name: "quienesSomos", widget: "text", hint: "Párrafo que presenta al equipo. Aparece al lado de la foto." }
+              - { label: "Título de la misión", name: "misionTitulo", widget: "string", hint: "Etiqueta del recuadro verde claro. Normalmente: Misión" }
+              - { label: "Misión", name: "mision", widget: "text", required: false, hint: "Texto de la misión, dentro del recuadro verde claro. Si lo dejas vacío, el recuadro no se muestra." }
               - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string", hint: "1 o 2 letras que se muestran en el círculo amarillo (avatar). Ej: IG" }
               - { label: "Nombre de la consultora", name: "consultoraNombre", widget: "string", hint: "Nombre que aparece en la tarjeta verde de la consultora." }
               - { label: "Grado (ej. Mag.)", name: "consultoraGrado", widget: "string", hint: "Grado académico entre paréntesis, se muestra al lado del nombre en letra más tenue. Ej: (Mag.)" }
@@ -150,6 +172,15 @@ collections:
                 hint: "Cada rubro se muestra como una tarjeta con un punto verde. Agrega uno por línea."
                 field: { label: "Sector", name: "sector", widget: "string", hint: "Nombre del rubro. Ej: Panificación y pastelería" }
 
+          - label: "Encabezado de Clientes"
+            name: "clientes"
+            widget: "object"
+            hint: "Los textos que encabezan la sección de Clientes. Los logos se editan aparte, en la sección «Clientes»."
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título. Ej: Nos respaldan" }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Clientes." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
+
           - label: "Contacto"
             name: "contacto"
             widget: "object"
@@ -177,6 +208,13 @@ collections:
     fields:
       - { label: "Título", name: "title", widget: "string", hint: "Nombre del servicio. Es el título de la tarjeta (en verde)." }
       - { label: "Descripción", name: "description", widget: "text", hint: "Texto corto que explica el servicio, dentro de la tarjeta." }
+      - { label: "Foto", name: "image", widget: "image", required: false, hint: "Foto que aparece arriba de la tarjeta. Si la dejas vacía, la tarjeta se muestra solo con texto." }
+      - label: "Qué incluye"
+        name: "bullets"
+        widget: "list"
+        required: false
+        hint: "Lista de puntos que aparecen dentro de la tarjeta, con un punto amarillo. Opcional: si la dejas vacía, no se muestra."
+        field: { label: "Punto", name: "punto", widget: "string", hint: "Una cosa que incluye el servicio. Ej: Seguimiento a expediente" }
       - { label: "Orden", name: "order", widget: "number", value_type: "int", required: false, hint: "Controla la posición de la tarjeta. Menor número = aparece primero." }
       - { label: "Contenido (opcional)", name: "body", widget: "markdown", required: false, hint: "Contenido adicional del servicio (opcional). Puedes dejarlo vacío." }
 

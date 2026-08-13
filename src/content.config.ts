@@ -7,6 +7,8 @@ const services = defineCollection({
     title: z.string(),
     description: z.string(),
     order: z.number().optional(),
+    image: z.string().optional(),          // foto de la tarjeta (ruta local o URL de Cloudinary)
+    bullets: z.array(z.string()).optional(), // qué incluye el servicio
   }),
 });
 

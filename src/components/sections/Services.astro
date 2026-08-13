@@ -20,8 +20,24 @@ const services = (await getCollection('services')).sort(
     <div class="cards">
       {services.map((service) => (
         <article class="card">
-          <h3>{service.data.title}</h3>
-          <p>{service.data.description}</p>
+          {service.data.image && (
+            <img
+              class="card-img"
+              src={service.data.image}
+              alt={service.data.title}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
+          <div class="card-body">
+            <h3>{service.data.title}</h3>
+            <p>{service.data.description}</p>
+            {service.data.bullets && service.data.bullets.length > 0 && (
+              <ul class="bullets">
+                {service.data.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            )}
+          </div>
         </article>
       ))}
     </div>
@@ -39,10 +55,12 @@ const services = (await getCollection('services')).sort(
     gap: var(--space-3);
   }
   .card {
+    display: flex;
+    flex-direction: column;
     background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
-    padding: var(--space-4) var(--space-3);
+    overflow: hidden;
     transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
   }
   .card:hover {
@@ -50,8 +68,37 @@ const services = (await getCollection('services')).sort(
     box-shadow: var(--shadow);
     border-color: var(--color-primary);
   }
+  .card-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+  .card-body { padding: var(--space-3); }
   .card h3 { font-size: var(--fs-xl); margin-bottom: var(--space-1); color: var(--color-primary-deep); }
   .card p { font-size: var(--fs-sm); }
+
+  .bullets {
+    margin-top: var(--space-2);
+    display: grid;
+    gap: 0.4rem;
+  }
+  .bullets li {
+    position: relative;
+    padding-left: 1.15rem;
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+    line-height: 1.45;
+  }
+  .bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 7px; height: 7px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+  }
 
   @media (max-width: 920px) { .cards { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } }

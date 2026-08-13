@@ -34,18 +34,22 @@
       var e = this.props.entry;
 
       // --- Hero ---
+      var heroImg = val(e, ['hero', 'imagen']);
       var hero = el('section', 'pv-hero', [
-        el('p', 'pv-eyebrow', 'Consultoría en calidad e inocuidad alimentaria · Lima'),
-        h('h1', { key: 'h1' }, [
-          val(e, ['hero', 'tituloLinea1']),
-          h('br', { key: 'br' }),
-          h('span', { key: 'hl', className: 'hl' }, val(e, ['hero', 'tituloDestacado']))
+        h('div', { key: 'txt', className: 'pv-hero-text' }, [
+          el('p', 'pv-eyebrow', 'Consultoría para la industria alimentaria · Lima'),
+          h('h1', { key: 'h1' }, [
+            val(e, ['hero', 'tituloLinea1']),
+            h('br', { key: 'br' }),
+            h('span', { key: 'hl', className: 'hl' }, val(e, ['hero', 'tituloDestacado']))
+          ]),
+          el('p', 'pv-lead', 'Texto descriptivo de la empresa (se edita en «Datos de la empresa»).'),
+          el('div', 'pv-btns', [
+            h('span', { key: 'b1', className: 'pv-btn pv-btn-primary' }, val(e, ['hero', 'botonWhatsapp'])),
+            h('span', { key: 'b2', className: 'pv-btn pv-btn-ghost' }, val(e, ['hero', 'botonServicios']))
+          ])
         ]),
-        el('p', 'pv-lead', 'Texto descriptivo de la empresa (se edita en «Datos de la empresa»).'),
-        el('div', 'pv-btns', [
-          h('span', { key: 'b1', className: 'pv-btn pv-btn-primary' }, val(e, ['hero', 'botonWhatsapp'])),
-          h('span', { key: 'b2', className: 'pv-btn pv-btn-ghost' }, val(e, ['hero', 'botonServicios']))
-        ])
+        heroImg ? h('img', { key: 'img', className: 'pv-media', src: heroImg, alt: '' }) : null
       ]);
 
       // --- Encabezado de Servicios ---
@@ -58,6 +62,26 @@
         el('div', 'pv-note', 'Las tarjetas de servicios se editan en la sección «Servicios».')
       ]);
 
+      // --- Beneficios (HACCP) ---
+      var benefImg = val(e, ['beneficios', 'imagen']);
+      var benefItems = items(e, ['beneficios', 'lista']).map(function (b, i) {
+        return h('li', { key: i }, [
+          h('span', { key: 'tk', className: 'pv-tick small' }, '✓'),
+          h('span', { key: 'tx' }, b)
+        ]);
+      });
+      var beneficios = el('section', 'pv-section', [
+        h('div', { key: 'g', className: 'pv-split' }, [
+          h('div', { key: 'txt' }, [
+            el('p', 'pv-eyebrow', val(e, ['beneficios', 'eyebrow'])),
+            h('h2', { key: 't', style: { fontSize: '2.2rem', margin: '6px 0 10px' } }, val(e, ['beneficios', 'titulo'])),
+            el('p', 'pv-sub', val(e, ['beneficios', 'subtitulo'])),
+            h('ul', { key: 'l', className: 'pv-checklist' }, benefItems)
+          ]),
+          benefImg ? h('img', { key: 'img', className: 'pv-media', src: benefImg, alt: '' }) : null
+        ])
+      ]);
+
       // --- Nosotros ---
       var difs = items(e, ['nosotros', 'diferenciadores']).map(function (d, i) {
         return h('li', { key: i }, [
@@ -68,7 +92,22 @@
           ])
         ]);
       });
+      var fotoEquipo = val(e, ['nosotros', 'foto']);
+      var misionTxt = val(e, ['nosotros', 'mision']);
+      var nosotrosIntro = h('div', { key: 'intro', className: 'pv-split', style: { marginBottom: '36px' } }, [
+        fotoEquipo ? h('img', { key: 'img', className: 'pv-media', src: fotoEquipo, alt: '' }) : null,
+        h('div', { key: 'txt' }, [
+          el('p', 'pv-eyebrow', val(e, ['nosotros', 'eyebrow'])),
+          h('h2', { key: 't', style: { fontSize: '2.2rem', margin: '6px 0 10px' } }, val(e, ['nosotros', 'titulo'])),
+          el('p', 'pv-sub', val(e, ['nosotros', 'quienesSomos'])),
+          misionTxt ? h('div', { key: 'm', className: 'pv-mision' }, [
+            h('p', { key: 'l', className: 'pv-mision-label' }, val(e, ['nosotros', 'misionTitulo'])),
+            h('p', { key: 'p' }, misionTxt)
+          ]) : null
+        ])
+      ]);
       var nosotros = el('section', 'pv-section', [
+        nosotrosIntro,
         el('div', 'pv-about', [
           el('div', 'pv-about-card', [
             el('div', 'pv-avatar', val(e, ['nosotros', 'consultoraIniciales'])),
@@ -80,8 +119,6 @@
             el('p', 'pv-bio', val(e, ['nosotros', 'consultoraBio']))
           ]),
           el('div', 'pv-about-text', [
-            el('p', 'pv-eyebrow', val(e, ['nosotros', 'eyebrow'])),
-            h('h2', { key: 't' }, val(e, ['nosotros', 'titulo'])),
             h('ul', { key: 'f', className: 'pv-features' }, difs)
           ])
         ])
@@ -120,6 +157,16 @@
         h('div', { key: 'g', className: 'pv-sectors' }, sectores)
       ]);
 
+      // --- Encabezado de Clientes ---
+      var clientesSec = el('section', 'pv-section', [
+        h('header', { key: 'hd', className: 'pv-head center' }, [
+          el('p', 'pv-eyebrow', val(e, ['clientes', 'eyebrow'])),
+          h('h2', { key: 't' }, val(e, ['clientes', 'titulo'])),
+          el('p', 'pv-sub', val(e, ['clientes', 'subtitulo']))
+        ]),
+        el('div', 'pv-note', 'Los logos de los clientes se editan en la sección «Clientes».')
+      ]);
+
       // --- Contacto ---
       var opciones = items(e, ['contacto', 'opcionesServicio']).map(function (o, i) {
         return h('option', { key: i }, o);
@@ -136,7 +183,7 @@
         ])
       ]);
 
-      return el('div', 'pv', [hero, servicios, nosotros, proceso, sectoresSec, contacto]);
+      return el('div', 'pv', [hero, servicios, beneficios, nosotros, proceso, sectoresSec, clientesSec, contacto]);
     }
   });
 
@@ -146,13 +193,21 @@
   var ServicioPreview = createClass({
     render: function () {
       var e = this.props.entry;
+      var img = val(e, ['image']);
+      var puntos = items(e, ['bullets']).map(function (b, i) {
+        return h('li', { key: i }, b);
+      });
       return el('div', 'pv', [
         h('div', { key: 'nt', className: 'pv-section' }, [
           el('div', 'pv-note', 'Así se verá esta tarjeta en la sección «Servicios» del inicio:'),
           h('div', { key: 'c', className: 'pv-cards', style: { marginTop: '16px' } }, [
             el('article', 'pv-card', [
-              h('h3', { key: 't' }, val(e, ['title'])),
-              h('p', { key: 'd' }, val(e, ['description']))
+              img ? h('img', { key: 'i', className: 'pv-card-img', src: img, alt: '' }) : null,
+              h('div', { key: 'body', className: 'pv-card-body' }, [
+                h('h3', { key: 't' }, val(e, ['title'])),
+                h('p', { key: 'd' }, val(e, ['description'])),
+                puntos.length ? h('ul', { key: 'b', className: 'pv-bullets' }, puntos) : null
+              ])
             ])
           ]),
           h('div', { key: 'b', className: 'pv-prose', style: { marginTop: '24px' } }, this.props.widgetFor('body'))
@@ -236,8 +291,9 @@
               dato('RUC', ['ruc'], 'd2'),
               dato('Correo', ['email'], 'd3'),
               dato('WhatsApp', ['whatsappDisplay'], 'd4'),
-              dato('Ciudad', ['city'], 'd5'),
-              dato('Dirección', ['address'], 'd6')
+              dato('Teléfono', ['phoneAltDisplay'], 'd5'),
+              dato('Ciudad', ['city'], 'd6'),
+              dato('Dirección', ['address'], 'd7')
             ]),
             h('div', { key: 'soc', className: 'pv-socials' }, socials)
           ])

@@ -3,16 +3,36 @@
     "tituloLinea1": "Tu negocio de alimentos,",
     "tituloDestacado": "en regla y certificado.",
     "botonWhatsapp": "Conversemos por WhatsApp",
-    "botonServicios": "Ver servicios"
+    "botonServicios": "Ver servicios",
+    "imagen": "/images/fotos/planta-inspeccion.jpg"
   },
   "serviciosSeccion": {
     "eyebrow": "Lo que hacemos",
     "titulo": "Servicios que ponen tu operación a la altura de la norma",
     "subtitulo": "Soluciones adaptadas al rubro de tu empresa, desde el diagnóstico hasta la certificación."
   },
+  "beneficios": {
+    "eyebrow": "Por qué implementarlo",
+    "titulo": "Beneficios de implementar el sistema HACCP",
+    "subtitulo": "Aportar confianza al consumidor sobre la higiene de los alimentos.",
+    "imagen": "/images/fotos/supermercado.jpg",
+    "lista": [
+      "Aportar confianza al consumidor sobre la higiene de los alimentos.",
+      "Reducir la aparición de enfermedades causadas por los alimentos.",
+      "Eliminar las barreras para el comercio internacional.",
+      "Introducir nuevos productos y tecnologías.",
+      "Identificar los peligros que puede tener la inocuidad del producto.",
+      "Incrementar la competitividad de las organizaciones.",
+      "Promover el cumplimiento con los requisitos de la legislación."
+    ]
+  },
   "nosotros": {
     "eyebrow": "Quiénes somos",
     "titulo": "Asesoría personalizada, según el rubro de tu empresa",
+    "foto": "/images/fotos/equipo.jpg",
+    "quienesSomos": "Somos un equipo de profesionales multidisciplinarios, especializados en normativas nacionales e internacionales con enfoque en calidad e inocuidad alimentaria.",
+    "misionTitulo": "Misión",
+    "mision": "Convertirnos en su socio estratégico para solucionar problemas relacionados en mantener la inocuidad alimentaria, garantizando confianza en el consumidor final.",
     "consultoraIniciales": "IG",
     "consultoraNombre": "Ing. Isabel Guerrero",
     "consultoraGrado": "(Mag.)",
@@ -48,6 +68,11 @@
       "Bebidas y agua de mesa",
       "Programas sociales (Qali Warma)"
     ]
+  },
+  "clientes": {
+    "eyebrow": "Nos respaldan",
+    "titulo": "Empresas que confían en nosotros",
+    "subtitulo": "Negocios de alimentos que acompañamos en su camino a la certificación."
   },
   "contacto": {
     "eyebrow": "Hablemos",

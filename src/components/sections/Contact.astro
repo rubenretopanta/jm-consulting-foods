@@ -18,6 +18,12 @@ const { contacto } = home;
           <span class="ic">WA</span>
           <span><small>WhatsApp</small>{SITE.whatsappDisplay}</span>
         </a>
+        {SITE.phoneAlt && (
+          <a class="info-item" href={`tel:+51${SITE.phoneAlt}`}>
+            <span class="ic">TEL</span>
+            <span><small>Teléfono</small>{SITE.phoneAltDisplay}</span>
+          </a>
+        )}
         <a class="info-item" href={`mailto:${SITE.email}`}>
           <span class="ic">@</span>
           <span><small>Correo</small>{SITE.email}</span>

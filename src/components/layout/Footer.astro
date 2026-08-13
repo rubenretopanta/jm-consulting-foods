@@ -36,6 +36,8 @@ const year = new Date().getFullYear();
       <div><small>Razón social</small><strong>{SITE.legalName}</strong></div>
       <div><small>RUC</small><strong>{SITE.ruc}</strong></div>
       <div><small>Correo</small><strong>{SITE.email}</strong></div>
+      <div><small>WhatsApp</small><strong>{SITE.whatsappDisplay}</strong></div>
+      {SITE.phoneAlt && <div><small>Teléfono</small><strong>{SITE.phoneAltDisplay}</strong></div>}
       <div><small>Ubicación</small><strong>{SITE.city}</strong></div>
     </div>
   </div>
