@@ -19,26 +19,41 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
         <p class="sec-sub">{textos.subtitulo}</p>
       </header>
 
-      <div class="grid">
-        {clientes.map((cliente) => (
-          <article class="client-card">
-            <div class="logo-box">
-              {cliente.data.image ? (
-                <img
-                  class="logo"
-                  src={cliente.data.image}
-                  alt={cliente.data.name}
-                  loading="lazy"
-                  decoding="async"
-                />
-              ) : (
-                <span class="logo-ph">{cliente.data.name.trim().charAt(0).toUpperCase()}</span>
-              )}
-            </div>
-            <h3>{cliente.data.name}</h3>
-            {cliente.data.description && <p>{cliente.data.description}</p>}
-          </article>
-        ))}
+      <div class="carousel" data-clientes-carousel>
+        <div class="track" data-track tabindex="0" role="group" aria-label="Logos de clientes">
+          {clientes.map((cliente) => (
+            <article class="client-card">
+              <div class="logo-box">
+                {cliente.data.image ? (
+                  <img
+                    class="logo"
+                    src={cliente.data.image}
+                    alt={cliente.data.name}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <span class="logo-ph">{cliente.data.name.trim().charAt(0).toUpperCase()}</span>
+                )}
+              </div>
+              <h3>{cliente.data.name}</h3>
+              {cliente.data.description && <p>{cliente.data.description}</p>}
+            </article>
+          ))}
+        </div>
+
+        <div class="controls" data-controls hidden>
+          <button type="button" class="nav" data-prev aria-label="Ver clientes anteriores">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M15 5 8 12l7 7" />
+            </svg>
+          </button>
+          <button type="button" class="nav" data-next aria-label="Ver más clientes">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -50,12 +65,28 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
   .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
   .sec-sub { font-size: var(--fs-lg); }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: var(--space-2);
+  /* Carrusel: una sola fila en todos los tamaños, se avanza con las flechas o deslizando */
+  .carousel { --gap: var(--space-2); --per-view: 5; }
+
+  .track {
+    display: flex;
+    gap: var(--gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    /* aire para que el hover (translateY) y la sombra no se recorten */
+    padding: 6px 2px 14px;
+    margin-inline: -2px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
   }
+  .track::-webkit-scrollbar { display: none; }
+  .track:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; border-radius: var(--radius); }
+
   .client-card {
+    flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+    scroll-snap-align: start;
     background: var(--color-surface);
     border: 1px solid var(--color-line);
     border-radius: var(--radius);
@@ -103,11 +134,88 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
   }
   .client-card p { font-size: var(--fs-xs); margin-top: 0.15rem; }
 
-  @media (max-width: 1040px) { .grid { grid-template-columns: repeat(4, 1fr); } }
-  @media (max-width: 820px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 520px)  {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+  /* Flechas */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+  .controls[hidden] { display: none; }
+  .nav {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-primary-deep);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition);
+  }
+  .nav svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nav:hover:not(:disabled) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .nav:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+  .nav:disabled { opacity: 0.35; cursor: default; }
+
+  @media (max-width: 1040px) { .carousel { --per-view: 4; } }
+  @media (max-width: 820px)  { .carousel { --per-view: 3; } }
+  @media (max-width: 620px)  { .carousel { --per-view: 2; } }
+  @media (max-width: 420px)  {
+    .carousel { --per-view: 1.4; }
     .logo-box { height: 64px; }
     .logo { max-height: 64px; }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track { scroll-behavior: auto; }
+    .client-card:hover { transform: none; }
+  }
 </style>
+
+<script>
+  // Carrusel de clientes: avanza de a una "página" (los logos visibles) con las flechas.
+  // Las flechas solo aparecen si hay más logos de los que caben en pantalla.
+  document.querySelectorAll('[data-clientes-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('[data-track]');
+    const controls = carousel.querySelector('[data-controls]');
+    const prev = carousel.querySelector('[data-prev]');
+    const next = carousel.querySelector('[data-next]');
+    if (!track || !controls || !prev || !next) return;
+
+    const sync = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      const scrollable = max > 1;
+      controls.hidden = !scrollable;
+      if (!scrollable) return;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= max - 1;
+    };
+
+    const page = (dir) => track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+
+    prev.addEventListener('click', () => page(-1));
+    next.addEventListener('click', () => page(1));
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    // Los logos se cargan en diferido: al llegar cambia el ancho real del track.
+    track.querySelectorAll('img').forEach((img) => {
+      if (!img.complete) img.addEventListener('load', sync, { once: true });
+    });
+
+    sync();
+  });
+</script>
