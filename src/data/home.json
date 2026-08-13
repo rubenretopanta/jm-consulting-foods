@@ -72,7 +72,8 @@
   "clientes": {
     "eyebrow": "Nos respaldan",
     "titulo": "Empresas que confían en nosotros",
-    "subtitulo": "Negocios de alimentos que acompañamos en su camino a la certificación."
+    "subtitulo": "Negocios de alimentos que acompañamos en su camino a la certificación.",
+    "conteoLabel": "empresas de alimentos ya trabajaron con nosotros"
   },
   "contacto": {
     "eyebrow": "Hablemos",

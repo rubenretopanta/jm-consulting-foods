@@ -17,10 +17,23 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
         <p class="eyebrow">{textos.eyebrow}</p>
         <h2>{textos.titulo}</h2>
         <p class="sec-sub">{textos.subtitulo}</p>
+        {textos.conteoLabel && (
+          <p class="count">
+            <strong>{clientes.length}</strong>
+            <span>{textos.conteoLabel}</span>
+          </p>
+        )}
       </header>
 
       <div class="carousel" data-clientes-carousel>
-        <div class="track" data-track tabindex="0" role="group" aria-label="Logos de clientes">
+        <div
+          class="track"
+          data-track
+          tabindex="0"
+          role="region"
+          aria-roledescription="carrusel"
+          aria-label="Logos de clientes"
+        >
           {clientes.map((cliente) => (
             <article class="client-card">
               <div class="logo-box">
@@ -65,6 +78,26 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
   .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
   .sec-sub { font-size: var(--fs-lg); }
 
+  /* Prueba social: el número sale del total de clientes publicados */
+  .count {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: var(--space-2);
+    padding: 0.45rem 1rem 0.45rem 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-deep);
+    font-size: var(--fs-sm);
+    line-height: 1.2;
+    text-align: left;
+  }
+  .count strong {
+    font-family: var(--font-display);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-bold);
+  }
+
   /* Carrusel: una sola fila en todos los tamaños, se avanza con las flechas o deslizando */
   .carousel { --gap: var(--space-2); --per-view: 5; }
 
@@ -72,8 +105,6 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
     display: flex;
     gap: var(--gap);
     overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     /* aire para que el hover (translateY) y la sombra no se recorten */
     padding: 6px 2px 14px;
     margin-inline: -2px;
@@ -81,6 +112,9 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
     -ms-overflow-style: none;
     overscroll-behavior-x: contain;
   }
+  /* El desplazamiento lo controla el script; el snap solo se usa cuando
+     el visitante pidió menos movimiento y el carrusel avanza por pasos. */
+  .track.is-snapping { scroll-snap-type: x mandatory; }
   .track::-webkit-scrollbar { display: none; }
   .track:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; border-radius: var(--radius); }
 
@@ -100,19 +134,31 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
     border-color: var(--color-primary);
   }
 
-  /* Caja de altura fija: los logos tienen formas muy distintas y así quedan alineados */
+  /* Caja de altura fija: los logos tienen formas muy distintas y así quedan alineados.
+     Se sale del padding lateral de la tarjeta para que los logos anchos
+     (Selva Plant, LabSuperfood) aprovechen todo el ancho disponible. */
   .logo-box {
-    height: 80px;
+    height: 72px;
     display: grid;
     place-items: center;
     margin-bottom: var(--space-2);
+    margin-inline: -0.5rem;
   }
   .logo {
     max-width: 100%;
-    max-height: 80px;
+    max-height: 72px;
     width: auto;
     height: auto;
     object-fit: contain;
+    transition: filter var(--transition), opacity var(--transition);
+  }
+  /* Escala de grises para que el muro se lea como un conjunto pese a lo
+     dispares que son los logos; recupera el color al pasar el mouse.
+     Solo donde hay mouse: en pantallas táctiles se ven siempre a color. */
+  @media (hover: hover) {
+    .logo { filter: grayscale(1); opacity: 0.72; }
+    .client-card:hover .logo,
+    .track:focus-visible .logo { filter: none; opacity: 1; }
   }
   .logo-ph {
     width: 68px; height: 68px;
@@ -178,8 +224,8 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
   @media (max-width: 620px) {
     .carousel { --per-view: 3.2; --gap: var(--space-1); }
     .client-card { padding: var(--space-2) 0.6rem var(--space-2); }
-    .logo-box { height: 52px; margin-bottom: var(--space-1); }
-    .logo { max-height: 52px; }
+    .logo-box { height: 48px; margin-bottom: var(--space-1); margin-inline: -0.35rem; }
+    .logo { max-height: 48px; }
     .logo-ph { width: 46px; height: 46px; font-size: var(--fs-base); }
     .client-card h3 { font-size: 0.72rem; }
     /* la descripción no cabe legible a este ancho */
@@ -188,14 +234,17 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .track { scroll-behavior: auto; }
     .client-card:hover { transform: none; }
   }
 </style>
 
 <script>
-  // Carrusel de clientes: avanza de a una "página" (los logos visibles) con las flechas.
-  // Las flechas solo aparecen si hay más logos de los que caben en pantalla.
+  // Carrusel de clientes.
+  // - Avanza solo, despacio y en bucle, para que se vean todos los logos sin hacer clic.
+  // - Se detiene al pasar el mouse, al tocar, al enfocar con teclado o al usar las flechas.
+  // - Las flechas avanzan una "página" (los logos visibles).
+  // - Si todos los logos caben en pantalla no hay movimiento ni flechas.
+  // - Si el visitante pidió menos movimiento, no hay avance automático: solo flechas por pasos.
   document.querySelectorAll('[data-clientes-carousel]').forEach((carousel) => {
     const track = carousel.querySelector('[data-track]');
     const controls = carousel.querySelector('[data-controls]');
@@ -203,26 +252,151 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
     const next = carousel.querySelector('[data-next]');
     if (!track || !controls || !prev || !next) return;
 
-    const sync = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      const scrollable = max > 1;
-      controls.hidden = !scrollable;
-      if (!scrollable) return;
-      prev.disabled = track.scrollLeft <= 1;
-      next.disabled = track.scrollLeft >= max - 1;
+    const SPEED = 26;        // píxeles por segundo del avance automático
+    const RESUME = 2500;     // ms de pausa tras una interacción
+    const originals = Array.from(track.children);
+    const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let clones = [];
+    let loopWidth = 0;   // ancho de una vuelta completa (el set original)
+    let pos = 0;         // posición real; la mandamos nosotros, no el navegador
+    let target = null;   // destino cuando se usó una flecha
+    let pausaHasta = 0;
+    let encima = false;
+    let conFoco = false;
+    let raf = 0;
+    let ultimoEscrito = -1;
+    let enPantalla = true;
+    let pestanaVisible = true;
+
+    /* ---------- Modo simple: sin avance automático ---------- */
+    const pasos = () => {
+      track.classList.add('is-snapping');
+      const sync = () => {
+        const max = track.scrollWidth - track.clientWidth;
+        controls.hidden = max <= 1;
+        prev.disabled = track.scrollLeft <= 1;
+        next.disabled = track.scrollLeft >= max - 1;
+      };
+      const paso = (dir) => track.scrollBy({ left: dir * track.clientWidth, behavior: 'auto' });
+      prev.addEventListener('click', () => paso(-1));
+      next.addEventListener('click', () => paso(1));
+      track.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
     };
 
-    const page = (dir) => track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+    /* ---------- Modo carrusel infinito ---------- */
+    const medir = () => {
+      // Una vuelta = desde el primer original hasta su copia.
+      loopWidth = clones.length ? clones[0].offsetLeft - originals[0].offsetLeft : 0;
+    };
 
-    prev.addEventListener('click', () => page(-1));
-    next.addEventListener('click', () => page(1));
-    track.addEventListener('scroll', sync, { passive: true });
-    window.addEventListener('resize', sync);
-    // Los logos se cargan en diferido: al llegar cambia el ancho real del track.
-    track.querySelectorAll('img').forEach((img) => {
-      if (!img.complete) img.addEventListener('load', sync, { once: true });
-    });
+    const clonar = () => {
+      clones = originals.map((card) => {
+        const copia = card.cloneNode(true);
+        copia.setAttribute('aria-hidden', 'true');
+        track.appendChild(copia);
+        return copia;
+      });
+    };
 
-    sync();
+    const frame = (t) => {
+      const dt = Math.min((t - (frame.prev || t)) / 1000, 0.05);
+      frame.prev = t;
+      let mover = false;
+
+      if (target !== null) {
+        // Acercamiento suave al destino marcado por una flecha.
+        pos += (target - pos) * Math.min(1, dt * 9);
+        if (Math.abs(target - pos) < 0.5) { pos = target; target = null; }
+        mover = true;
+      } else if (!encima && !conFoco && t > pausaHasta) {
+        pos += SPEED * dt;
+        mover = true;
+      } else {
+        // En pausa mandamos nosotros nada: seguimos al visitante. Escribir scrollLeft
+        // aquí cortaría la inercia del deslizamiento en celular.
+        pos = track.scrollLeft;
+      }
+
+      if (mover) {
+        // Bucle sin costuras: al pasar una vuelta, volvemos al inicio del set original.
+        if (loopWidth > 0) {
+          if (pos >= loopWidth) { pos -= loopWidth; if (target !== null) target -= loopWidth; }
+          else if (pos < 0)     { pos += loopWidth; if (target !== null) target += loopWidth; }
+        }
+        ultimoEscrito = Math.round(pos);
+        track.scrollLeft = pos;
+      }
+      raf = requestAnimationFrame(frame);
+    };
+
+    const actualizarMotor = () => {
+      if (enPantalla && pestanaVisible) {
+        if (!raf) { frame.prev = 0; raf = requestAnimationFrame(frame); }
+      } else if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+
+    const pausar = (ms) => { pausaHasta = performance.now() + ms; };
+
+    const infinito = () => {
+      clonar();
+      medir();
+      controls.hidden = false;
+      actualizarMotor();
+
+      const page = (dir) => {
+        target = (target === null ? pos : target) + dir * track.clientWidth;
+        pausar(RESUME);
+      };
+      prev.addEventListener('click', () => page(-1));
+      next.addEventListener('click', () => page(1));
+
+      // El visitante desliza o usa la rueda: adoptamos su posición y pausamos.
+      track.addEventListener('scroll', () => {
+        if (Math.abs(track.scrollLeft - ultimoEscrito) > 2) {
+          pos = track.scrollLeft;
+          target = null;
+          pausar(RESUME);
+        }
+      }, { passive: true });
+
+      // Pausa al pasar el mouse: solo donde hay mouse de verdad. En pantallas
+      // táctiles un toque dispara pointerenter y el "leave" podría no llegar nunca.
+      if (window.matchMedia('(hover: hover)').matches) {
+        carousel.addEventListener('pointerenter', () => { encima = true; });
+        carousel.addEventListener('pointerleave', () => { encima = false; pausar(400); });
+      }
+      // Solo pausamos por foco de teclado: si contáramos también el clic, el botón
+      // quedaría enfocado y el carrusel se detendría hasta hacer clic en otro lado.
+      carousel.addEventListener('focusin', (e) => {
+        try { conFoco = e.target.matches(':focus-visible'); } catch { conFoco = false; }
+      });
+      carousel.addEventListener('focusout', () => { conFoco = false; pausar(RESUME); });
+
+      // No gastar batería si la sección no está a la vista o la pestaña está oculta.
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(
+          ([e]) => { enPantalla = e.isIntersecting; actualizarMotor(); },
+          { threshold: 0 }
+        ).observe(carousel);
+      }
+      document.addEventListener('visibilitychange', () => {
+        pestanaVisible = !document.hidden;
+        actualizarMotor();
+      });
+
+      window.addEventListener('resize', () => { medir(); if (loopWidth > 0) pos = Math.min(pos, loopWidth); });
+    };
+
+    // El ancho de las tarjetas es fijo (flex-basis en %) y la caja del logo tiene
+    // alto fijo, así que no hace falta esperar a que carguen las imágenes para medir.
+    if (menosMovimiento.matches) pasos();
+    else if (track.scrollWidth - track.clientWidth > 1) infinito();
+    else controls.hidden = true;
   });
 </script>

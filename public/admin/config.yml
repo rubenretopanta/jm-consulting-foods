@@ -180,6 +180,7 @@ collections:
               - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título. Ej: Nos respaldan" }
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Clientes." }
               - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
+              - { label: "Texto del contador", name: "conteoLabel", widget: "string", required: false, hint: "Va junto al número de clientes, en la etiqueta verde. Ej: «empresas de alimentos ya trabajaron con nosotros». El número se cuenta solo. Déjalo vacío para ocultar la etiqueta." }
 
           - label: "Contacto"
             name: "contacto"
