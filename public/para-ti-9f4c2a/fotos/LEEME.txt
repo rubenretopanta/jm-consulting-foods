@@ -1,9 +1,0 @@
-Copia aquí las fotos de ustedes dos.
-
-Consejos:
-- Nómbralas simple: 01.jpg, 02.jpg, 03.jpg...
-- Luego agrégalas en la lista "fotos" del archivo datos.js (una línea por foto).
-- Que cada foto pese menos de ~500 KB para que cargue rápido en el celular.
-  (Si salen del celular pesan 3-5 MB: pásalas por squoosh.app o redúcelas
-   a 1600 px de ancho antes de subirlas.)
-- Formatos: .jpg, .png o .webp
