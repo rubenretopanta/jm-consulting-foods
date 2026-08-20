@@ -4,7 +4,7 @@
     "tituloDestacado": "en regla y certificado.",
     "botonWhatsapp": "Conversemos por WhatsApp",
     "botonServicios": "Ver servicios",
-    "imagen": "/images/fotos/planta-inspeccion.jpg"
+    "imagen": "/images/fotos/laboratorio-analisis.jpg"
   },
   "serviciosSeccion": {
     "eyebrow": "Lo que hacemos",
@@ -34,15 +34,28 @@
     "misionTitulo": "Misión",
     "mision": "Convertirnos en su socio estratégico para solucionar problemas relacionados en mantener la inocuidad alimentaria, garantizando confianza en el consumidor final.",
     "consultoraIniciales": "IG",
+    "consultoraFoto": "/images/fotos/consultora.jpg",
     "consultoraNombre": "Ing. Isabel Guerrero",
     "consultoraGrado": "(Mag.)",
     "consultoraRol": "Consultora principal",
     "consultoraBio": "Te asesora directamente una especialista en gestión de la calidad e inocuidad alimentaria, con conocimiento de la normativa peruana vigente y trato cercano con cada cliente.",
     "diferenciadores": [
-      { "titulo": "Acompañamiento real", "texto": "No te entregamos solo documentos: te guiamos hasta que logras tu objetivo." },
-      { "titulo": "Soluciones a tu medida", "texto": "Adaptamos cada sistema al tamaño y la realidad de tu negocio." },
-      { "titulo": "Cumplimiento garantizado", "texto": "Trabajamos en base a la normativa de DIGESA y estándares internacionales." },
-      { "titulo": "Empresa formal y verificable", "texto": "RUC 20607994359 · activa, habida y registrada como MYPE." }
+      {
+        "titulo": "Acompañamiento real",
+        "texto": "No te entregamos solo documentos: te guiamos hasta que logras tu objetivo."
+      },
+      {
+        "titulo": "Soluciones a tu medida",
+        "texto": "Adaptamos cada sistema al tamaño y la realidad de tu negocio."
+      },
+      {
+        "titulo": "Cumplimiento garantizado",
+        "texto": "Trabajamos en base a la normativa de DIGESA y estándares internacionales."
+      },
+      {
+        "titulo": "Empresa formal y verificable",
+        "texto": "RUC 20607994359 · activa, habida y registrada como MYPE."
+      }
     ]
   },
   "proceso": {
@@ -50,10 +63,26 @@
     "titulo": "Un camino claro hacia tu certificación",
     "subtitulo": "Cuatro etapas simples para que sepas en todo momento dónde estás.",
     "pasos": [
-      { "num": "01", "titulo": "Diagnóstico", "texto": "Revisamos tu operación e identificamos qué te falta para cumplir la norma." },
-      { "num": "02", "titulo": "Implementación", "texto": "Elaboramos manuales y registros, y capacitamos a tu equipo." },
-      { "num": "03", "titulo": "Certificación", "texto": "Te preparamos y acompañamos en la auditoría hasta lograrla." },
-      { "num": "04", "titulo": "Acompañamiento", "texto": "Mantenemos tu sistema vigente con asesoría continua." }
+      {
+        "num": "01",
+        "titulo": "Diagnóstico",
+        "texto": "Revisamos tu operación e identificamos qué te falta para cumplir la norma."
+      },
+      {
+        "num": "02",
+        "titulo": "Implementación",
+        "texto": "Elaboramos manuales y registros, y capacitamos a tu equipo."
+      },
+      {
+        "num": "03",
+        "titulo": "Certificación",
+        "texto": "Te preparamos y acompañamos en la auditoría hasta lograrla."
+      },
+      {
+        "num": "04",
+        "titulo": "Acompañamiento",
+        "texto": "Mantenemos tu sistema vigente con asesoría continua."
+      }
     ]
   },
   "sectores": {
@@ -74,6 +103,33 @@
     "titulo": "Empresas que confían en nosotros",
     "subtitulo": "Negocios de alimentos que acompañamos en su camino a la certificación.",
     "conteoLabel": "empresas de alimentos ya trabajaron con nosotros"
+  },
+  "ferias": {
+    "eyebrow": "Dónde nos encuentras",
+    "titulo": "Presentes en ferias y ruedas de negocio",
+    "subtitulo": "Acompañamos a productores y empresas de alimentos en los espacios donde su producto se muestra al mercado.",
+    "fotos": [
+      {
+        "imagen": "/images/ferias/feria-andes-alimentos.jpg",
+        "texto": "Ronda de negocios con empresas de superalimentos"
+      },
+      {
+        "imagen": "/images/ferias/feria-asesoria-stand.jpg",
+        "texto": "Asesoría en el stand, producto en mano"
+      },
+      {
+        "imagen": "/images/ferias/feria-valle-andino.jpg",
+        "texto": "Recorriendo stands de productores andinos"
+      },
+      {
+        "imagen": "/images/ferias/feria-koreke.jpg",
+        "texto": "Café y cacao peruano en vitrina"
+      },
+      {
+        "imagen": "/images/ferias/feria-kimsasisa.jpg",
+        "texto": "Productos naturales listos para exportar"
+      }
+    ]
   },
   "contacto": {
     "eyebrow": "Hablemos",

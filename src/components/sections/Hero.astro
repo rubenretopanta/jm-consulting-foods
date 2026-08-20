@@ -20,14 +20,15 @@ const { hero } = home;
 
     {hero.imagen && (
       <figure class="hero-media">
-        <img src={hero.imagen} alt="Inspección de calidad en planta de alimentos" width="1254" height="836" fetchpriority="high" />
+        <img src={hero.imagen} alt="Analista de J&M Consulting Foods realizando ensayos de laboratorio" width="1400" height="933" fetchpriority="high" />
       </figure>
     )}
   </div>
 </section>
 
 <style>
-  .hero { padding-block: var(--space-6); }
+  /* Poco aire arriba: el antetitulo debe quedar cerca de la cabecera. */
+  .hero { padding-block: var(--space-4) var(--space-6); }
   .hero-grid {
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;

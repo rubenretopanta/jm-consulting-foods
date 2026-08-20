@@ -1,0 +1,74 @@
+---
+// Ferias.astro — galería de fotos en ferias y ruedas de negocio.
+// La sección solo se renderiza si hay al menos una foto cargada.
+import home from '../../data/home.json';
+const { ferias } = home;
+const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
+---
+
+{fotos.length > 0 && (
+  <section class="fairs section" id="ferias">
+    <div class="container">
+      <header class="sec-head">
+        <p class="eyebrow">{ferias.eyebrow}</p>
+        <h2>{ferias.titulo}</h2>
+        <p class="sec-sub">{ferias.subtitulo}</p>
+      </header>
+
+      <div class="gallery">
+        {fotos.map((foto) => (
+          <figure class="shot">
+            <img src={foto.imagen} alt={foto.texto || ferias.titulo} width="760" height="950" loading="lazy" decoding="async" />
+            {foto.texto && <figcaption>{foto.texto}</figcaption>}
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .fairs { background: var(--color-bg); }
+  .sec-head { max-width: 620px; margin-bottom: var(--space-5); text-align: center; margin-inline: auto; }
+  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
+  .sec-sub { font-size: var(--fs-lg); }
+
+  /* Flex en vez de grid: si la última fila queda incompleta, se centra sola,
+     sin importar cuántas fotos cargue el cliente desde el panel. */
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+  }
+  .shot {
+    flex: 0 1 calc((100% - 2 * var(--space-3)) / 3);
+    min-width: 230px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  }
+  .shot:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--color-primary); }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .shot figcaption {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 920px) {
+    .shot { flex-basis: calc((100% - var(--space-3)) / 2); min-width: 180px; }
+  }
+  @media (max-width: 480px) {
+    .shot { flex-basis: 100%; }
+  }
+</style>

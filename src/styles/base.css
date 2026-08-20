@@ -15,6 +15,20 @@ html {
   text-size-adjust: 100%;
 }
 
+/* Alto de la cabecera fija. Vive aquí (y no en Header.astro) porque también lo
+   necesitan los anclajes de abajo. */
+:root { --header-h: 84px; }
+@media (max-width: 920px) {
+  :root { --header-h: 68px; }
+}
+
+/* Al saltar a una sección con #ancla (incluido el logo, que lleva a #inicio),
+   dejar libre el alto de la cabecera para que no tape el inicio de la sección. */
+:target,
+section[id] {
+  scroll-margin-top: calc(var(--header-h) + var(--space-2));
+}
+
 body {
   font-family: var(--font-body);
   font-size: var(--fs-base);
@@ -104,10 +118,4 @@ p { color: var(--color-muted); }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-
-  /* Deja espacio bajo el header sticky al saltar a una sección con # */
-:target,
-section[id] {
-  scroll-margin-top: 90px;
-}
 }

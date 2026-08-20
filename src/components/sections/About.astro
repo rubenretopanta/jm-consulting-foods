@@ -30,7 +30,19 @@ const diferenciadores = nosotros.diferenciadores;
     <!-- Fila 2: tarjeta de la consultora + diferenciadores -->
     <div class="about-grid">
       <div class="about-card">
-        <div class="avatar">{nosotros.consultoraIniciales}</div>
+        {nosotros.consultoraFoto ? (
+          <img
+            class="avatar avatar-foto"
+            src={nosotros.consultoraFoto}
+            alt={nosotros.consultoraNombre}
+            width="600"
+            height="600"
+            loading="lazy"
+            decoding="async"
+          />
+        ) : (
+          <div class="avatar">{nosotros.consultoraIniciales}</div>
+        )}
         <h3>{nosotros.consultoraNombre} <span class="mag">{nosotros.consultoraGrado}</span></h3>
         <p class="role">{nosotros.consultoraRol}</p>
         <p class="bio">
@@ -112,6 +124,12 @@ const diferenciadores = nosotros.diferenciadores;
     font-weight: var(--fw-bold);
     font-size: var(--fs-xl);
     margin-bottom: var(--space-2);
+  }
+  /* Cuando hay foto de la consultora, ocupa el mismo círculo que las iniciales. */
+  .avatar-foto {
+    display: block;
+    object-fit: cover;
+    border: 3px solid var(--color-accent);
   }
   .about-card h3 { color: #fff; font-size: var(--fs-xl); }
   .mag { font-size: var(--fs-base); font-weight: var(--fw-regular); opacity: 0.7; }

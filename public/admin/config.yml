@@ -128,7 +128,8 @@ collections:
               - { label: "Quiénes somos", name: "quienesSomos", widget: "text", hint: "Párrafo que presenta al equipo. Aparece al lado de la foto." }
               - { label: "Título de la misión", name: "misionTitulo", widget: "string", hint: "Etiqueta del recuadro verde claro. Normalmente: Misión" }
               - { label: "Misión", name: "mision", widget: "text", required: false, hint: "Texto de la misión, dentro del recuadro verde claro. Si lo dejas vacío, el recuadro no se muestra." }
-              - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string", hint: "1 o 2 letras que se muestran en el círculo amarillo (avatar). Ej: IG" }
+              - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string", hint: "1 o 2 letras que se muestran en el círculo amarillo (avatar). Solo se usan si NO hay foto de la consultora. Ej: IG" }
+              - { label: "Foto de la consultora", name: "consultoraFoto", widget: "image", required: false, hint: "Foto de la consultora, en el círculo de la tarjeta verde. Recomendado: imagen cuadrada. Si la dejas vacía, se muestran las iniciales." }
               - { label: "Nombre de la consultora", name: "consultoraNombre", widget: "string", hint: "Nombre que aparece en la tarjeta verde de la consultora." }
               - { label: "Grado (ej. Mag.)", name: "consultoraGrado", widget: "string", hint: "Grado académico entre paréntesis, se muestra al lado del nombre en letra más tenue. Ej: (Mag.)" }
               - { label: "Rol", name: "consultoraRol", widget: "string", hint: "Cargo o rol, en amarillo debajo del nombre. Ej: Consultora principal" }
@@ -181,6 +182,22 @@ collections:
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Clientes." }
               - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
               - { label: "Texto del contador", name: "conteoLabel", widget: "string", required: false, hint: "Va junto al número de clientes, en la etiqueta verde. Ej: «empresas de alimentos ya trabajaron con nosotros». El número se cuenta solo. Déjalo vacío para ocultar la etiqueta." }
+
+          - label: "Ferias y eventos"
+            name: "ferias"
+            widget: "object"
+            hint: "Galería de fotos en ferias y ruedas de negocio. Va después de Clientes. Si borras todas las fotos, la sección desaparece del sitio."
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de ferias." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
+              - label: "Fotos"
+                name: "fotos"
+                widget: "list"
+                hint: "Cada foto se muestra como una tarjeta. Puedes agregar, quitar o reordenar. Recomendado: fotos verticales."
+                fields:
+                  - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de la feria o evento (se sube a Cloudinary)." }
+                  - { label: "Pie de foto", name: "texto", widget: "string", required: false, hint: "Texto corto debajo de la foto. Opcional: si lo dejas vacío, la foto se muestra sola." }
 
           - label: "Contacto"
             name: "contacto"
