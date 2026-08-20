@@ -143,8 +143,9 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
   .nav:disabled { opacity: 0.35; cursor: default; }
 
   @media (max-width: 920px) { .carousel { --per-view: 2; --gap: var(--space-2); } }
+  /* En celular, una foto completa por vista: nada de asomos de la siguiente. */
   @media (max-width: 620px) {
-    .carousel { --per-view: 1.15; }
+    .carousel { --per-view: 1; }
     .nav { width: 42px; height: 42px; }
   }
 
@@ -154,8 +155,12 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
 </style>
 
 <script>
-  // Carrusel de ferias: avanza una "página" (las fotos visibles) con las flechas,
-  // y se puede deslizar con el dedo. Si todas las fotos caben, no hay flechas.
+  // Carrusel de ferias.
+  // - Pasa solo cada 3 segundos, una foto por vez, y vuelve al inicio al terminar.
+  // - Se detiene mientras el visitante mira (mouse encima, foco de teclado o dedo)
+  //   y se reanuda un rato después.
+  // - Las flechas avanzan una "página" (las fotos que se ven).
+  // - Si todas las fotos caben en pantalla, no hay flechas ni movimiento.
   document.querySelectorAll('[data-ferias-carousel]').forEach((carousel) => {
     const track = carousel.querySelector('[data-track]');
     const controls = carousel.querySelector('[data-controls]');
@@ -163,19 +168,71 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     const next = carousel.querySelector('[data-next]');
     if (!track || !controls || !prev || !next) return;
 
-    const sync = () => {
-      const max = track.scrollWidth - track.clientWidth;
-      controls.hidden = max <= 1;
-      prev.disabled = track.scrollLeft <= 1;
-      next.disabled = track.scrollLeft >= max - 1;
+    const INTERVALO = 3000;   // ms entre foto y foto
+    const REANUDAR = 6000;    // ms de pausa tras tocar o usar las flechas
+    const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let temporizador = 0;
+    let pausadoHasta = 0;
+    let encima = false;
+    let conFoco = false;
+
+    // Ancho de una foto (incluido el hueco que la separa de la siguiente).
+    const anchoFoto = () => {
+      const foto = track.querySelector('.shot');
+      if (!foto) return track.clientWidth;
+      const hueco = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return foto.getBoundingClientRect().width + hueco;
     };
 
-    const paso = (dir) => track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+    const tope = () => track.scrollWidth - track.clientWidth;
+    const alFinal = () => track.scrollLeft >= tope() - 2;
 
-    prev.addEventListener('click', () => paso(-1));
-    next.addEventListener('click', () => paso(1));
+    const mover = (px) => track.scrollBy({ left: px, behavior: 'smooth' });
+
+    // Flechas: una página entera de fotos.
+    const pagina = (dir) => {
+      const ancho = anchoFoto();
+      const porVista = Math.max(1, Math.round(track.clientWidth / ancho));
+      mover(dir * ancho * porVista);
+    };
+
+    const sync = () => {
+      const max = tope();
+      controls.hidden = max <= 1;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = alFinal();
+    };
+
+    const avanzarSolo = () => {
+      if (encima || conFoco || document.hidden) return;
+      if (Date.now() < pausadoHasta) return;
+      if (tope() <= 1) return;
+      if (alFinal()) track.scrollTo({ left: 0, behavior: 'smooth' });
+      else mover(anchoFoto());
+    };
+
+    const pausar = () => { pausadoHasta = Date.now() + REANUDAR; };
+
+    prev.addEventListener('click', () => { pausar(); pagina(-1); });
+    next.addEventListener('click', () => { pausar(); pagina(1); });
     track.addEventListener('scroll', sync, { passive: true });
+    track.addEventListener('pointerdown', pausar);
+    track.addEventListener('touchstart', pausar, { passive: true });
+    carousel.addEventListener('mouseenter', () => { encima = true; });
+    carousel.addEventListener('mouseleave', () => { encima = false; });
+    carousel.addEventListener('focusin', () => { conFoco = true; });
+    carousel.addEventListener('focusout', () => { conFoco = false; });
     window.addEventListener('resize', sync);
+
+    const arrancar = () => {
+      clearInterval(temporizador);
+      // Quien pidió menos movimiento avanza solo con las flechas.
+      if (!menosMovimiento.matches) temporizador = setInterval(avanzarSolo, INTERVALO);
+    };
+    menosMovimiento.addEventListener('change', arrancar);
+
     sync();
+    arrancar();
   });
 </script>

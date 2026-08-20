@@ -154,11 +154,17 @@ const clientes = (await getCollection('clientes', ({ data }) => !data.draft)).so
   }
   /* Escala de grises para que el muro se lea como un conjunto pese a lo
      dispares que son los logos; recupera el color al pasar el mouse.
-     Solo donde hay mouse: en pantallas táctiles se ven siempre a color. */
-  @media (hover: hover) {
+     Solo con mouse de verdad: hace falta `pointer: fine` además de `hover`,
+     porque varios Android (Samsung entre ellos) dicen tener hover sin tenerlo. */
+  @media (hover: hover) and (pointer: fine) {
     .logo { filter: grayscale(1); opacity: 0.72; }
     .client-card:hover .logo,
     .track:focus-visible .logo { filter: none; opacity: 1; }
+  }
+  /* Red de seguridad: en anchos de celular siempre a color, pase lo que pase
+     con lo que informe el navegador. */
+  @media (max-width: 920px) {
+    .logo { filter: none; opacity: 1; }
   }
   .logo-ph {
     width: 68px; height: 68px;
