@@ -30,7 +30,7 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
                 src={foto.imagen}
                 alt={foto.texto || ferias.titulo}
                 width="760"
-                height="507"
+                height="950"
                 loading="lazy"
                 decoding="async"
               />
@@ -62,9 +62,16 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
   .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
   .sec-sub { font-size: var(--fs-lg); }
 
-  /* Una sola fila que se desliza. En celular se ve una foto grande y horizontal,
-     con un asomo de la siguiente para que se note que hay más. */
-  .carousel { --gap: var(--space-3); --per-view: 3; }
+  /* Una sola fila que se desliza de lado. En celular se ve una foto completa
+     por vista, ocupando todo el ancho. */
+  .carousel {
+    --gap: var(--space-3);
+    --per-view: 3;
+    /* alto aproximado del pie de foto: sirve para centrar las flechas sobre
+       la imagen y no sobre la tarjeta entera */
+    --pie: 3.25rem;
+    position: relative;
+  }
 
   .track {
     display: flex;
@@ -96,7 +103,9 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 3 / 2;
+    /* 4/5 es la proporción exacta de las fotos: así se ven completas,
+       sin que 'cover' recorte nada. */
+    aspect-ratio: 4 / 5;
     object-fit: cover;
   }
   .shot figcaption {
@@ -105,26 +114,36 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     color: var(--color-muted);
   }
 
-  /* Flechas: mismo trato que en el carrusel de clientes */
+  /* Flechas encima de la foto. La capa cubre el carrusel pero deja pasar el
+     dedo y la rueda: solo los botones reciben clics. */
   .controls {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-2);
-    margin-top: var(--space-3);
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
   }
   .controls[hidden] { display: none; }
   .nav {
+    position: absolute;
+    top: calc((100% - var(--pie)) / 2);
+    transform: translateY(-50%);
+    pointer-events: auto;
     width: 46px;
     height: 46px;
     border-radius: var(--radius-full);
     border: 1px solid var(--color-line);
-    background: var(--color-surface);
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: var(--shadow);
     color: var(--color-primary-deep);
     display: grid;
     place-items: center;
     cursor: pointer;
     transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition);
   }
+  .nav[data-prev] { left: var(--space-2); }
+  .nav[data-next] { right: var(--space-2); }
   .nav svg {
     width: 22px;
     height: 22px;
@@ -140,7 +159,8 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     color: #fff;
   }
   .nav:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
-  .nav:disabled { opacity: 0.35; cursor: default; }
+  /* Extremos: la flecha queda a la vista pero apagada y sin responder. */
+  .nav:disabled { opacity: 0.3; cursor: default; box-shadow: none; }
 
   @media (max-width: 920px) { .carousel { --per-view: 2; --gap: var(--space-2); } }
   /* En celular, una foto completa por vista: nada de asomos de la siguiente. */
@@ -224,6 +244,8 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     carousel.addEventListener('focusin', () => { conFoco = true; });
     carousel.addEventListener('focusout', () => { conFoco = false; });
     window.addEventListener('resize', sync);
+    // Al terminar de cargar las fotos el ancho real puede cambiar: recalcular.
+    window.addEventListener('load', sync);
 
     const arrancar = () => {
       clearInterval(temporizador);
