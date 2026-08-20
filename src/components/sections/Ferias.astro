@@ -1,5 +1,5 @@
 ---
-// Ferias.astro — galería de fotos en ferias y ruedas de negocio.
+// Ferias.astro — carrusel de fotos en ferias y ruedas de negocio.
 // La sección solo se renderiza si hay al menos una foto cargada.
 import home from '../../data/home.json';
 const { ferias } = home;
@@ -15,13 +15,42 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
         <p class="sec-sub">{ferias.subtitulo}</p>
       </header>
 
-      <div class="gallery">
-        {fotos.map((foto) => (
-          <figure class="shot">
-            <img src={foto.imagen} alt={foto.texto || ferias.titulo} width="760" height="950" loading="lazy" decoding="async" />
-            {foto.texto && <figcaption>{foto.texto}</figcaption>}
-          </figure>
-        ))}
+      <div class="carousel" data-ferias-carousel>
+        <div
+          class="track"
+          data-track
+          tabindex="0"
+          role="region"
+          aria-roledescription="carrusel"
+          aria-label="Fotos en ferias y eventos"
+        >
+          {fotos.map((foto) => (
+            <figure class="shot">
+              <img
+                src={foto.imagen}
+                alt={foto.texto || ferias.titulo}
+                width="760"
+                height="507"
+                loading="lazy"
+                decoding="async"
+              />
+              {foto.texto && <figcaption>{foto.texto}</figcaption>}
+            </figure>
+          ))}
+        </div>
+
+        <div class="controls" data-controls hidden>
+          <button type="button" class="nav" data-prev aria-label="Ver fotos anteriores">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M15 5 8 12l7 7" />
+            </svg>
+          </button>
+          <button type="button" class="nav" data-next aria-label="Ver más fotos">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -33,17 +62,28 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
   .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
   .sec-sub { font-size: var(--fs-lg); }
 
-  /* Flex en vez de grid: si la última fila queda incompleta, se centra sola,
-     sin importar cuántas fotos cargue el cliente desde el panel. */
-  .gallery {
+  /* Una sola fila que se desliza. En celular se ve una foto grande y horizontal,
+     con un asomo de la siguiente para que se note que hay más. */
+  .carousel { --gap: var(--space-3); --per-view: 3; }
+
+  .track {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-3);
+    gap: var(--gap);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* aire para que el hover y la sombra no se recorten */
+    padding: 6px 2px 14px;
+    margin-inline: -2px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
   }
+  .track::-webkit-scrollbar { display: none; }
+  .track:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; border-radius: var(--radius); }
+
   .shot {
-    flex: 0 1 calc((100% - 2 * var(--space-3)) / 3);
-    min-width: 230px;
+    flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+    scroll-snap-align: start;
     border-radius: var(--radius);
     overflow: hidden;
     background: var(--color-surface);
@@ -56,7 +96,7 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 2;
     object-fit: cover;
   }
   .shot figcaption {
@@ -65,10 +105,77 @@ const fotos = ferias?.fotos?.filter((f) => f.imagen) ?? [];
     color: var(--color-muted);
   }
 
-  @media (max-width: 920px) {
-    .shot { flex-basis: calc((100% - var(--space-3)) / 2); min-width: 180px; }
+  /* Flechas: mismo trato que en el carrusel de clientes */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
   }
-  @media (max-width: 480px) {
-    .shot { flex-basis: 100%; }
+  .controls[hidden] { display: none; }
+  .nav {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-primary-deep);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition);
+  }
+  .nav svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nav:hover:not(:disabled) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .nav:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+  .nav:disabled { opacity: 0.35; cursor: default; }
+
+  @media (max-width: 920px) { .carousel { --per-view: 2; --gap: var(--space-2); } }
+  @media (max-width: 620px) {
+    .carousel { --per-view: 1.15; }
+    .nav { width: 42px; height: 42px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shot:hover { transform: none; }
   }
 </style>
+
+<script>
+  // Carrusel de ferias: avanza una "página" (las fotos visibles) con las flechas,
+  // y se puede deslizar con el dedo. Si todas las fotos caben, no hay flechas.
+  document.querySelectorAll('[data-ferias-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('[data-track]');
+    const controls = carousel.querySelector('[data-controls]');
+    const prev = carousel.querySelector('[data-prev]');
+    const next = carousel.querySelector('[data-next]');
+    if (!track || !controls || !prev || !next) return;
+
+    const sync = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      controls.hidden = max <= 1;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= max - 1;
+    };
+
+    const paso = (dir) => track.scrollBy({ left: dir * track.clientWidth, behavior: 'smooth' });
+
+    prev.addEventListener('click', () => paso(-1));
+    next.addEventListener('click', () => paso(1));
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+</script>

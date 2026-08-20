@@ -101,8 +101,8 @@
   "clientes": {
     "eyebrow": "Nos respaldan",
     "titulo": "Empresas que confían en nosotros",
-    "subtitulo": "Negocios de alimentos que acompañamos en su camino a la certificación.",
-    "conteoLabel": "empresas de alimentos ya trabajaron con nosotros"
+    "subtitulo": "Algunas de las empresas de alimentos que han confiado en nosotros para implementar y certificar sus sistemas de calidad.",
+    "conteoLabel": ""
   },
   "ferias": {
     "eyebrow": "Dónde nos encuentras",
@@ -111,7 +111,7 @@
     "fotos": [
       {
         "imagen": "/images/ferias/feria-andes-alimentos.jpg",
-        "texto": "Ronda de negocios con empresas de superalimentos"
+        "texto": "Con Andes Alimentos, superalimentos peruanos"
       },
       {
         "imagen": "/images/ferias/feria-asesoria-stand.jpg",
@@ -119,15 +119,15 @@
       },
       {
         "imagen": "/images/ferias/feria-valle-andino.jpg",
-        "texto": "Recorriendo stands de productores andinos"
+        "texto": "Con Valle Andino en su stand"
       },
       {
         "imagen": "/images/ferias/feria-koreke.jpg",
-        "texto": "Café y cacao peruano en vitrina"
+        "texto": "Con Koreke, café peruano"
       },
       {
         "imagen": "/images/ferias/feria-kimsasisa.jpg",
-        "texto": "Productos naturales listos para exportar"
+        "texto": "Con Kimsasisa, productos naturales"
       }
     ]
   },
