@@ -109,6 +109,23 @@ p { color: var(--color-muted); }
   color: var(--color-primary);
 }
 
+/* ============================================
+   DOSIS PUNTUALES DEL VERDE DEL LOGO
+   El #36B729 es demasiado luminoso para texto o superficies grandes
+   (ver tokens.css). Aqui se usa solo donde es un detalle grafico:
+   la seleccion de texto y el anillo de foco.
+   ============================================ */
+::selection {
+  background: var(--color-brand-green);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand-green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 /* Accesibilidad: respeta a quien prefiere menos movimiento */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

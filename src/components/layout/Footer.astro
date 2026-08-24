@@ -52,7 +52,13 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .footer { background: var(--color-primary-deep); color: rgba(255,255,255,0.72); padding-block: var(--space-5) var(--space-3); }
+  .footer {
+    background: var(--color-primary-deep);
+    color: rgba(255,255,255,0.72);
+    padding-block: var(--space-5) var(--space-3);
+    /* Filo superior con el verde exacto del emblema: firma de marca en dosis minima. */
+    border-top: 3px solid var(--color-brand-green);
+  }
   .foot-top { display: flex; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; padding-bottom: var(--space-3); border-bottom: 1px solid rgba(255,255,255,0.12); }
 
   /* Version clara del logo, para que las letras se lean sobre el fondo verde.

@@ -3,28 +3,36 @@
      COLORES — extraídos de la marca J&M
      ============================================ */
 
-  /* Base neutra (el crema cálido del fondo del logo) */
-  --color-bg:        #F3EFE9;   /* fondo general, cálido como el logo */
+  /* Neutros — el gris del wordmark "J&M" del logo es #666666 */
+  --color-bg:        #F3EFE9;   /* crema cálido de fondo (decisión del sitio, no del logo) */
   --color-surface:   #FFFFFF;   /* tarjetas y secciones elevadas */
-  --color-ink:       #3A3A37;   /* gris del wordmark "J&M" — texto principal */
-  --color-muted:     #6E6E68;   /* texto secundario */
+  --color-ink:       #3A3A3A;   /* texto principal — misma familia neutra del wordmark */
+  --color-muted:     #6B6B67;   /* texto secundario */
   --color-line:      #E4DED4;   /* bordes y separadores */
 
-  /* Color institucional (ancla de confianza) */
-  --color-primary:        #2E7D4F;   /* verde — del emblema, transmite inocuidad */
-  --color-primary-deep:   #1F5C39;   /* verde oscuro para footer / hover */
-  --color-primary-soft:   #E6F0E9;   /* verde muy claro para fondos suaves */
+  /* ── Verde de marca ──────────────────────────
+     #36B729 es el verde EXACTO del emblema del logo. Es muy luminoso:
+     sobre el fondo crema da 2.3:1 y con texto blanco encima 2.6:1, así que
+     no sirve para texto ni para superficies grandes. Se usa solo en dosis
+     pequeñas y decorativas (--color-brand-green).
+     Para todo lo demás se usan versiones más profundas del MISMO tono
+     (H 114.5°), que sí cumplen contraste AA. */
+  --color-brand-green:    #36B729;   /* verde literal del logo — solo detalles */
+  --color-primary:        #217619;   /* 5.0:1 sobre el crema · 5.7:1 con blanco encima */
+  --color-primary-deep:   #1A5D14;   /* footer / hover — 7.0:1 */
+  --color-primary-soft:   #E9F8E7;   /* fondos suaves */
 
-  /* Acento cálido (CTAs, lo "amistoso") */
-  --color-accent:         #F4B63F;   /* ámbar — del emblema */
-  --color-accent-deep:    #D9971C;   /* ámbar oscuro para hover */
-  --color-accent-ink:     #4A3508;   /* texto sobre ámbar */
+  /* Acento cálido (CTAs) — ámbar del emblema */
+  --color-accent:         #FFBE4A;   /* ámbar exacto del logo */
+  --color-accent-deep:    #E69100;   /* hover */
+  --color-accent-ink:     #4A3508;   /* texto sobre ámbar — 7.1:1 */
 
-  /* Acentos del emblema (uso puntual, por categoría) */
-  --color-blue:   #3F6AD8;
-  --color-red:    #E24640;
-  --color-green:  #2E9E4F;
-  --color-yellow: #F4B63F;
+  /* Los cuatro colores del emblema, tal cual salen del logo.
+     Uso puntual y decorativo (categorías, iconos), nunca como texto. */
+  --color-green:  #36B729;
+  --color-yellow: #FFBE4A;
+  --color-blue:   #5271FF;
+  --color-red:    #FF5D5B;
 
   /* ============================================
      TIPOGRAFÍA
@@ -62,8 +70,8 @@
   --radius-lg: 24px;
   --radius-full: 999px;
 
-  --shadow-sm: 0 6px 18px -12px rgba(31, 92, 57, 0.4);
-  --shadow:    0 18px 40px -24px rgba(31, 92, 57, 0.35);
+  --shadow-sm: 0 6px 18px -12px rgba(26, 93, 20, 0.40);
+  --shadow:    0 18px 40px -24px rgba(26, 93, 20, 0.35);
 
   --container: 1140px;
 
