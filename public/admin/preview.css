@@ -213,3 +213,13 @@ body {
 @media (max-width: 700px) {
   .pv-about, .pv-split, .pv-hero { grid-template-columns: 1fr; gap: 24px; }
 }
+
+/* Capacitaciones: tira de miniaturas de la galería */
+.pv-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
+.pv-thumb {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-sm);
+}

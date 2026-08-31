@@ -33,8 +33,10 @@
     render: function () {
       var e = this.props.entry;
 
-      // --- Hero ---
-      var heroImg = val(e, ['hero', 'imagen']);
+      // --- Hero (banner) ---
+      // En el sitio las fotos van cambiando solas; aquí mostramos la primera.
+      var heroFotos = items(e, ['hero', 'fotos']);
+      var heroImg = heroFotos.length ? (heroFotos[0].get ? heroFotos[0].get('imagen') : '') : '';
       var hero = el('section', 'pv-hero', [
         h('div', { key: 'txt', className: 'pv-hero-text' }, [
           el('p', 'pv-eyebrow', 'Consultoría para la industria alimentaria · Lima'),
@@ -157,6 +159,20 @@
         h('div', { key: 'g', className: 'pv-sectors' }, sectores)
       ]);
 
+      // --- Capacitaciones ---
+      var capFotos = items(e, ['capacitaciones', 'fotos']).map(function (f, i) {
+        var src = f.get ? f.get('imagen') : '';
+        return src ? h('img', { key: i, className: 'pv-thumb', src: src, alt: '' }) : null;
+      });
+      var capacitacionesSec = el('section', 'pv-section', [
+        h('header', { key: 'hd', className: 'pv-head center' }, [
+          el('p', 'pv-eyebrow', val(e, ['capacitaciones', 'eyebrow'])),
+          h('h2', { key: 't' }, val(e, ['capacitaciones', 'titulo'])),
+          el('p', 'pv-sub', val(e, ['capacitaciones', 'subtitulo']))
+        ]),
+        h('div', { key: 'g', className: 'pv-thumbs' }, capFotos)
+      ]);
+
       // --- Encabezado de Clientes ---
       var clientesSec = el('section', 'pv-section', [
         h('header', { key: 'hd', className: 'pv-head center' }, [
@@ -183,7 +199,7 @@
         ])
       ]);
 
-      return el('div', 'pv', [hero, servicios, beneficios, nosotros, proceso, sectoresSec, clientesSec, contacto]);
+      return el('div', 'pv', [hero, proceso, servicios, beneficios, nosotros, sectoresSec, capacitacionesSec, clientesSec, contacto]);
     }
   });
 

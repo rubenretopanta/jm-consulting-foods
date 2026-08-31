@@ -2,16 +2,20 @@
 // Header.astro — navegación principal con menú hamburguesa (móvil)
 import { SITE, waLink } from '../../data/site.ts';
 import { getCollection } from 'astro:content';
+import home from '../../data/home.json';
 
-// El enlace "Clientes" solo se muestra si hay clientes publicados (no borrador),
-// igual que la sección: así nunca queda un enlace que no lleve a nada.
+// Los enlaces "Clientes" y "Capacitaciones" solo se muestran si su sección
+// tiene contenido, igual que la sección: así nunca queda un enlace que no
+// lleve a nada. El orden del menú sigue el orden de la página.
 const hayClientes = (await getCollection('clientes', ({ data }) => !data.draft)).length > 0;
+const hayCapacitaciones = (home.capacitaciones?.fotos ?? []).some((f) => f.imagen);
 
 const navLinks = [
+  { label: 'Proceso', href: '/#proceso' },
   { label: 'Servicios', href: '/#servicios' },
   { label: 'Nosotros', href: '/#nosotros' },
-  { label: 'Proceso', href: '/#proceso' },
   { label: 'Sectores', href: '/#sectores' },
+  ...(hayCapacitaciones ? [{ label: 'Capacitaciones', href: '/#capacitaciones' }] : []),
   ...(hayClientes ? [{ label: 'Clientes', href: '/#clientes' }] : []),
   { label: 'Blog', href: '/blog/' },
   { label: 'Contacto', href: '/#contacto' },
@@ -82,19 +86,23 @@ const navLinks = [
   }
   .nav-links {
     display: flex;
-    gap: var(--space-4);
+    gap: clamp(0.85rem, 1.8vw, 2rem);
     align-items: center;
-    /* El menu arranca junto al logo; el boton de WhatsApp se queda a la derecha. */
-    margin-inline: var(--space-4) auto;
+    /* El menu arranca junto al logo; el boton de WhatsApp se queda a la derecha.
+       Los huecos se encogen en pantallas medianas para que la fila entre. */
+    margin-inline: clamp(1rem, 2vw, 2rem) auto;
   }
   .nav-links a {
+    white-space: nowrap;
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     color: var(--color-muted);
     transition: color var(--transition);
   }
   .nav-links a:hover { color: var(--color-primary); }
-  .nav-cta { display: flex; align-items: center; gap: var(--space-2); }
+  /* margin-left: garantiza aire entre el último enlace y el botón cuando
+     el menú se aprieta al máximo (alrededor de los 925 px). */
+  .nav-cta { display: flex; align-items: center; gap: var(--space-2); margin-left: var(--space-2); }
 
   .btn {
     display: inline-flex;
@@ -138,7 +146,7 @@ const navLinks = [
   @media (max-width: 920px) {
     .brand-mark { height: 38px; }
     .brand-word { font-size: 9.5px; }
-    .nav-links { display: none; margin-inline: 0; }
+    .nav-links { display: none; margin-inline: 0; gap: var(--space-4); }
     .menu-btn { display: block; }
     .desktop-cta { display: none; }
 

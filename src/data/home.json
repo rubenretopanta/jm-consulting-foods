@@ -4,7 +4,28 @@
     "tituloDestacado": "en regla y certificado.",
     "botonWhatsapp": "Conversemos por WhatsApp",
     "botonServicios": "Ver servicios",
-    "imagen": "/images/fotos/laboratorio-analisis.jpg"
+    "fotos": [
+      {
+        "imagen": "/images/portada/embotellado-bebidas.jpg",
+        "texto": "Línea de embotellado en planta de bebidas"
+      },
+      {
+        "imagen": "/images/portada/planta-procesamiento.jpg",
+        "texto": "Sala de proceso en planta de alimentos"
+      },
+      {
+        "imagen": "/images/fotos/planta-inspeccion.jpg",
+        "texto": "Control de proceso en planta"
+      },
+      {
+        "imagen": "/images/fotos/linea-produccion.jpg",
+        "texto": "Línea de producción de conservas"
+      },
+      {
+        "imagen": "/images/fotos/laboratorio-analisis.jpg",
+        "texto": "Ensayos de laboratorio para control de calidad"
+      }
+    ]
   },
   "serviciosSeccion": {
     "eyebrow": "Lo que hacemos",
@@ -98,6 +119,57 @@
       "Programas sociales (Qali Warma)"
     ]
   },
+  "capacitaciones": {
+    "eyebrow": "Formación en planta",
+    "titulo": "Capacitamos al equipo que hace el trabajo",
+    "subtitulo": "Talleres prácticos de HACCP, BPM e higiene: el personal de planta trabaja con casos de su propia operación y se lleva el material listo para aplicar.",
+    "fotos": [
+      {
+        "imagen": "/images/capacitaciones/capacitacion-01.jpg",
+        "texto": "Taller de HACCP: descripción del producto"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-02.jpg",
+        "texto": "Explicando los programas prerrequisito (PPR)"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-03.jpg",
+        "texto": "Análisis de peligros, paso a paso"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-04.jpg",
+        "texto": "Acompañamiento durante el taller práctico"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-05.jpg",
+        "texto": "Sesión de trabajo con el equipo de planta"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-06.jpg",
+        "texto": "Presentación del curso a cargo de la consultora"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-07.jpg",
+        "texto": "Los participantes exponen su trabajo"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-08.jpg",
+        "texto": "Puesta en común de los ejercicios"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-09.jpg",
+        "texto": "Cierre del curso con el equipo capacitado"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-10.jpg",
+        "texto": "Desarrollo de los ejercicios del taller"
+      },
+      {
+        "imagen": "/images/capacitaciones/capacitacion-11.jpg",
+        "texto": "Ejercicio práctico del taller"
+      }
+    ]
+  },
   "clientes": {
     "eyebrow": "Nos respaldan",
     "titulo": "Empresas que confían en nosotros",
@@ -110,24 +182,24 @@
     "subtitulo": "Acompañamos a productores y empresas de alimentos en los espacios donde su producto se muestra al mercado.",
     "fotos": [
       {
-        "imagen": "/images/ferias/feria-andes-alimentos.jpg",
-        "texto": "Con Andes Alimentos, superalimentos peruanos"
+        "imagen": "/images/ferias/feria-superalimentos.jpg",
+        "texto": "En feria, con un productor de superalimentos peruanos"
       },
       {
         "imagen": "/images/ferias/feria-asesoria-stand.jpg",
         "texto": "Asesoría en el stand, producto en mano"
       },
       {
-        "imagen": "/images/ferias/feria-valle-andino.jpg",
-        "texto": "Con Valle Andino en su stand"
+        "imagen": "/images/ferias/feria-alimentos-andinos.jpg",
+        "texto": "Acompañando a una empresa de alimentos andinos"
       },
       {
-        "imagen": "/images/ferias/feria-koreke.jpg",
-        "texto": "Con Koreke, café peruano"
+        "imagen": "/images/ferias/feria-cafe.jpg",
+        "texto": "Con productores de café peruano"
       },
       {
-        "imagen": "/images/ferias/feria-kimsasisa.jpg",
-        "texto": "Con Kimsasisa, productos naturales"
+        "imagen": "/images/ferias/feria-productos-naturales.jpg",
+        "texto": "Con una empresa de productos naturales"
       }
     ]
   },

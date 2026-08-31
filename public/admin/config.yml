@@ -82,16 +82,22 @@ collections:
         label: "Secciones de la home"
         file: "src/data/home.json"
         fields:
-          - label: "Portada (Hero)"
+          - label: "Portada (banner)"
             name: "hero"
             widget: "object"
-            hint: "Es lo primero que se ve al abrir el sitio, arriba de todo."
+            hint: "Es lo primero que se ve al abrir el sitio: un banner ancho con el título encima y las fotos de fondo, que van cambiando solas."
             fields:
-              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string", hint: "Primera línea del título grande de la portada (en color oscuro)." }
-              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string", hint: "Segunda línea del título, que se muestra resaltada en verde." }
+              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string", hint: "Primera línea del título grande de la portada (en blanco)." }
+              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string", hint: "Segunda línea del título, que se muestra resaltada en amarillo." }
               - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string", hint: "Texto del botón amarillo principal de la portada (abre WhatsApp)." }
               - { label: "Botón secundario", name: "botonServicios", widget: "string", hint: "Texto del botón secundario de la portada (lleva a la sección de servicios)." }
-              - { label: "Foto de la portada", name: "imagen", widget: "image", required: false, hint: "Foto grande que acompaña al título de la portada, al lado derecho. Si la dejas vacía, la portada se muestra solo con texto." }
+              - label: "Fotos de la portada"
+                name: "fotos"
+                widget: "list"
+                hint: "Las fotos del banner. Van cambiando solas cada 5 segundos, en este orden. Recomendado: fotos horizontales y anchas (mínimo 1600 px). Si dejas una sola, el banner se queda quieto con esa."
+                fields:
+                  - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de fondo del banner (se sube a Cloudinary)." }
+                  - { label: "Descripción de la foto", name: "texto", widget: "string", required: false, hint: "Qué se ve en la foto. No se muestra en pantalla: sirve para los lectores de pantalla y para Google." }
 
           - label: "Encabezado de Servicios"
             name: "serviciosSeccion"
@@ -172,6 +178,22 @@ collections:
                 widget: "list"
                 hint: "Cada rubro se muestra como una tarjeta con un punto verde. Agrega uno por línea."
                 field: { label: "Sector", name: "sector", widget: "string", hint: "Nombre del rubro. Ej: Panificación y pastelería" }
+
+          - label: "Capacitaciones"
+            name: "capacitaciones"
+            widget: "object"
+            hint: "Galería de fotos de los talleres y capacitaciones en planta. Va después de Sectores y antes de Clientes. Si borras todas las fotos, la sección desaparece del sitio."
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de Capacitaciones." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
+              - label: "Fotos"
+                name: "fotos"
+                widget: "list"
+                hint: "Las fotos del carrusel, en este orden. Pasan solas cada 3 segundos: se ven 3 a la vez en computadora y una en celular. Puedes agregar, quitar o reordenar. Recomendado: fotos verticales."
+                fields:
+                  - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de la capacitación (se sube a Cloudinary)." }
+                  - { label: "Pie de foto", name: "texto", widget: "string", required: false, hint: "Texto corto debajo de la foto. Opcional: si lo dejas vacío, la foto se muestra sola." }
 
           - label: "Encabezado de Clientes"
             name: "clientes"
