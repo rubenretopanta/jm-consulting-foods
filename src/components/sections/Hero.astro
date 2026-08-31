@@ -65,6 +65,10 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
      de la página. La proporción 2:1 evita que las fotos se recorten de más
      en pantallas anchas. */
   .banner {
+    /* Tono del velo que oscurece las fotos, en un solo sitio.
+       --velo-solido es ese mismo tono ya mezclado, para las zonas sin foto. */
+    --velo: 9, 28, 7;
+    --velo-solido: #152811;
     position: relative;
     isolation: isolate;
     display: grid;
@@ -76,7 +80,9 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow);
-    background: var(--color-primary-surface);
+    /* El banner no lleva el verde de la marca: su color es el mismo velo
+       oscuro que cubre la foto, en sólido. */
+    background: var(--velo-solido);
   }
 
   /* Foto y texto comparten la misma celda: el texto va encima. */
@@ -107,9 +113,9 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
     inset: 0;
     background:
       linear-gradient(100deg,
-        rgba(9, 28, 7, 0.86) 0%,
-        rgba(9, 28, 7, 0.66) 46%,
-        rgba(9, 28, 7, 0.18) 100%);
+        rgba(var(--velo), 0.86) 0%,
+        rgba(var(--velo), 0.66) 46%,
+        rgba(var(--velo), 0.18) 100%);
   }
 
   /* --- Texto --- */
@@ -175,10 +181,10 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
     .banner-text {
       grid-area: 2 / 1;
       align-self: stretch;
-      background: var(--color-primary-surface);
+      background: var(--velo-solido);
       padding: var(--space-3) var(--space-3) var(--space-4);
     }
-    .scrim { background: linear-gradient(180deg, rgba(9, 28, 7, 0.35) 0%, rgba(9, 28, 7, 0.15) 100%); }
+    .scrim { background: linear-gradient(180deg, rgba(var(--velo), 0.35) 0%, rgba(var(--velo), 0.15) 100%); }
     .lead { max-width: none; }
   }
 

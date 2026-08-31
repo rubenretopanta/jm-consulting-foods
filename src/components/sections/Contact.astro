@@ -4,8 +4,9 @@ import home from '../../data/home.json';
 const { contacto } = home;
 ---
 
-<section class="contact section" id="contacto">
+<section class="contact-wrap section" id="contacto">
   <div class="container">
+   <div class="contact">
     <header class="sec-head">
       <p class="eyebrow accent">{contacto.eyebrow}</p>
       <h2>{contacto.titulo}</h2>
@@ -51,14 +52,24 @@ const { contacto } = home;
         <p class="form-note">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
       </div>
     </div>
+   </div>
   </div>
 </section>
 
 <style>
-  .contact { background: linear-gradient(160deg, var(--color-primary-surface), var(--color-primary)); color: #fff; }
+  /* El verde es un panel del ancho de la página, no una franja de borde a
+     borde de la ventana: igual que el banner de la portada. */
+  .contact-wrap { padding-block: var(--space-6); }
+  .contact {
+    background: linear-gradient(160deg, var(--color-primary-surface), var(--color-primary));
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    box-shadow: var(--shadow);
+  }
   .sec-head { max-width: 620px; margin-bottom: var(--space-5); }
   .sec-head h2 { color: #fff; margin-block: var(--space-1) var(--space-2); }
-  .sec-sub { color: rgba(255,255,255,0.95); font-size: var(--fs-lg); }
+  .sec-sub { color: #fff; font-size: var(--fs-lg); }
   .eyebrow.accent { color: var(--color-accent); }
 
   .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: var(--space-5); align-items: start; }
@@ -72,7 +83,7 @@ const { contacto } = home;
     display: grid; place-items: center;
     font-size: var(--fs-xs); font-weight: var(--fw-bold);
   }
-  .info-item small { display: block; color: rgba(255,255,255,0.95); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; }
+  .info-item small { display: block; color: #fff; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; }
   .info-item span span, .info-item > span { font-weight: var(--fw-semibold); }
 
   .form { background: #fff; border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow); display: grid; gap: var(--space-2); }
