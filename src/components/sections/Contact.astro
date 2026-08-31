@@ -73,6 +73,10 @@ const { contacto } = home;
   .eyebrow.accent { color: var(--color-accent); }
 
   .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: var(--space-5); align-items: start; }
+  /* Sin esto las columnas no se dejan encoger por debajo del ancho natural de
+     su contenido (el <select> mide lo que su opción más larga, el correo no
+     parte) y la tarjeta se sale del panel por la derecha. */
+  .grid > * { min-width: 0; }
 
   .info { display: grid; gap: var(--space-3); }
   .info-item { display: flex; gap: var(--space-2); align-items: center; color: #fff; }
@@ -84,11 +88,15 @@ const { contacto } = home;
     font-size: var(--fs-xs); font-weight: var(--fw-bold);
   }
   .info-item small { display: block; color: #fff; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; }
-  .info-item span span, .info-item > span { font-weight: var(--fw-semibold); }
+  .info-item span span, .info-item > span { font-weight: var(--fw-semibold); min-width: 0; overflow-wrap: anywhere; }
 
   .form { background: #fff; border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow); display: grid; gap: var(--space-2); }
-  .form label { display: grid; gap: 6px; font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--color-primary-deep); }
+  .form label { display: grid; gap: 6px; min-width: 0; font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--color-primary-deep); }
   .form input, .form select, .form textarea {
+    /* width + min-width: los campos se adaptan a la tarjeta en vez de imponer
+       su ancho natural. */
+    width: 100%;
+    min-width: 0;
     padding: 0.8rem 1rem; border: 1.5px solid var(--color-line);
     border-radius: var(--radius-sm); background: var(--color-bg);
     color: var(--color-ink); font-size: var(--fs-sm);

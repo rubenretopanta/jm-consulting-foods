@@ -59,7 +59,7 @@ const fotos = capacitaciones?.fotos?.filter((f) => f.imagen) ?? [];
 )}
 
 <style>
-  .training { background: var(--color-surface); }
+  .training { background: var(--color-bg); }
   .sec-head { max-width: 620px; margin-bottom: var(--space-5); text-align: center; margin-inline: auto; }
   .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
   .sec-sub { font-size: var(--fs-lg); }
@@ -95,7 +95,7 @@ const fotos = capacitaciones?.fotos?.filter((f) => f.imagen) ?? [];
     scroll-snap-align: start;
     border-radius: var(--radius);
     overflow: hidden;
-    background: var(--color-bg);
+    background: var(--color-surface);
     border: 1px solid var(--color-line);
     box-shadow: var(--shadow-sm);
     transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
