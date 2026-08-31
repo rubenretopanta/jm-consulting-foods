@@ -16,10 +16,16 @@
      no sirve para texto ni para superficies grandes. Se usa solo en dosis
      pequeñas y decorativas (--color-brand-green).
      Para todo lo demás se usan versiones más profundas del MISMO tono
-     (H 114.5°), que sí cumplen contraste AA. */
+     (H 114.5°, S 64%), que sí cumplen contraste AA. Se aclararon todo lo que
+     el contraste permite para parecerse al logo: los fondos verdes grandes
+     usan --color-primary-surface (L 31%, el tope con texto blanco encima),
+     y por eso el texto secundario sobre verde va al 95% de blanco y no al
+     70-78% de antes: con un verde más claro, translúcido ya no se leía. */
   --color-brand-green:    #36B729;   /* verde literal del logo — solo detalles */
+  --color-primary-surface:#26801B;   /* fondos verdes grandes — lo más claro que
+                                        admite texto blanco: 5.0:1 */
   --color-primary:        #217619;   /* 5.0:1 sobre el crema · 5.7:1 con blanco encima */
-  --color-primary-deep:   #1A5D14;   /* footer / hover — 7.0:1 */
+  --color-primary-deep:   #1A5D14;   /* texto verde oscuro / hover — 7.0:1 */
   --color-primary-soft:   #E9F8E7;   /* fondos suaves */
 
   /* Acento cálido (CTAs) — ámbar del emblema */

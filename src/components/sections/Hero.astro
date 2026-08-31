@@ -76,7 +76,7 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow);
-    background: var(--color-primary-deep);
+    background: var(--color-primary-surface);
   }
 
   /* Foto y texto comparten la misma celda: el texto va encima. */
@@ -161,11 +161,21 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
      vertical (queda con muchísimo zoom): foto arriba, texto debajo. */
   @media (max-width: 920px) {
     .banner { aspect-ratio: auto; min-height: 0; }
-    .media { grid-area: 1 / 1; aspect-ratio: 4 / 3; }
+    /* Alto explícito, no 'aspect-ratio': la celda de la foto solo contiene
+       elementos posicionados (no aportan alto), y varios navegadores de
+       celular la dejaban en cero, con lo que la foto no se veía.
+       'align-self: start' evita además que el estirado del grid mande. */
+    .media {
+      grid-area: 1 / 1;
+      align-self: start;
+      height: 68vw;
+      min-height: 220px;
+      max-height: 400px;
+    }
     .banner-text {
       grid-area: 2 / 1;
       align-self: stretch;
-      background: var(--color-primary-deep);
+      background: var(--color-primary-surface);
       padding: var(--space-3) var(--space-3) var(--space-4);
     }
     .scrim { background: linear-gradient(180deg, rgba(9, 28, 7, 0.35) 0%, rgba(9, 28, 7, 0.15) 100%); }

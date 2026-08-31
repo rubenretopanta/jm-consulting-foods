@@ -13,6 +13,7 @@
   --color-muted:     #6B6B67;
   --color-line:      #E4DED4;
   --color-brand-green:    #36B729;
+  --color-primary-surface:#26801B;
   --color-primary:        #217619;
   --color-primary-deep:   #1A5D14;
   --color-primary-soft:   #E9F8E7;
@@ -109,7 +110,7 @@ body {
 /* ---------- NOSOTROS ---------- */
 .pv-about { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: center; }
 .pv-about-card {
-  background: linear-gradient(150deg, var(--color-primary), var(--color-primary-deep));
+  background: linear-gradient(150deg, var(--color-primary-surface), var(--color-primary));
   color: #fff; border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow);
 }
 .pv-avatar {
@@ -121,7 +122,7 @@ body {
 .pv-about-card h3 { color: #fff; font-size: 1.5rem; }
 .pv-mag { font-size: 1rem; font-weight: 400; opacity: 0.7; }
 .pv-role { color: var(--color-accent); font-weight: 600; font-size: 0.9rem; margin: 4px 0 14px; }
-.pv-bio { color: rgba(255,255,255,0.85); font-size: 0.9rem; margin: 0; }
+.pv-bio { color: rgba(255,255,255,0.95); font-size: 0.9rem; margin: 0; }
 .pv-about-text h2 { font-size: 2.2rem; margin: 6px 0 22px; }
 .pv-mision {
   margin-top: 18px; padding: 18px;
@@ -160,9 +161,9 @@ body {
 .pv-dot { flex: none; width: 12px; height: 12px; border-radius: var(--radius-full); background: var(--color-primary); }
 
 /* ---------- CONTACTO ---------- */
-.pv-contact { padding: 40px 28px; background: linear-gradient(160deg, var(--color-primary), var(--color-primary-deep)); color: #fff; border-radius: var(--radius); }
+.pv-contact { padding: 40px 28px; background: linear-gradient(160deg, var(--color-primary-surface), var(--color-primary)); color: #fff; border-radius: var(--radius); }
 .pv-contact .pv-head h2 { color: #fff; }
-.pv-contact .pv-sub { color: rgba(255,255,255,0.78); }
+.pv-contact .pv-sub { color: rgba(255,255,255,0.95); }
 .pv-form { background: #fff; border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow); display: grid; gap: 12px; max-width: 460px; }
 .pv-form label { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--color-primary-deep); }
 .pv-form select, .pv-form input {
