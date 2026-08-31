@@ -97,7 +97,10 @@ p { color: var(--color-muted); }
 }
 
 .section {
-  padding-block: var(--space-7);
+  /* Aire vertical de cada seccion. Antes eran 96 px fijos arriba y abajo, que
+     sumaban casi 200 px entre seccion y seccion. Ahora escala con la pantalla:
+     40 px en celular, 60 px en escritorio. */
+  padding-block: clamp(2.5rem, 5vw, 3.75rem);
 }
 
 .eyebrow {

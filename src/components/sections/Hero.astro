@@ -59,11 +59,11 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
 
 <style>
   /* Poco aire arriba: el banner debe quedar cerca de la cabecera. */
-  .hero { padding-block: var(--space-3) var(--space-6); }
+  .hero { padding-block: var(--space-3) var(--space-4); }
 
   /* El banner vive dentro del contenedor, con el mismo ancho que el resto
-     de la página. La proporción 2:1 evita que las fotos se recorten de más
-     en pantallas anchas. */
+     de la página. La proporción 2.2:1 deja ver casi toda la foto sin que el
+     banner se coma media pantalla. */
   .banner {
     /* Tono del velo que oscurece las fotos, en un solo sitio.
        --velo-solido es ese mismo tono ya mezclado, para las zonas sin foto. */
@@ -75,8 +75,8 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
     /* stretch para que la celda de la foto ocupe todo el alto del banner;
        el texto se centra por su cuenta con align-self. */
     align-items: stretch;
-    aspect-ratio: 2 / 1;
-    min-height: 420px;
+    aspect-ratio: 2.2 / 1;
+    min-height: 400px;
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow);
