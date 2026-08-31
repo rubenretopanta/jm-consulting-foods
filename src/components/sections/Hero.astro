@@ -164,9 +164,19 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
   .dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
   /* En celular el texto no cabe encima sin recortar la foto a un cuadro
-     vertical (queda con muchísimo zoom): foto arriba, texto debajo. */
+     vertical (queda con muchísimo zoom): la foto va arriba, en su tarjeta
+     redondeada, y el texto debajo como contenido normal de la página, sobre
+     el crema y en tinta oscura. */
   @media (max-width: 920px) {
-    .banner { aspect-ratio: auto; min-height: 0; }
+    .banner {
+      aspect-ratio: auto;
+      min-height: 0;
+      /* la tarjeta pasa a ser solo la foto */
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
     /* Alto explícito, no 'aspect-ratio': la celda de la foto solo contiene
        elementos posicionados (no aportan alto), y varios navegadores de
        celular la dejaban en cero, con lo que la foto no se veía.
@@ -177,15 +187,27 @@ const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
       height: 68vw;
       min-height: 220px;
       max-height: 400px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
     }
     .banner-text {
       grid-area: 2 / 1;
       align-self: stretch;
-      background: var(--velo-solido);
-      padding: var(--space-3) var(--space-3) var(--space-4);
+      background: transparent;
+      padding: var(--space-3) 0 0;
     }
-    .scrim { background: linear-gradient(180deg, rgba(var(--velo), 0.35) 0%, rgba(var(--velo), 0.15) 100%); }
-    .lead { max-width: none; }
+    /* Sin velo detrás, el texto va en los colores normales de la página. */
+    .banner h1 { color: var(--color-ink); }
+    .lead { max-width: none; color: var(--color-muted); }
+    /* El ámbar del logo sobre el crema da 1.4:1 (invisible). Estos dos son el
+       mismo ámbar rebajado hasta que se lee: el antetítulo es letra pequeña y
+       necesita 4.5:1; el titular es grande y le basta 3:1. */
+    .eyebrow { color: #8A5200; }
+    .hl { color: #B87200; }
+    .btn-ghost { border-color: var(--color-line); color: var(--color-primary); }
+    .btn-ghost:hover { background: var(--color-primary-soft); }
+    .scrim { background: linear-gradient(180deg, rgba(var(--velo), 0.28) 0%, rgba(var(--velo), 0.10) 100%); }
   }
 
   @media (prefers-reduced-motion: reduce) {
