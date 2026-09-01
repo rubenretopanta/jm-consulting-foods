@@ -1,0 +1,18 @@
+# robots.txt — J&M Consulting Foods
+#
+# Sin este archivo Google rastrea igual (cuando falta, entiende "puedes pasar"),
+# pero es el sitio estándar donde se le anuncia el sitemap: así lo encuentra
+# solo, sin depender de que alguien lo envíe a mano desde Search Console.
+#
+# Vive en /public, así que Astro lo copia tal cual a la raíz del sitio.
+# Si algún día cambia el dominio, hay que actualizar la línea Sitemap: es la
+# única de este archivo que lleva una dirección absoluta.
+
+User-agent: *
+Allow: /
+
+# El panel de administración no pinta nada en los resultados de búsqueda.
+# Ya lleva su propia etiqueta noindex; esto además evita que lo rastree.
+Disallow: /admin/
+
+Sitemap: https://jm-consulting-foods.netlify.app/sitemap-index.xml
