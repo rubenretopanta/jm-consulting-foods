@@ -4,7 +4,22 @@
     "tituloDestacado": "en regla y certificado.",
     "botonWhatsapp": "Conversemos por WhatsApp",
     "botonServicios": "Ver servicios",
+    "puntos": [
+      {
+        "texto": "Especialistas en calidad e inocuidad alimentaria"
+      },
+      {
+        "texto": "Asesoría personalizada según tu rubro"
+      },
+      {
+        "texto": "Lima, Perú"
+      }
+    ],
     "fotos": [
+      {
+        "imagen": "/images/portada/supervision-linea-embotellado.jpg",
+        "texto": "Supervisión de la línea de embotellado en planta"
+      },
       {
         "imagen": "/images/portada/embotellado-bebidas.jpg",
         "texto": "Línea de embotellado en planta de bebidas"
@@ -105,6 +120,13 @@
         "texto": "Mantenemos tu sistema vigente con asesoría continua."
       }
     ]
+  },
+  "ctaIntermedio": {
+    "eyebrow": "¿Necesitas orientación?",
+    "titulo": "Cuéntanos qué necesita tu empresa",
+    "subtitulo": "Recibe una propuesta personalizada, sin compromiso.",
+    "boton": "Hablar por WhatsApp",
+    "imagen": "/images/fotos/capacitacion-aula.jpg"
   },
   "sectores": {
     "eyebrow": "A quiénes ayudamos",

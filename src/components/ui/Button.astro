@@ -1,0 +1,60 @@
+---
+/**
+ * Button.astro — botón único de todo el sitio.
+ *
+ * Renderiza un <a> real cuando hay `href` y un <button> real cuando no:
+ * nunca un div disfrazado, para que el teclado y los lectores de pantalla
+ * lo entiendan. Los estilos viven en base.css (.btn / .btn--*) para que
+ * cualquier sección pueda reutilizarlos sin importar el componente.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'accent' | 'outline' | 'light' | 'ghost-light';
+  size?: 'sm' | 'md' | 'lg';
+  icon?: string;          // icono a la derecha del texto
+  iconLeft?: string;      // icono a la izquierda
+  block?: boolean;
+  external?: boolean;     // abre en pestaña nueva con rel seguro
+  type?: 'button' | 'submit';
+  id?: string;
+  class?: string;
+  'aria-label'?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  icon,
+  iconLeft,
+  block = false,
+  external = false,
+  type = 'button',
+  id,
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  size !== 'md' && `btn--${size}`,
+  block && 'btn--block',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+
+const Tag = href ? 'a' : 'button';
+const tagProps = href
+  ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+  : { type };
+---
+
+<Tag class={classes} id={id} {...tagProps} {...rest}>
+  {iconLeft && <Icon name={iconLeft} size={18} />}
+  <span><slot /></span>
+  {icon && <Icon name={icon} size={18} />}
+</Tag>

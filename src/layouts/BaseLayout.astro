@@ -1,23 +1,53 @@
 ---
 // BaseLayout.astro — esqueleto común de todas las páginas
 import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import WhatsAppDock from '../components/ui/WhatsAppDock.astro';
 import { SITE } from '../data/site.ts';
 import '../styles/tokens.css';
 import '../styles/base.css';
-import Footer from '../components/layout/Footer.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title = SITE.name,
   description = SITE.description,
+  image = '/images/portada/planta-procesamiento.jpg',
 } = Astro.props;
 
 // Título de pestaña: "Sección · J&M Consulting Foods"
 const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.tagline}` : `${title} · ${SITE.name}`;
+
+// URL absoluta de esta página y de la imagen social. Astro.site viene de
+// astro.config.mjs; si faltara, no se emiten las etiquetas absolutas.
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const ogImage = Astro.site ? new URL(image, Astro.site).href : undefined;
+
+// Ficha de la empresa para buscadores. Solo datos reales de site.json.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE.legalName,
+  alternateName: SITE.name,
+  description: SITE.description,
+  ...(canonical ? { url: new URL('/', Astro.site).href } : {}),
+  ...(ogImage ? { image: ogImage } : {}),
+  telephone: `+${SITE.whatsapp}`,
+  email: SITE.email,
+  taxID: SITE.ruc,
+  foundingDate: String(SITE.foundedYear),
+  areaServed: SITE.city,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: SITE.address,
+    addressCountry: 'PE',
+  },
+  sameAs: Object.values(SITE.social ?? {}).filter(Boolean),
+};
 ---
 
 <!doctype html>
@@ -27,27 +57,84 @@ const pageTitle = title === SITE.name ? `${SITE.name} — ${SITE.tagline}` : `${
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="fwRjwQkCsZzx1ncoEpFxqpHtMrFhDaMFWMVsy6xElNc" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/svg+xml" href="/logo-mark.svg" />
+    {canonical && <link rel="canonical" href={canonical} />}
 
     <!-- Open Graph (para que se vea bien al compartir en WhatsApp/redes) -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="es_PE" />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
 
-    <!-- Fuentes de la marca -->
+    <!-- Tipografía de la interfaz. Una sola familia: menos peticiones y más
+         coherencia. El wordmark del logo no la usa. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
+    <!-- Marca <html class="js"> antes de pintar: sin esto, las animaciones de
+         aparición dejarían el contenido invisible si el JS no llega.
+         Y red de seguridad: si el script de aparición (que es un módulo) no
+         llegó a ejecutarse, se quita la clase y todo vuelve a ser visible.
+         Una animación perdida es un detalle; una página en blanco, no. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      window.addEventListener('load', function () {
+        if (!document.documentElement.hasAttribute('data-reveal')) {
+          document.documentElement.classList.remove('js');
+        }
+      });
+    </script>
+
     <title>{pageTitle}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
-   <body>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <Header />
     <slot />
-     <Footer />
+    <Footer />
+    <WhatsAppDock />
+
+    <script>
+      // Aparición al hacer scroll. Un solo observador para toda la página:
+      // cada elemento con .reveal se muestra al entrar y se deja de observar.
+      // Quien pidió menos movimiento no ve nada de esto (lo neutraliza el CSS,
+      // y aquí además se marca todo como visible sin animar).
+      // Aviso a la red de seguridad de <head>: este script sí se ejecutó.
+      document.documentElement.setAttribute('data-reveal', 'on');
+
+      const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const elementos = document.querySelectorAll('.reveal');
+
+      if (menosMovimiento.matches || !('IntersectionObserver' in window)) {
+        elementos.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entradas) => {
+            entradas.forEach((entrada) => {
+              if (!entrada.isIntersecting) return;
+              entrada.target.classList.add('is-in');
+              io.unobserve(entrada.target);
+            });
+          },
+          // rootMargin negativo abajo: el elemento entra cuando ya subió un
+          // poco en pantalla, no en cuanto asoma un píxel.
+          { threshold: 0, rootMargin: '0px 0px -12% 0px' }
+        );
+        elementos.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>

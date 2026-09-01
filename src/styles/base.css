@@ -1,6 +1,8 @@
-/* ============================================
-   RESET
-   ============================================ */
+/* ============================================================
+   BASE — reset, tipografía global, utilidades y sistema de botones
+   ============================================================ */
+
+/* ---------- RESET ---------- */
 *,
 *::before,
 *::after {
@@ -16,15 +18,16 @@ html {
 }
 
 /* Alto de la cabecera fija. Vive aquí (y no en Header.astro) porque también lo
-   necesitan los anclajes de abajo. */
-:root { --header-h: 84px; }
-@media (max-width: 920px) {
-  :root { --header-h: 68px; }
+   necesitan los anclajes de abajo y el desplazamiento con #hash. */
+:root { --header-h: 76px; }
+@media (max-width: 960px) {
+  :root { --header-h: 64px; }
 }
 
-/* Al saltar a una sección con #ancla (incluido el logo, que lleva a #inicio),
-   dejar libre el alto de la cabecera para que no tape el inicio de la sección. */
+/* Al saltar a una sección con #ancla, dejar libre el alto de la cabecera para
+   que no tape el inicio de la sección. */
 :target,
+main[id],
 section[id] {
   scroll-margin-top: calc(var(--header-h) + var(--space-2));
 }
@@ -32,20 +35,34 @@ section[id] {
 body {
   font-family: var(--font-body);
   font-size: var(--fs-base);
-  line-height: 1.6;
-  color: var(--color-ink);
+  line-height: var(--lh-body);
+  color: var(--color-ink-soft);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Cinturón contra el desbordamiento horizontal: ninguna sección debería
+     necesitarlo, pero si algo se pasa, no rompe la página entera. */
   overflow-x: hidden;
 }
 
 img,
 picture,
-svg {
+svg,
+video {
   max-width: 100%;
   display: block;
 }
+
+/* height: auto es OBLIGATORIO aquí, no un adorno.
+   Los atributos width/height del HTML (que ponemos para reservar el hueco y
+   que la página no dé saltos al cargar) llegan al navegador como medidas en
+   píxeles de verdad. Si el CSS solo fija el ancho, la altura se queda en la
+   del atributo: una foto de 900×1200 se dibuja al ancho de su columna pero
+   con 1200 px de alto, y sale estiradísima y recortada.
+   Con height: auto, la altura la decide el aspect-ratio de cada marco.
+   Quien necesite otra altura (las fotos de la portada, el CTA, los avatares)
+   la declara con su propia clase, que gana por especificidad. */
+img { height: auto; }
 
 a {
   color: inherit;
@@ -53,12 +70,12 @@ a {
 }
 
 ul,
-ol {
-  list-style: none;
-}
+ol { list-style: none; }
 
 button {
   font-family: inherit;
+  font-size: inherit;
+  color: inherit;
   cursor: pointer;
   border: none;
   background: none;
@@ -69,55 +86,192 @@ textarea,
 select {
   font-family: inherit;
   font-size: inherit;
+  color: inherit;
 }
 
-/* ============================================
-   TIPOGRAFÍA GLOBAL
-   ============================================ */
-h1, h2, h3, h4 {
+/* ---------- TIPOGRAFÍA GLOBAL ---------- */
+h1, h2, h3, h4, h5 {
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
-  line-height: 1.1;
+  line-height: var(--lh-head);
+  letter-spacing: var(--tracking-tight);
   color: var(--color-ink);
+  text-wrap: balance;
 }
 
-h1 { font-size: var(--fs-display); }
-h2 { font-size: var(--fs-2xl); }
-h3 { font-size: var(--fs-xl); }
+h1 {
+  font-size: var(--fs-display);
+  font-weight: var(--fw-black);
+  line-height: var(--lh-tight);
+}
+h2 { font-size: var(--fs-3xl); }
+h3 { font-size: var(--fs-xl); letter-spacing: -0.015em; }
+h4 { font-size: var(--fs-md); letter-spacing: -0.01em; }
 
-p { color: var(--color-muted); }
+p { color: var(--color-muted); text-wrap: pretty; }
 
-/* ============================================
-   UTILIDADES DE LAYOUT
-   ============================================ */
+strong { color: var(--color-ink); font-weight: var(--fw-semibold); }
+
+/* ---------- LAYOUT ---------- */
 .container {
+  width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: var(--space-3);
+  padding-inline: var(--gutter);
 }
 
-.section {
-  /* Aire vertical de cada seccion. Antes eran 96 px fijos arriba y abajo, que
-     sumaban casi 200 px entre seccion y seccion. Ahora escala con la pantalla:
-     40 px en celular, 60 px en escritorio. */
-  padding-block: clamp(2.5rem, 5vw, 3.75rem);
-}
+.section { padding-block: var(--section-y); }
+.section--tight { padding-block: calc(var(--section-y) * 0.62); }
 
+/* Franja: cambia el fondo de una sección sin dibujar bordes. */
+.band   { background: var(--color-band); }
+.band-2 { background: var(--color-band-2); }
+
+/* Antetítulo verde en versalitas. Sobre fondo oscuro pasa a ámbar
+   con .eyebrow--on-dark. */
 .eyebrow {
+  display: block;
   font-family: var(--font-body);
   font-weight: var(--fw-semibold);
   font-size: var(--fs-xs);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--color-primary);
 }
+/* Ambar sobre grafito: 11:1. */
+.eyebrow--on-dark { color: var(--color-accent); }
+/* Sobre los paneles VERDES el ambar solo da 3.5:1 (falla AA a 12 px),
+   asi que ahi el antetitulo va en blanco. */
+.eyebrow--on-green { color: rgba(255, 255, 255, 0.94); }
 
-/* ============================================
-   DOSIS PUNTUALES DEL VERDE DEL LOGO
-   El #36B729 es demasiado luminoso para texto o superficies grandes
-   (ver tokens.css). Aqui se usa solo donde es un detalle grafico:
-   la seleccion de texto y el anillo de foco.
-   ============================================ */
+/* ---------- BOTONES ----------
+   Sistema único para toda la web. Se usa desde <Button /> y también
+   directamente donde hace falta un <button> nativo (formulario).
+   Alto mínimo 46px: objetivo táctil cómodo en celular. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 46px;
+  padding: 0.75rem 1.5rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  transition: background var(--t), color var(--t), border-color var(--t),
+              box-shadow var(--t), transform var(--t-fast);
+}
+.btn svg { flex: none; }
+
+/* Retroalimentación al pulsar: el botón cede un poco. */
+.btn:active { transform: translateY(1px) scale(0.995); }
+
+.btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.btn--primary:hover {
+  background: var(--color-primary-deep);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.btn--accent {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  box-shadow: var(--shadow-sm);
+}
+.btn--accent:hover {
+  background: var(--color-accent-deep);
+  color: #fff;
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-line-2);
+}
+.btn--outline:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-deep);
+  background: var(--color-primary-tint);
+  transform: translateY(-2px);
+}
+
+/* Variantes para fondos oscuros */
+.btn--light {
+  background: #fff;
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
+}
+.btn--light:hover { color: var(--color-primary-deep); transform: translateY(-2px); }
+
+.btn--ghost-light {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.42);
+}
+.btn--ghost-light:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.75);
+  transform: translateY(-2px);
+}
+
+.btn--lg { min-height: 54px; padding: 0.95rem 1.6rem; font-size: var(--fs-md); }
+.btn--sm { min-height: 40px; padding: 0.55rem 1.1rem; }
+.btn--block { display: flex; width: 100%; }
+
+/* Enlace-flecha: la flecha se adelanta al pasar el mouse. */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary);
+  transition: color var(--t), gap var(--t);
+}
+.arrow-link:hover { color: var(--color-primary-deep); gap: 0.65rem; }
+
+/* ---------- ACCESIBILIDAD ---------- */
+
+/* Salto al contenido: invisible hasta que se enfoca con el teclado. */
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -100px;
+  z-index: 999;
+  padding: 0.7rem 1.15rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-deep);
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  transition: top var(--t);
+}
+.skip-link:focus { top: var(--space-2); }
+
+/* Texto solo para lectores de pantalla. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* El verde literal del logo, en su dosis justa: selección y foco. */
 ::selection {
   background: var(--color-brand-green);
   color: #fff;
@@ -129,13 +283,37 @@ p { color: var(--color-muted); }
   border-radius: 4px;
 }
 
-/* Accesibilidad: respeta a quien prefiere menos movimiento */
+/* ---------- MICROINTERACCIONES: APARICIÓN AL HACER SCROLL ----------
+   El elemento entra con un desplazamiento mínimo. Solo se anima si el
+   script marcó la raíz con la clase js: sin JavaScript todo queda
+   visible desde el principio, nunca en blanco. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.js .reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+/* Escalonado para rejillas: cada hijo entra un pelín después. */
+.js .reveal[data-delay="1"] { transition-delay: 0.07s; }
+.js .reveal[data-delay="2"] { transition-delay: 0.14s; }
+.js .reveal[data-delay="3"] { transition-delay: 0.21s; }
+.js .reveal[data-delay="4"] { transition-delay: 0.28s; }
+.js .reveal[data-delay="5"] { transition-delay: 0.35s; }
+
+/* ---------- MENOS MOVIMIENTO ----------
+   Quien lo pide no ve animaciones ni desplazamientos suaves. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

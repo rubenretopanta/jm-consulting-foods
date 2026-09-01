@@ -1,78 +1,145 @@
 ---
-// Header.astro — navegación principal con menú hamburguesa (móvil)
+// Header.astro — cabecera fija: logo real, navegación y CTA de WhatsApp.
+//
+// EL LOGO NO SE TOCA: es el mismo /logo-jm.png de siempre (marca "J&M" +
+// emblema) más el texto "Consulting Foods" en su serif original. Solo cambian
+// el tamaño de render y el aire alrededor. Ver la nota del bloque .brand.
 import { SITE, waLink } from '../../data/site.ts';
 import { getCollection } from 'astro:content';
 import home from '../../data/home.json';
+import Icon from '../ui/Icon.astro';
 
-// Los enlaces "Clientes" y "Capacitaciones" solo se muestran si su sección
-// tiene contenido, igual que la sección: así nunca queda un enlace que no
-// lleve a nada. El orden del menú sigue el orden de la página.
+// Los enlaces "Clientes", "Capacitaciones" y "Blog" solo se muestran si su
+// sección tiene contenido: así nunca queda un enlace que no lleve a nada.
+// El orden del menú sigue el orden de la página.
 const hayClientes = (await getCollection('clientes', ({ data }) => !data.draft)).length > 0;
 const hayCapacitaciones = (home.capacitaciones?.fotos ?? []).some((f) => f.imagen);
+const hayBlog = (await getCollection('blog', ({ data }) => !data.draft)).length > 0;
 
 const navLinks = [
-  { label: 'Proceso', href: '/#proceso' },
-  { label: 'Servicios', href: '/#servicios' },
-  { label: 'Nosotros', href: '/#nosotros' },
-  { label: 'Sectores', href: '/#sectores' },
-  ...(hayCapacitaciones ? [{ label: 'Capacitaciones', href: '/#capacitaciones' }] : []),
-  ...(hayClientes ? [{ label: 'Clientes', href: '/#clientes' }] : []),
-  { label: 'Blog', href: '/blog/' },
-  { label: 'Contacto', href: '/#contacto' },
+  { label: 'Inicio', href: '/#inicio', id: 'inicio' },
+  { label: 'Proceso', href: '/#proceso', id: 'proceso' },
+  { label: 'Servicios', href: '/#servicios', id: 'servicios' },
+  { label: 'Sectores', href: '/#sectores', id: 'sectores' },
+  { label: 'Nosotros', href: '/#nosotros', id: 'nosotros' },
+  ...(hayCapacitaciones ? [{ label: 'Capacitaciones', href: '/#capacitaciones', id: 'capacitaciones' }] : []),
+  ...(hayClientes ? [{ label: 'Clientes', href: '/#clientes', id: 'clientes' }] : []),
+  ...(hayBlog ? [{ label: 'Blog', href: '/blog/', id: '' }] : []),
+  { label: 'Contacto', href: '/#contacto', id: 'contacto' },
 ];
+
+const wa = waLink('Hola J&M, quiero solicitar una asesoría.');
 ---
 
-<header class="header">
+<header class="header" id="siteHeader" data-header>
   <div class="container nav">
-   <a href="/#inicio" class="brand" aria-label={SITE.name}>
+    <!-- ── LOGO REAL ──────────────────────────────────────────────
+         La marca (J&M + emblema) va como imagen y "Consulting Foods"
+         como texto: a este tamaño un mapa de bits de esa frase sale
+         borroso. No fusionar las dos piezas. -->
+    <a href="/#inicio" class="brand" aria-label={`${SITE.name} — ir al inicio`}>
       <img src="/logo-jm.png" alt="" class="brand-mark" width="333" height="138" />
       <span class="brand-word">Consulting Foods</span>
     </a>
 
-    <!-- checkbox que controla el menú (funciona sin JS) -->
-
-    <nav class="nav-links" id="navlinks">
-      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-      <a href={waLink('Hola J&M, quiero información.')} class="btn btn-primary menu-cta">Escríbenos</a>
+    <nav class="nav-desktop" aria-label="Navegación principal">
+      {navLinks.map((link) => (
+        <a href={link.href} data-nav-link data-section={link.id}>{link.label}</a>
+      ))}
     </nav>
 
-    <div class="nav-cta">
-      <a href={waLink('Hola J&M, quiero información.')} class="btn btn-primary desktop-cta">Escríbenos</a>
-     <button type="button" id="menuBtn" class="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+    <div class="nav-actions">
+      <a href={wa} class="btn btn--primary btn--sm desktop-cta" target="_blank" rel="noopener noreferrer">
+        <Icon name="whatsapp" size={17} />
+        <span>Solicitar asesoría</span>
+      </a>
+
+      <button
+        type="button"
+        id="menuBtn"
+        class="menu-btn"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
         <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </header>
 
+<!-- Panel de navegación en celular. Vive fuera de <header> para poder cubrir
+     la pantalla completa sin heredar el fondo translúcido de la cabecera. -->
+<div class="menu-backdrop" data-backdrop hidden></div>
+
+<nav class="menu" id="mobileMenu" aria-label="Navegación móvil" hidden>
+  <ul class="menu-list">
+    {navLinks.map((link) => (
+      <li>
+        <a href={link.href} data-menu-link>
+          <span>{link.label}</span>
+          <Icon name="chevron-right" size={18} />
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <div class="menu-foot">
+    <a href={wa} class="btn btn--primary btn--block" target="_blank" rel="noopener noreferrer" data-menu-link>
+      <Icon name="whatsapp" size={18} />
+      <span>Solicitar asesoría</span>
+    </a>
+    <a class="menu-contact" href={`tel:+51${SITE.phoneAlt}`}>
+      <Icon name="phone" size={16} />
+      <span>{SITE.phoneAltDisplay}</span>
+    </a>
+    <a class="menu-contact" href={`mailto:${SITE.email}`}>
+      <Icon name="mail" size={16} />
+      <span>{SITE.email}</span>
+    </a>
+  </div>
+</nav>
+
 <style>
+  /* ---------- CABECERA ---------- */
   .header {
     position: sticky;
     top: 0;
-    z-index: 50;
-    background: color-mix(in srgb, var(--color-bg) 82%, transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--color-line);
+    z-index: 70;
+    background: color-mix(in srgb, #fff 88%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--t), box-shadow var(--t), background var(--t);
   }
+  /* Al bajar, la cabecera se separa del contenido con una línea y una sombra
+     mínima. Arriba del todo va limpia, sin marco. */
+  .header.is-scrolled {
+    background: color-mix(in srgb, #fff 94%, transparent);
+    border-bottom-color: var(--color-line);
+    box-shadow: 0 10px 30px -26px rgba(18, 24, 28, 0.5);
+  }
+
   .nav {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: var(--space-2);
     height: var(--header-h);
   }
+
+  /* ---------- LOGO ----------
+     Solo tamaño y posición. Colores, formas y proporciones intactos. */
   .brand {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex: none;
     gap: 3px;
+    margin-right: auto;
   }
-  /* La marca (J&M + emblema) va como imagen; "Consulting Foods" va como texto
-     real, porque a este tamano un mapa de bits se ve borroso. */
   .brand-mark {
     display: block;
-    height: 46px;
+    height: 44px;
     width: auto;
   }
   .brand-word {
@@ -84,121 +151,248 @@ const navLinks = [
     white-space: nowrap;
     color: #0F0F0F;
   }
-  .nav-links {
+
+  /* ---------- NAVEGACIÓN EN ESCRITORIO ---------- */
+  .nav-desktop {
     display: flex;
-    gap: clamp(0.85rem, 1.8vw, 2rem);
     align-items: center;
-    /* El menu arranca junto al logo; el boton de WhatsApp se queda a la derecha.
-       Los huecos se encogen en pantallas medianas para que la fila entre. */
-    margin-inline: clamp(1rem, 2vw, 2rem) auto;
+    gap: clamp(0.6rem, 1.5vw, 1.5rem);
   }
-  .nav-links a {
+  .nav-desktop a {
+    position: relative;
     white-space: nowrap;
+    padding-block: 0.4rem;
     font-size: var(--fs-sm);
     font-weight: var(--fw-medium);
     color: var(--color-muted);
-    transition: color var(--transition);
+    transition: color var(--t);
   }
-  .nav-links a:hover { color: var(--color-primary); }
-  /* margin-left: garantiza aire entre el último enlace y el botón cuando
-     el menú se aprieta al máximo (alrededor de los 925 px). */
-  .nav-cta { display: flex; align-items: center; gap: var(--space-2); margin-left: var(--space-2); }
+  /* Subrayado que crece desde el centro. También marca la sección en la que
+     está el visitante mientras hace scroll. */
+  .nav-desktop a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-brand-green);
+    transform: translateX(-50%);
+    transition: width var(--t);
+  }
+  .nav-desktop a:hover { color: var(--color-ink); }
+  .nav-desktop a:hover::after,
+  .nav-desktop a.is-active::after { width: 100%; }
+  .nav-desktop a.is-active { color: var(--color-ink); font-weight: var(--fw-semibold); }
 
-  .btn {
-    display: inline-flex;
+  .nav-actions {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-sm);
-    padding: 0.7rem 1.3rem;
-    border-radius: var(--radius-full);
-    transition: transform var(--transition), background var(--transition);
-  }
-  .btn-primary {
-    background: var(--color-accent);
-    color: var(--color-accent-ink);
-    box-shadow: var(--shadow-sm);
-  }
-  .btn-primary:hover {
-    background: var(--color-accent-deep);
-    color: #fff;
-    transform: translateY(-2px);
+    gap: var(--space-2);
+    flex: none;
+    margin-left: clamp(0.5rem, 1.5vw, 1.25rem);
   }
 
-  /* hamburguesa: oculto en desktop */
-  .nav-toggle { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-  .menu-btn { display: none; width: 44px; height: 44px; position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-  .menu-btn span {
-    position: absolute; left: 11px; right: 11px; height: 2.5px;
-    background: var(--color-primary-deep); border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.2s ease;
+  /* ---------- HAMBURGUESA ---------- */
+  .menu-btn {
+    display: none;
+    position: relative;
+    width: 46px;
+    height: 46px;
+    border-radius: var(--radius-sm);
+    -webkit-tap-highlight-color: transparent;
+    transition: background var(--t);
   }
-  .menu-btn span:nth-child(1) { top: 15px; }
-  .menu-btn span:nth-child(2) { top: 21px; }
-  .menu-btn span:nth-child(3) { top: 27px; }
+  .menu-btn:hover { background: var(--color-band); }
+  .menu-btn span {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-ink);
+    transition: transform var(--t), opacity var(--t-fast);
+  }
+  .menu-btn span:nth-child(1) { top: 16px; }
+  .menu-btn span:nth-child(2) { top: 22px; }
+  .menu-btn span:nth-child(3) { top: 28px; }
   .menu-btn.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
   .menu-btn.is-open span:nth-child(2) { opacity: 0; }
   .menu-btn.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-  .menu-cta { display: none; }
+  /* ---------- PANEL MÓVIL ---------- */
+  .menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 68;
+    background: rgba(18, 24, 28, 0.42);
+    opacity: 0;
+    transition: opacity var(--t);
+  }
+  .menu-backdrop.is-open { opacity: 1; }
+  .menu-backdrop[hidden] { display: none; }
 
-  /* ---------- MÓVIL ---------- */
-  @media (max-width: 920px) {
-    .brand-mark { height: 38px; }
-    .brand-word { font-size: 9.5px; }
-    .nav-links { display: none; margin-inline: 0; gap: var(--space-4); }
-    .menu-btn { display: block; }
+  .menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 69;
+    width: min(360px, 88vw);
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--header-h) + var(--space-3)) var(--space-3)
+             calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+    background: #fff;
+    box-shadow: -24px 0 60px -30px rgba(18, 24, 28, 0.5);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translateX(100%);
+    transition: transform var(--t-slow);
+  }
+  .menu.is-open { transform: none; }
+  .menu[hidden] { display: none; }
+
+  .menu-list { display: grid; }
+  .menu-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    /* 56px de alto: cómodo para el pulgar. */
+    min-height: 56px;
+    padding: 0.5rem 0.25rem;
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-line);
+    transition: color var(--t), padding-left var(--t);
+  }
+  .menu-list a :global(svg) { color: var(--color-faint); transition: color var(--t), transform var(--t); }
+  .menu-list a:hover,
+  .menu-list a:active { color: var(--color-primary-deep); padding-left: 0.6rem; }
+  .menu-list a:hover :global(svg) { color: var(--color-primary); transform: translateX(3px); }
+
+  .menu-foot { margin-top: var(--space-4); display: grid; gap: var(--space-2); }
+  .menu-contact {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 44px;
+    font-size: var(--fs-sm);
+    color: var(--color-muted);
+    overflow-wrap: anywhere;
+  }
+  .menu-contact :global(svg) { color: var(--color-primary); flex: none; }
+
+  /* ---------- CAMBIO A MENÚ MÓVIL ----------
+     A 1060px la fila de 9 enlaces + CTA deja de entrar con holgura:
+     antes de que se apriete, pasamos al panel. Cubre también tablets. */
+  @media (max-width: 1060px) {
+    .nav-desktop { display: none; }
     .desktop-cta { display: none; }
+    .menu-btn { display: block; }
+    .brand-mark { height: 36px; }
+    .brand-word { font-size: 9.5px; }
+  }
 
-    .nav-links.is-open {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: var(--header-h); left: 0; right: 0;
-      background: var(--color-bg);
-      padding: 14px 24px 24px;
-      border-bottom: 1px solid var(--color-line);
-      box-shadow: var(--shadow);
-      max-height: calc(100vh - var(--header-h));
-      overflow-y: auto;
-    }
-    .nav-links a:not(.menu-cta) {
-      padding: 0.95rem 0.25rem;
-      font-size: var(--fs-lg);
-      color: var(--color-primary-deep);
-      border-bottom: 1px solid var(--color-line);
-    }
-    .menu-cta {
-      display: inline-flex;
-      justify-content: center;
-      margin-top: 1rem;
-      color: var(--color-accent-ink);
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .menu { transition: none; }
+    .menu-backdrop { transition: none; }
   }
 </style>
 
 <script>
+  /* ---------- Cabecera al hacer scroll ---------- */
+  const header = document.querySelector('[data-header]');
+  if (header) {
+    const marcar = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+    marcar();
+    window.addEventListener('scroll', marcar, { passive: true });
+  }
+
+  /* ---------- Menú móvil ---------- */
   const btn = document.getElementById('menuBtn');
-  const nav = document.getElementById('navlinks');
+  const menu = document.getElementById('mobileMenu');
+  const backdrop = document.querySelector('[data-backdrop]');
 
-  function toggleMenu() {
-    const open = nav.classList.toggle('is-open');
-    btn.classList.toggle('is-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  function closeMenu() {
-    nav.classList.remove('is-open');
-    btn.classList.remove('is-open');
-    btn.setAttribute('aria-expanded', 'false');
-  }
+  if (btn && menu && backdrop) {
+    let abierto = false;
 
-  if (btn && nav) {
-    btn.addEventListener('click', toggleMenu);
-    nav.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
-    document.addEventListener('click', (e) => {
-      if (!nav.contains(e.target) && !btn.contains(e.target)) closeMenu();
+    const abrir = () => {
+      abierto = true;
+      menu.hidden = false;
+      backdrop.hidden = false;
+      // Un frame de margen para que el navegador registre el estado inicial
+      // y la transición se vea, en vez de aparecer de golpe.
+      requestAnimationFrame(() => {
+        menu.classList.add('is-open');
+        backdrop.classList.add('is-open');
+      });
+      btn.classList.add('is-open');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'Cerrar menú');
+      // Bloquea el scroll del fondo mientras el panel está abierto.
+      document.body.style.overflow = 'hidden';
+      menu.querySelector('a')?.focus();
+    };
+
+    const cerrar = ({ devolverFoco = false } = {}) => {
+      if (!abierto) return;
+      abierto = false;
+      menu.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Abrir menú');
+      document.body.style.overflow = '';
+      if (devolverFoco) btn.focus();
+      // Se ocultan al terminar la animación para que el panel no quede
+      // alcanzable con el tabulador mientras sale de pantalla.
+      window.setTimeout(() => {
+        if (!abierto) { menu.hidden = true; backdrop.hidden = true; }
+      }, 450);
+    };
+
+    btn.addEventListener('click', () => (abierto ? cerrar({ devolverFoco: true }) : abrir()));
+    backdrop.addEventListener('click', () => cerrar());
+    menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => cerrar()));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') cerrar({ devolverFoco: true });
     });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-    window.addEventListener('resize', () => { if (window.innerWidth > 920) closeMenu(); });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1060) cerrar();
+    });
+  }
+
+  /* ---------- Enlace activo según la sección visible ----------
+     Ayuda a saber dónde se está sin tener que mirar la barra de scroll. */
+  const enlaces = Array.from(document.querySelectorAll('[data-nav-link][data-section]'))
+    .filter((a) => a.dataset.section);
+  const secciones = enlaces
+    .map((a) => document.getElementById(a.dataset.section))
+    .filter(Boolean);
+
+  if (secciones.length && 'IntersectionObserver' in window) {
+    const visibles = new Set();
+    const pintar = () => {
+      // Gana la sección visible que esté más arriba en la página.
+      const activa = secciones.find((s) => visibles.has(s.id));
+      enlaces.forEach((a) => a.classList.toggle('is-active', !!activa && a.dataset.section === activa.id));
+    };
+    const io = new IntersectionObserver(
+      (entradas) => {
+        entradas.forEach((e) => {
+          if (e.isIntersecting) visibles.add(e.target.id);
+          else visibles.delete(e.target.id);
+        });
+        pintar();
+      },
+      // La franja activa es el tercio superior del área visible, por debajo
+      // de la cabecera.
+      { rootMargin: '-20% 0px -66% 0px', threshold: 0 }
+    );
+    secciones.forEach((s) => io.observe(s));
   }
 </script>

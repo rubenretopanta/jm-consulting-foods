@@ -85,12 +85,19 @@ collections:
           - label: "Portada (banner)"
             name: "hero"
             widget: "object"
-            hint: "Es lo primero que se ve al abrir el sitio: un banner ancho con el título encima y las fotos de fondo, que van cambiando solas."
+            hint: "Es lo primero que se ve al abrir el sitio: el mensaje principal a la izquierda y la foto a la derecha. Las fotos van cambiando solas."
             fields:
-              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string", hint: "Primera línea del título grande de la portada (en blanco)." }
-              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string", hint: "Segunda línea del título, que se muestra resaltada en amarillo." }
-              - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string", hint: "Texto del botón amarillo principal de la portada (abre WhatsApp)." }
+              - { label: "Título — línea 1", name: "tituloLinea1", widget: "string", hint: "Primera línea del título grande de la portada." }
+              - { label: "Título — parte destacada", name: "tituloDestacado", widget: "string", hint: "Segunda línea del título, que se muestra resaltada en verde." }
+              - { label: "Botón de WhatsApp", name: "botonWhatsapp", widget: "string", hint: "Texto del botón verde principal de la portada (abre WhatsApp)." }
               - { label: "Botón secundario", name: "botonServicios", widget: "string", hint: "Texto del botón secundario de la portada (lleva a la sección de servicios)." }
+              - label: "Puntos de confianza"
+                name: "puntos"
+                widget: "list"
+                required: false
+                hint: "Los tres apuntes cortos que aparecen debajo de los botones de la portada, cada uno con su icono. Máximo 3: si pones más, se repiten los iconos. Si borras todos, la fila desaparece."
+                fields:
+                  - { label: "Texto", name: "texto", widget: "string", hint: "Frase muy corta. Ej: Asesoría personalizada según tu rubro" }
               - label: "Fotos de la portada"
                 name: "fotos"
                 widget: "list"
@@ -98,6 +105,23 @@ collections:
                 fields:
                   - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de fondo del banner (se sube a Cloudinary)." }
                   - { label: "Descripción de la foto", name: "texto", widget: "string", required: false, hint: "Qué se ve en la foto. No se muestra en pantalla: sirve para los lectores de pantalla y para Google." }
+
+          - label: "Proceso"
+            name: "proceso"
+            widget: "object"
+            hint: "Sección «Cómo trabajamos», con los pasos numerados."
+            fields:
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Proceso." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
+              - label: "Pasos"
+                name: "pasos"
+                widget: "list"
+                hint: "Cada paso del proceso. Se muestran en fila, numerados. Puedes agregar, quitar o reordenar."
+                fields:
+                  - { label: "Número", name: "num", widget: "string", hint: "Número grande del paso (como texto). Ej: 01" }
+                  - { label: "Título", name: "titulo", widget: "string", hint: "Nombre corto del paso." }
+                  - { label: "Texto", name: "texto", widget: "text", hint: "Explicación breve del paso." }
 
           - label: "Encabezado de Servicios"
             name: "serviciosSeccion"
@@ -148,22 +172,17 @@ collections:
                   - { label: "Título", name: "titulo", widget: "string", hint: "Título corto del punto (en negrita)." }
                   - { label: "Texto", name: "texto", widget: "text", hint: "Explicación breve del punto." }
 
-          - label: "Proceso"
-            name: "proceso"
+          - label: "Llamada a la acción (mitad de la página)"
+            name: "ctaIntermedio"
             widget: "object"
-            hint: "Sección «Cómo trabajamos», con los pasos numerados."
+            required: false
+            hint: "El bloque con foto que aparece a mitad de la página. Invita a escribir por WhatsApp sin tener que bajar hasta el final."
             fields:
-              - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
-              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Proceso." }
-              - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
-              - label: "Pasos"
-                name: "pasos"
-                widget: "list"
-                hint: "Cada paso del proceso. Se muestran en fila, numerados. Puedes agregar, quitar o reordenar."
-                fields:
-                  - { label: "Número", name: "num", widget: "string", hint: "Número grande del paso (como texto). Ej: 01" }
-                  - { label: "Título", name: "titulo", widget: "string", hint: "Nombre corto del paso." }
-                  - { label: "Texto", name: "texto", widget: "text", hint: "Explicación breve del paso." }
+              - { label: "Antetítulo", name: "eyebrow", widget: "string", required: false, hint: "Texto pequeño en verde y mayúsculas, encima del título. Ej: ¿Necesitas orientación?" }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Título grande del bloque." }
+              - { label: "Subtítulo", name: "subtitulo", widget: "text", required: false, hint: "Frase corta de apoyo debajo del título." }
+              - { label: "Texto del botón", name: "boton", widget: "string", hint: "Texto del botón verde. Abre WhatsApp con el número de la empresa: no hace falta escribir ningún número aquí." }
+              - { label: "Foto", name: "imagen", widget: "image", required: false, hint: "Foto que acompaña al bloque, a la derecha (arriba en celular). Recomendado: horizontal y ancha. Si la dejas vacía, el bloque se muestra solo con el texto." }
 
           - label: "Sectores"
             name: "sectores"

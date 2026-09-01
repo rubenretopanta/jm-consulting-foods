@@ -1,28 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/sections/Hero.astro';
-import Process from '../components/sections/Process.astro';
+import TrustStrip from '../components/sections/TrustStrip.astro';
 import Services from '../components/sections/Services.astro';
+import Process from '../components/sections/Process.astro';
+import CtaBanner from '../components/sections/CtaBanner.astro';
 import Beneficios from '../components/sections/Beneficios.astro';
-import About from '../components/sections/About.astro';
 import Sectors from '../components/sections/Sectors.astro';
+import About from '../components/sections/About.astro';
 import Capacitaciones from '../components/sections/Capacitaciones.astro';
-import Clientes from '../components/sections/Clientes.astro';
 import Ferias from '../components/sections/Ferias.astro';
+import Clientes from '../components/sections/Clientes.astro';
 import Contact from '../components/sections/Contact.astro';
 ---
 
 <BaseLayout>
-  <main>
+  <main id="contenido">
+    <!-- El orden sigue el recorrido de una decisión: qué hacemos → por qué
+         fiarse → cómo trabajamos → qué ofrecemos → hablemos → para qué sirve
+         → a quién atendemos → quiénes somos → pruebas → contacto.
+         El proceso va antes que los servicios por decisión del cliente. -->
     <Hero />
+    <TrustStrip />
     <Process />
     <Services />
+    <CtaBanner />
     <Beneficios />
-    <About />
     <Sectors />
+    <About />
     <Capacitaciones />
-    <Clientes />
     <Ferias />
+    <Clientes />
     <Contact />
   </main>
 </BaseLayout>

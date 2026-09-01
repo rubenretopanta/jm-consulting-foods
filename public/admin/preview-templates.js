@@ -37,6 +37,9 @@
       // En el sitio las fotos van cambiando solas; aquí mostramos la primera.
       var heroFotos = items(e, ['hero', 'fotos']);
       var heroImg = heroFotos.length ? (heroFotos[0].get ? heroFotos[0].get('imagen') : '') : '';
+      var heroPuntos = items(e, ['hero', 'puntos']).map(function (p, i) {
+        return h('li', { key: i }, p.get ? p.get('texto') : p);
+      });
       var hero = el('section', 'pv-hero', [
         h('div', { key: 'txt', className: 'pv-hero-text' }, [
           el('p', 'pv-eyebrow', 'Consultoría para la industria alimentaria · Lima'),
@@ -49,7 +52,10 @@
           el('div', 'pv-btns', [
             h('span', { key: 'b1', className: 'pv-btn pv-btn-primary' }, val(e, ['hero', 'botonWhatsapp'])),
             h('span', { key: 'b2', className: 'pv-btn pv-btn-ghost' }, val(e, ['hero', 'botonServicios']))
-          ])
+          ]),
+          heroPuntos.length
+            ? h('ul', { key: 'pts', className: 'pv-proofs' }, heroPuntos)
+            : null
         ]),
         heroImg ? h('img', { key: 'img', className: 'pv-media', src: heroImg, alt: '' }) : null
       ]);
@@ -143,6 +149,18 @@
         h('div', { key: 'st', className: 'pv-steps' }, pasos)
       ]);
 
+      // --- CTA intermedio ---
+      var ctaImg = val(e, ['ctaIntermedio', 'imagen']);
+      var ctaIntermedio = el('section', 'pv-cta', [
+        el('div', 'pv-cta-text', [
+          el('p', 'pv-eyebrow', val(e, ['ctaIntermedio', 'eyebrow'])),
+          h('h2', { key: 't' }, val(e, ['ctaIntermedio', 'titulo'])),
+          h('p', { key: 's' }, val(e, ['ctaIntermedio', 'subtitulo'])),
+          h('span', { key: 'b', className: 'pv-btn pv-btn-primary' }, val(e, ['ctaIntermedio', 'boton']))
+        ]),
+        ctaImg ? h('img', { key: 'i', className: 'pv-cta-img', src: ctaImg, alt: '' }) : null
+      ]);
+
       // --- Sectores ---
       var sectores = items(e, ['sectores', 'lista']).map(function (s, i) {
         return el('div', 'pv-sector', [
@@ -199,7 +217,7 @@
         ])
       ]);
 
-      return el('div', 'pv', [hero, proceso, servicios, beneficios, nosotros, sectoresSec, capacitacionesSec, clientesSec, contacto]);
+      return el('div', 'pv', [hero, proceso, servicios, ctaIntermedio, beneficios, sectoresSec, nosotros, capacitacionesSec, clientesSec, contacto]);
     }
   });
 

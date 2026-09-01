@@ -1,58 +1,102 @@
 ---
+// Sectors.astro — los sectores que atiende J&M. La lista es exactamente la
+// que ya estaba en home.json: no se añade ni se quita ninguno.
 import home from '../../data/home.json';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Icon from '../ui/Icon.astro';
+
 const { sectores: sectoresData } = home;
 const sectores = sectoresData.lista;
+
+// El icono se elige por lo que dice el propio texto del sector, no por su
+// posición: así el cliente puede reordenar o renombrar desde el panel y cada
+// uno sigue llevando el icono que le toca. Si no reconoce ninguno, hoja.
+const REGLAS: Array<[RegExp, string]> = [
+  [/restaurant|servicio|comedor|cocina/i, 'utensils'],
+  [/panific|paster|panad/i, 'bread'],
+  [/agroindustr|agrícola|agricola|granos|andin/i, 'wheat'],
+  [/pesquer|pescad|marino|acuícola|acuicola/i, 'fish'],
+  [/bebida|agua|jugo|lácte|lacte/i, 'bottle'],
+  [/programa|social|qali|escolar|institucion/i, 'users'],
+];
+
+const iconoDe = (texto: string) => REGLAS.find(([re]) => re.test(texto))?.[1] ?? 'leaf';
 ---
 
 <section class="sectors section" id="sectores">
   <div class="container">
-    <header class="sec-head">
-      <p class="eyebrow">{sectoresData.eyebrow}</p>
-      <h2>{sectoresData.titulo}</h2>
-      <p class="sec-sub">{sectoresData.subtitulo}</p>
-    </header>
+    <SectionHeader
+      eyebrow={sectoresData.eyebrow}
+      title={sectoresData.titulo}
+      subtitle={sectoresData.subtitulo}
+      align="center"
+      class="reveal"
+    />
 
-    <div class="grid">
-      {sectores.map((sector) => (
-        <div class="sector">
-          <span class="dot"></span>
-          {sector}
-        </div>
+    <ul class="grid">
+      {sectores.map((sector, i) => (
+        <li class="sector reveal" data-delay={String(i % 3)}>
+          <span class="sector-ic"><Icon name={iconoDe(sector)} size={24} /></span>
+          <span class="sector-name">{sector}</span>
+        </li>
       ))}
-    </div>
+    </ul>
   </div>
 </section>
 
 <style>
-  .sec-head { max-width: 620px; margin-bottom: var(--space-4); }
-  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
-  .sec-sub { font-size: var(--fs-lg); }
-
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-2);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 1.8vw, 1.25rem);
   }
+
   .sector {
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-sm);
-    padding: var(--space-3);
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    font-weight: var(--fw-semibold);
-    color: var(--color-primary-deep);
-    transition: transform var(--transition), border-color var(--transition);
+    min-height: 88px;
+    padding: var(--space-3);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    transition: transform var(--t), box-shadow var(--t), border-color var(--t);
   }
-  .sector:hover { border-color: var(--color-accent); transform: translateX(4px); }
-  .dot {
-    flex: none;
-    width: 12px; height: 12px;
-    border-radius: var(--radius-full);
-    background: var(--color-primary);
+  .sector:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--color-line-2);
   }
 
-  @media (max-width: 920px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .sector-ic {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-deep);
+    transition: background var(--t), color var(--t);
+  }
+  .sector:hover .sector-ic { background: var(--color-primary); color: #fff; }
+
+  .sector-name {
+    font-size: var(--fs-md);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 960px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .sector { min-height: 74px; padding: var(--space-2) var(--space-3); }
+    .sector-ic { width: 42px; height: 42px; }
+    .sector-name { font-size: var(--fs-base); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sector:hover { transform: none; }
+  }
 </style>

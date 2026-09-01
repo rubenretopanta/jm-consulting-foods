@@ -1,0 +1,100 @@
+---
+/**
+ * WhatsAppDock.astro — barra fija inferior, SOLO en celular.
+ *
+ * Es el único botón flotante del sitio: en escritorio no existe (allí el CTA
+ * vive en la cabecera) y se esconde solo al llegar a la sección de contacto,
+ * para no repetir dos veces la misma acción ni tapar el formulario.
+ * Reserva su propio alto al final del <body> para no cubrir contenido y
+ * respeta la franja del gesto de inicio en iPhone (safe-area).
+ */
+import { waLink } from '../../data/site.ts';
+import Icon from './Icon.astro';
+
+const href = waLink('Hola J&M, quiero solicitar una asesoría.');
+---
+
+<div class="dock" id="waDock" data-wa-dock>
+  <a class="dock-btn" href={href} target="_blank" rel="noopener noreferrer">
+    <Icon name="whatsapp" size={22} />
+    <span class="dock-text">
+      <strong>WhatsApp</strong>
+      <small>Solicitar asesoría</small>
+    </span>
+    <Icon name="arrow-right" size={18} class="dock-arrow" />
+  </a>
+</div>
+
+<style>
+  /* En escritorio no se muestra: el CTA ya está fijo en la cabecera. */
+  .dock { display: none; }
+
+  @media (max-width: 860px) {
+    /* Hueco al final de la página para que la barra no tape el pie. */
+    :global(body) {
+      padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .dock {
+      display: block;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 60;
+      padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom, 0px));
+      background: color-mix(in srgb, #fff 86%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--color-line);
+      transition: transform var(--t-slow), opacity var(--t-slow);
+    }
+    /* Se aparta cuando el visitante ya está en la sección de contacto. */
+    .dock.is-hidden {
+      transform: translateY(120%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .dock-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      width: 100%;
+      min-height: 54px;
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: #fff;
+      box-shadow: var(--shadow);
+      transition: background var(--t);
+    }
+    .dock-btn:active { background: var(--color-primary-deep); }
+
+    .dock-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      margin-right: auto;
+      min-width: 0;
+    }
+    .dock-text strong { color: #fff; font-size: var(--fs-sm); font-weight: var(--fw-bold); }
+        /* 0.88: por debajo de eso, 12 px sobre el verde no llega a 4.5:1. */
+    .dock-text small { font-size: var(--fs-xs); color: rgba(255, 255, 255, 0.88); }
+    .dock-btn :global(.dock-arrow) { opacity: 0.85; }
+  }
+</style>
+
+<script>
+  // Esconde la barra mientras la sección de contacto está a la vista: allí el
+  // formulario ya ofrece la misma acción y la barra solo taparía campos.
+  const dock = document.querySelector('[data-wa-dock]');
+  const contacto = document.getElementById('contacto');
+
+  if (dock && contacto && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      ([entry]) => dock.classList.toggle('is-hidden', entry.isIntersecting),
+      { threshold: 0.12 }
+    ).observe(contacto);
+  }
+</script>

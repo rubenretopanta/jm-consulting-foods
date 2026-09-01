@@ -1,68 +1,152 @@
 ---
+// Process.astro — las cuatro etapas del trabajo, como una línea de tiempo.
+// Horizontal en escritorio, vertical en celular, con la conexión visible
+// entre pasos para que se lea como un camino y no como cuatro cajas sueltas.
 import home from '../../data/home.json';
+import SectionHeader from '../ui/SectionHeader.astro';
+import Icon from '../ui/Icon.astro';
+
 const { proceso } = home;
 const pasos = proceso.pasos;
+
+// Un icono por etapa, en el orden en que están definidas.
+const ICONOS = ['search', 'settings', 'badge-check', 'refresh'];
 ---
 
 <section class="process section" id="proceso">
   <div class="container">
-    <header class="sec-head">
-      <p class="eyebrow">{proceso.eyebrow}</p>
-      <h2>{proceso.titulo}</h2>
-      <p class="sec-sub">{proceso.subtitulo}</p>
-    </header>
+    <SectionHeader
+      eyebrow={proceso.eyebrow}
+      title={proceso.titulo}
+      subtitle={proceso.subtitulo}
+      align="center"
+      class="reveal"
+    />
 
-    <div class="steps">
-      {pasos.map((paso) => (
-        <article class="step">
-          <span class="num">{paso.num}</span>
+    <ol class="steps">
+      {pasos.map((paso, i) => (
+        <li class="step reveal" data-delay={String(Math.min(i, 5))}>
+          <div class="step-mark">
+            <span class="step-ic"><Icon name={ICONOS[i % ICONOS.length]} size={24} /></span>
+            <span class="step-num">{paso.num}</span>
+          </div>
           <h3>{paso.titulo}</h3>
           <p>{paso.texto}</p>
-        </article>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>
 
 <style>
-  .sec-head { max-width: 620px; margin-bottom: var(--space-4); text-align: center; margin-inline: auto; }
-  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
-  .sec-sub { font-size: var(--fs-lg); }
-
   .steps {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
   }
-  .step { position: relative; padding-top: var(--space-2); }
-  .num {
-    font-family: var(--font-display);
-    font-weight: var(--fw-bold);
-    font-size: var(--fs-3xl);
-    color: var(--color-primary);
-    opacity: 0.4;
-    line-height: 1;
-  }
-  .step h3 { font-size: var(--fs-lg); margin-block: var(--space-1) 0.4rem; color: var(--color-primary-deep); }
-  .step p { font-size: var(--fs-sm); }
 
-  /* línea punteada entre pasos */
-  .step::before {
+  /* La línea que une los pasos. Va por detrás de los círculos, a su misma
+     altura, y arranca y termina en el centro del primero y del último
+     (por eso los márgenes de 1/8 del ancho: media columna a cada lado). */
+  .steps::before {
     content: '';
     position: absolute;
-    top: 26px;
-    left: 70px;
-    right: -12px;
+    top: 31px;
+    left: calc(100% / 8);
+    right: calc(100% / 8);
     height: 2px;
-    background: repeating-linear-gradient(90deg, var(--color-line) 0 8px, transparent 8px 14px);
+    background: linear-gradient(
+      to right,
+      var(--color-line-2),
+      var(--color-primary-soft) 50%,
+      var(--color-line-2)
+    );
+    z-index: 0;
   }
-  .step:last-child::before { display: none; }
 
-  @media (max-width: 920px) {
-    .steps { grid-template-columns: repeat(2, 1fr); gap: var(--space-4); }
-    .step::before { display: none; }
+  .step { position: relative; z-index: 1; }
+
+  .step-mark { position: relative; width: 62px; margin-bottom: var(--space-3); }
+  .step-ic {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border-radius: var(--radius-full);
+    background: #fff;
+    color: var(--color-primary-deep);
+    border: 1.5px solid var(--color-line);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--t), color var(--t), transform var(--t);
   }
-  @media (max-width: 560px) {
-    .steps { grid-template-columns: 1fr; }
+  .step:hover .step-ic {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-3px);
+  }
+
+  /* El número, en verde de marca, montado sobre el círculo. */
+  .step-num {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    display: grid;
+    place-items: center;
+    min-width: 30px;
+    height: 26px;
+    padding-inline: 7px;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: #fff;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    box-shadow: var(--shadow-xs);
+  }
+
+  .step h3 { font-size: var(--fs-md); margin-bottom: 0.4rem; }
+  .step p { font-size: var(--fs-sm); line-height: 1.55; max-width: 26ch; }
+
+  /* ---------- TABLET: dos filas de dos ---------- */
+  @media (max-width: 960px) {
+    .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-3); }
+    /* La línea horizontal ya no une nada coherente con dos filas. */
+    .steps::before { display: none; }
+    .step p { max-width: none; }
+  }
+
+  /* ---------- CELULAR: línea de tiempo vertical ---------- */
+  @media (max-width: 600px) {
+    .steps { grid-template-columns: 1fr; gap: 0; }
+    .step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      column-gap: var(--space-3);
+      padding-bottom: var(--space-4);
+    }
+    .step:last-child { padding-bottom: 0; }
+    /* Tramo vertical que baja de un paso al siguiente. */
+    .step::before {
+      content: '';
+      position: absolute;
+      left: 25px;
+      top: 58px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--color-line-2);
+    }
+    .step:last-child::before { display: none; }
+
+    .step-mark { grid-row: 1 / span 2; width: 52px; margin-bottom: 0; }
+    .step-ic { width: 52px; height: 52px; }
+    .step-num { min-width: 26px; height: 22px; top: -4px; right: -6px; }
+    .step h3 { align-self: center; margin-bottom: 0.3rem; }
+    .step p { grid-column: 2; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step:hover .step-ic { transform: none; }
   }
 </style>

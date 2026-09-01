@@ -1,131 +1,365 @@
 ---
+// Contact.astro — datos de contacto y formulario.
+//
+// La lógica es la misma de siempre: el formulario no envía nada a ningún
+// servidor, compone un mensaje y abre WhatsApp con él ya escrito. Lo que
+// cambia es la forma: <form> real (funciona con Enter), etiquetas visibles,
+// validación del nombre y estados de foco, error, envío y éxito.
 import { SITE, waLink } from '../../data/site.ts';
 import home from '../../data/home.json';
+import Icon from '../ui/Icon.astro';
+
 const { contacto } = home;
+
+const datos = [
+  {
+    icon: 'whatsapp',
+    label: 'WhatsApp',
+    value: SITE.whatsappDisplay,
+    href: waLink('Hola J&M, quiero información.'),
+    external: true,
+  },
+  ...(SITE.phoneAlt
+    ? [{ icon: 'phone', label: 'Teléfono', value: SITE.phoneAltDisplay, href: `tel:+51${SITE.phoneAlt}` }]
+    : []),
+  { icon: 'mail', label: 'Correo', value: SITE.email, href: `mailto:${SITE.email}` },
+  { icon: 'map-pin', label: 'Ubicación', value: SITE.address },
+  { icon: 'id-card', label: `RUC ${SITE.ruc}`, value: SITE.legalName },
+];
 ---
 
 <section class="contact-wrap section" id="contacto">
   <div class="container">
-   <div class="contact">
-    <header class="sec-head">
-      <p class="eyebrow accent">{contacto.eyebrow}</p>
-      <h2>{contacto.titulo}</h2>
-      <p class="sec-sub">{contacto.subtitulo}</p>
-    </header>
-
-    <div class="grid">
+    <div class="contact reveal">
+      <!-- ── Datos ── -->
       <div class="info">
-        <a class="info-item" href={waLink('Hola J&M, quiero información.')}>
-          <span class="ic">WA</span>
-          <span><small>WhatsApp</small>{SITE.whatsappDisplay}</span>
-        </a>
-        {SITE.phoneAlt && (
-          <a class="info-item" href={`tel:+51${SITE.phoneAlt}`}>
-            <span class="ic">TEL</span>
-            <span><small>Teléfono</small>{SITE.phoneAltDisplay}</span>
-          </a>
-        )}
-        <a class="info-item" href={`mailto:${SITE.email}`}>
-          <span class="ic">@</span>
-          <span><small>Correo</small>{SITE.email}</span>
-        </a>
-        <div class="info-item">
-          <span class="ic">◉</span>
-          <span><small>Ubicación</small>{SITE.city}</span>
-        </div>
-        <div class="info-item">
-          <span class="ic">RUC</span>
-          <span><small>Empresa</small>{SITE.legalName}</span>
-        </div>
+        <p class="eyebrow eyebrow--on-green">{contacto.eyebrow}</p>
+        <h2>{contacto.titulo}</h2>
+        <p class="info-sub">{contacto.subtitulo}</p>
+
+        <ul class="info-list">
+          {datos.map((d) => {
+            const Tag = d.href ? 'a' : 'div';
+            const props = d.href
+              ? { href: d.href, ...(d.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) }
+              : {};
+            return (
+              <li>
+                <Tag class="info-item" {...props}>
+                  <span class="ic"><Icon name={d.icon} size={19} /></span>
+                  <span class="info-text">
+                    <small>{d.label}</small>
+                    <span class="info-value">{d.value}</span>
+                  </span>
+                </Tag>
+              </li>
+            );
+          })}
+        </ul>
+
+        <ul class="socials">
+          {SITE.social.facebook && (
+            <li><a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><Icon name="facebook" size={18} /></a></li>
+          )}
+          {SITE.social.instagram && (
+            <li><a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Icon name="instagram" size={18} /></a></li>
+          )}
+          {SITE.social.linkedin && (
+            <li><a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><Icon name="linkedin" size={18} /></a></li>
+          )}
+        </ul>
       </div>
 
-      <div class="form">
-        <label>Nombre<input type="text" id="f-nombre" placeholder="Tu nombre" /></label>
-        <label>Empresa<input type="text" id="f-empresa" placeholder="Nombre de tu negocio" /></label>
-        <label>¿Qué necesitas?
-          <select id="f-servicio">
-            {contacto.opcionesServicio.map((op) => <option>{op}</option>)}
-          </select>
-        </label>
-        <label>Mensaje<textarea id="f-mensaje" placeholder="Cuéntanos brevemente sobre tu negocio..."></textarea></label>
-        <button id="f-enviar" class="btn-send">Enviar por WhatsApp</button>
-        <p class="form-note">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+      <!-- ── Formulario ── -->
+      <div class="form-card">
+        <form class="form" id="waForm" novalidate>
+          <div class="field">
+            <label for="f-nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
+            <input
+              type="text"
+              id="f-nombre"
+              name="nombre"
+              placeholder="Tu nombre"
+              autocomplete="name"
+              required
+              aria-describedby="f-nombre-error"
+            />
+            <p class="error" id="f-nombre-error" hidden>Escribe tu nombre para poder saludarte.</p>
+          </div>
+
+          <div class="field">
+            <label for="f-empresa">Empresa <span class="opt">(opcional)</span></label>
+            <input
+              type="text"
+              id="f-empresa"
+              name="empresa"
+              placeholder="Nombre de tu negocio"
+              autocomplete="organization"
+            />
+          </div>
+
+          <div class="field">
+            <label for="f-servicio">¿Qué necesitas?</label>
+            <div class="select-wrap">
+              <select id="f-servicio" name="servicio">
+                {contacto.opcionesServicio.map((op) => <option>{op}</option>)}
+              </select>
+              <Icon name="chevron-down" size={17} class="select-chevron" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-mensaje">Mensaje <span class="opt">(opcional)</span></label>
+            <textarea
+              id="f-mensaje"
+              name="mensaje"
+              rows="3"
+              placeholder="Cuéntanos brevemente sobre tu negocio..."
+            ></textarea>
+          </div>
+
+          <button type="submit" id="f-enviar" class="btn btn--primary btn--block btn--lg">
+            <Icon name="whatsapp" size={18} />
+            <span class="btn-label">Enviar por WhatsApp</span>
+          </button>
+
+          <p class="form-note" id="f-nota">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+        </form>
       </div>
     </div>
-   </div>
   </div>
 </section>
 
 <style>
-  /* El verde es un panel del ancho de la página, no una franja de borde a
-     borde de la ventana: igual que el banner de la portada. */
+  /* El panel va DENTRO del contenedor, no de borde a borde de la ventana. */
   .contact {
-    background: linear-gradient(160deg, var(--color-primary-surface), var(--color-primary));
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: start;
+    padding: clamp(1.75rem, 4vw, 3.5rem);
+    border-radius: var(--radius-xl);
+    background: linear-gradient(155deg, var(--color-primary-surface), var(--color-primary));
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* ---------- Datos ---------- */
+  .info h2 { color: #fff; margin-block: 0.6rem 0; max-width: 16ch; }
+  .info-sub {
+    margin-top: var(--space-2);
+    font-size: var(--fs-lg);
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 32ch;
+  }
+
+  .info-list { display: grid; gap: 0.35rem; margin-top: clamp(1.75rem, 3vw, 2.5rem); }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-height: 52px;
+    padding: 0.4rem;
+    margin-inline: -0.4rem;
+    border-radius: var(--radius-sm);
     color: #fff;
+    transition: background var(--t);
+  }
+  a.info-item:hover { background: rgba(255, 255, 255, 0.11); }
+  .ic {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+  }
+  .info-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.3; }
+  .info-text small {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    /* 0.85 y no menos: por debajo, este texto de 12 px sobre el verde baja
+       de 4.5:1. */
+    color: rgba(255, 255, 255, 0.85);
+  }
+  /* overflow-wrap: el correo es largo y sin esto empuja la columna. */
+  .info-value { font-size: var(--fs-sm); font-weight: var(--fw-semibold); overflow-wrap: anywhere; }
+
+  .socials { display: flex; gap: 0.5rem; margin-top: var(--space-3); }
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    transition: background var(--t), color var(--t), transform var(--t);
+  }
+  .socials a:hover {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    transform: translateY(-2px);
+  }
+
+  /* ---------- Formulario ---------- */
+  .form-card {
+    background: #fff;
     border-radius: var(--radius-lg);
-    padding: clamp(1.5rem, 4vw, 3.5rem);
+    padding: clamp(1.25rem, 2.5vw, 2rem);
     box-shadow: var(--shadow);
   }
-  .sec-head { max-width: 620px; margin-bottom: var(--space-4); }
-  .sec-head h2 { color: #fff; margin-block: var(--space-1) var(--space-2); }
-  .sec-sub { color: #fff; font-size: var(--fs-lg); }
-  .eyebrow.accent { color: var(--color-accent); }
+  .form { display: grid; gap: var(--space-2); }
+  .field { display: grid; gap: 0.4rem; min-width: 0; }
 
-  .grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: var(--space-5); align-items: start; }
-  /* Sin esto las columnas no se dejan encoger por debajo del ancho natural de
-     su contenido (el <select> mide lo que su opción más larga, el correo no
-     parte) y la tarjeta se sale del panel por la derecha. */
-  .grid > * { min-width: 0; }
-
-  .info { display: grid; gap: var(--space-3); }
-  .info-item { display: flex; gap: var(--space-2); align-items: center; color: #fff; }
-  .info-item .ic {
-    flex: none; width: 44px; height: 44px;
-    border-radius: var(--radius-sm);
-    background: rgba(255,255,255,0.12);
-    display: grid; place-items: center;
-    font-size: var(--fs-xs); font-weight: var(--fw-bold);
+  .field label {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
   }
-  .info-item small { display: block; color: #fff; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.1em; }
-  .info-item span span, .info-item > span { font-weight: var(--fw-semibold); min-width: 0; overflow-wrap: anywhere; }
+  .req { color: var(--color-primary); }
+  .opt { font-weight: var(--fw-regular); color: var(--color-faint); }
 
-  .form { background: #fff; border-radius: var(--radius-lg); padding: var(--space-4); box-shadow: var(--shadow); display: grid; gap: var(--space-2); }
-  .form label { display: grid; gap: 6px; min-width: 0; font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--color-primary-deep); }
-  .form input, .form select, .form textarea {
-    /* width + min-width: los campos se adaptan a la tarjeta en vez de imponer
-       su ancho natural. */
+  .field input,
+  .field select,
+  .field textarea {
     width: 100%;
     min-width: 0;
-    padding: 0.8rem 1rem; border: 1.5px solid var(--color-line);
-    border-radius: var(--radius-sm); background: var(--color-bg);
-    color: var(--color-ink); font-size: var(--fs-sm);
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--color-line);
+    border-radius: var(--radius-sm);
+    background: var(--color-band);
+    color: var(--color-ink);
+    font-size: var(--fs-sm);
+    transition: border-color var(--t), background var(--t), box-shadow var(--t);
   }
-  .form input:focus, .form select:focus, .form textarea:focus { outline: none; border-color: var(--color-primary); }
-  .form textarea { resize: vertical; min-height: 90px; }
-  .btn-send {
-    background: var(--color-accent); color: var(--color-accent-ink);
-    font-weight: var(--fw-semibold); padding: 0.9rem; border-radius: var(--radius-full);
-    box-shadow: var(--shadow-sm); transition: background var(--transition), transform var(--transition);
-  }
-  .btn-send:hover { background: var(--color-accent-deep); color: #fff; transform: translateY(-2px); }
-  .form-note { font-size: var(--fs-xs); color: var(--color-muted); text-align: center; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--color-faint); }
 
-  @media (max-width: 920px) { .grid { grid-template-columns: 1fr; gap: var(--space-4); } }
+  /* Foco visible y con relieve: se ve dónde está el cursor sin ambigüedad. */
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+  }
+  .field textarea { resize: vertical; min-height: 92px; }
+
+  /* Estado de error */
+  .field.has-error input {
+    border-color: var(--color-error);
+    background: var(--color-error-soft);
+  }
+  .field.has-error input:focus {
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+  }
+  .error { font-size: var(--fs-xs); color: var(--color-error); font-weight: var(--fw-medium); }
+  .error[hidden] { display: none; }
+
+  /* El <select> nativo con su flecha propia queda desalineado en cada
+     navegador: se oculta y se dibuja una sola, siempre igual. */
+  .select-wrap { position: relative; display: grid; }
+  .select-wrap select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2.6rem;
+  }
+  /* :global(): el <svg> lo dibuja <Icon /> y no lleva el atributo de ambito
+     de este componente. Cuelga de .select-wrap, que si lo lleva. */
+  .select-wrap :global(.select-chevron) {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-muted);
+    pointer-events: none;
+  }
+
+  .form :global(#f-enviar) { margin-top: var(--space-1); }
+  /* Mientras se abre WhatsApp el botón queda inerte, para que nadie lo pulse
+     tres veces creyendo que no pasó nada. */
+  .form :global(#f-enviar.is-busy) { opacity: 0.75; pointer-events: none; }
+
+  .form-note {
+    font-size: var(--fs-xs);
+    color: var(--color-muted);
+    text-align: center;
+    transition: color var(--t);
+  }
+  .form-note.is-ok {
+    color: var(--color-primary-deep);
+    font-weight: var(--fw-semibold);
+  }
+
+  @media (max-width: 960px) {
+    .contact { grid-template-columns: 1fr; gap: var(--space-4); }
+    .info h2, .info-sub { max-width: none; }
+  }
 </style>
 
 <script define:vars={{ phone: SITE.whatsapp }}>
+  // Mismo comportamiento de siempre: componer el mensaje y abrir WhatsApp.
+  // Ahora cuelga del submit del formulario, así que también funciona con Enter.
+  const form = document.getElementById('waForm');
   const btn = document.getElementById('f-enviar');
-  btn?.addEventListener('click', () => {
-    const n = document.getElementById('f-nombre').value.trim();
-    const e = document.getElementById('f-empresa').value.trim();
-    const s = document.getElementById('f-servicio').value;
-    const m = document.getElementById('f-mensaje').value.trim();
-    let txt = `Hola J&M Consulting Foods, soy ${n || '[nombre]'}`;
-    if (e) txt += ` de ${e}`;
-    txt += `. Me interesa: ${s}.`;
-    if (m) txt += ` ${m}`;
+  const nota = document.getElementById('f-nota');
+  const nombre = document.getElementById('f-nombre');
+  const errorNombre = document.getElementById('f-nombre-error');
+
+  const marcarError = (hay) => {
+    nombre.closest('.field').classList.toggle('has-error', hay);
+    errorNombre.hidden = !hay;
+    nombre.setAttribute('aria-invalid', hay ? 'true' : 'false');
+  };
+
+  // El error desaparece en cuanto se empieza a escribir: no tiene sentido
+  // seguir regañando a alguien que ya lo está arreglando.
+  nombre?.addEventListener('input', () => {
+    if (nombre.value.trim()) marcarError(false);
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const n = nombre.value.trim();
+    if (!n) {
+      marcarError(true);
+      nombre.focus();
+      return;
+    }
+    marcarError(false);
+
+    const empresa = document.getElementById('f-empresa').value.trim();
+    const servicio = document.getElementById('f-servicio').value;
+    const mensaje = document.getElementById('f-mensaje').value.trim();
+
+    let txt = `Hola J&M Consulting Foods, soy ${n}`;
+    if (empresa) txt += ` de ${empresa}`;
+    txt += `. Me interesa: ${servicio}.`;
+    if (mensaje) txt += ` ${mensaje}`;
+
     const wa = `https://wa.me/${phone}?text=${encodeURIComponent(txt)}`;
+
+    // Estado de envío
+    const etiqueta = btn.querySelector('.btn-label');
+    const original = etiqueta.textContent;
+    btn.classList.add('is-busy');
+    etiqueta.textContent = 'Abriendo WhatsApp…';
+
     const isMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
-    if (isMobile) { window.location.href = wa; } else { window.open(wa, '_blank'); }
+    if (isMobile) window.location.href = wa;
+    else window.open(wa, '_blank', 'noopener');
+
+    // Confirmación: la página sigue aquí, así que hay que decir qué pasó.
+    window.setTimeout(() => {
+      btn.classList.remove('is-busy');
+      etiqueta.textContent = original;
+      nota.textContent = 'Listo: revisa la ventana de WhatsApp con tu mensaje ya escrito.';
+      nota.classList.add('is-ok');
+    }, 1200);
   });
 </script>

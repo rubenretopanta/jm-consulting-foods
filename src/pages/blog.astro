@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import Icon from '../components/ui/Icon.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -11,26 +13,32 @@ const fmt = (d) =>
 ---
 
 <BaseLayout title="Blog">
-  <main class="section">
+  <main id="contenido" class="section">
     <div class="container">
-      <header class="sec-head">
-        <p class="eyebrow">Recursos</p>
-        <h1>Blog</h1>
-        <p class="sec-sub">Guías prácticas sobre inocuidad alimentaria y cumplimiento normativo.</p>
-      </header>
+      <SectionHeader
+        eyebrow="Recursos"
+        title="Blog"
+        subtitle="Guías prácticas sobre inocuidad alimentaria y cumplimiento normativo."
+        align="center"
+        as="h1"
+      />
 
       {posts.length === 0 ? (
         <p class="empty">Muy pronto publicaremos nuestros primeros artículos.</p>
       ) : (
         <div class="posts">
-          {posts.map((post) => (
-            <a class="post-card" href={`/blog/${post.id.replace(/\.md$/, '')}/`}>
-              {post.data.image && <img src={post.data.image} alt={post.data.title} loading="lazy" />}
+          {posts.map((post, i) => (
+            <a class="post-card reveal" data-delay={String(i % 3)} href={`/blog/${post.id.replace(/\.md$/, '')}/`}>
+              {post.data.image && (
+                <div class="post-media">
+                  <img src={post.data.image} alt="" loading="lazy" decoding="async" />
+                </div>
+              )}
               <div class="post-body">
                 <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
                 <h2>{post.data.title}</h2>
                 <p>{post.data.description}</p>
-                <span class="more">Leer más →</span>
+                <span class="arrow-link">Leer más <Icon name="arrow-right" size={16} /></span>
               </div>
             </a>
           ))}
@@ -41,33 +49,52 @@ const fmt = (d) =>
 </BaseLayout>
 
 <style>
-  .sec-head { max-width: 640px; margin-bottom: var(--space-5); }
-  .sec-head h1 { margin-block: var(--space-1) var(--space-2); }
-  .sec-sub { font-size: var(--fs-lg); }
-  .empty { font-size: var(--fs-lg); }
+  .empty { font-size: var(--fs-lg); text-align: center; }
 
   .posts {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-3);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.2vw, 1.75rem);
   }
   .post-card {
     display: flex;
     flex-direction: column;
     background: var(--color-surface);
     border: 1px solid var(--color-line);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    transition: transform var(--t), box-shadow var(--t), border-color var(--t);
   }
-  .post-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--color-primary); }
-  .post-card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-  .post-body { padding: var(--space-3); display: grid; gap: 0.5rem; }
-  .post-body time { font-size: var(--fs-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-  .post-body h2 { font-size: var(--fs-lg); color: var(--color-primary-deep); }
-  .post-body p { font-size: var(--fs-sm); }
-  .more { color: var(--color-primary); font-weight: var(--fw-semibold); font-size: var(--fs-sm); margin-top: 0.3rem; }
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow);
+    border-color: var(--color-line-2);
+  }
+  .post-media { overflow: hidden; background: var(--color-band-2); }
+  .post-media img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    transition: transform var(--t-slow);
+  }
+  .post-card:hover .post-media img { transform: scale(1.045); }
 
-  @media (max-width: 920px) { .posts { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .posts { grid-template-columns: 1fr; } }
+  .post-body { display: grid; gap: 0.5rem; padding: var(--space-3); }
+  .post-body time {
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+  .post-body h2 { font-size: var(--fs-lg); }
+  .post-body p { font-size: var(--fs-sm); line-height: 1.6; }
+  .arrow-link { margin-top: 0.3rem; }
+
+  @media (max-width: 960px) { .posts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .posts { grid-template-columns: 1fr; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .post-card:hover { transform: none; }
+    .post-card:hover .post-media img { transform: none; }
+  }
 </style>

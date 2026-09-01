@@ -1,0 +1,76 @@
+---
+// CtaBanner.astro — llamada a la acción intermedia, entre el proceso y el
+// resto de la página. Es el punto donde alguien ya entendió qué hacemos y
+// todavía le queda mucha página por delante.
+//
+// Se ve como la portada: mismo marco de foto (desvanecido por la izquierda y
+// curva abajo) y los mismos colores del sitio — antetítulo verde, titular en
+// tinta y botón verde. Antes era un panel oscuro con letras blancas y era el
+// único bloque de la página con ese aspecto; el cliente pidió unificarlo.
+// Aquí NO va la hoja verde: es una firma de la portada.
+//
+// Usa el MISMO enlace de WhatsApp que el resto del sitio (waLink de site.ts);
+// aquí no hay números ni URLs escritos a mano.
+import { waLink } from '../../data/site.ts';
+import home from '../../data/home.json';
+import Button from '../ui/Button.astro';
+import PhotoFrame from '../ui/PhotoFrame.astro';
+
+const cta = home.ctaIntermedio ?? {};
+const href = waLink('Hola J&M, necesito orientación sobre lo que necesita mi empresa.');
+const fotos = cta.imagen ? [{ imagen: cta.imagen, texto: cta.titulo }] : [];
+---
+
+<section class="cta-wrap section" aria-labelledby="cta-title">
+  <div class="container cta-inner">
+    <div class="cta-text reveal">
+      {cta.eyebrow && <p class="eyebrow">{cta.eyebrow}</p>}
+      <h2 id="cta-title">{cta.titulo}</h2>
+      {cta.subtitulo && <p class="cta-sub">{cta.subtitulo}</p>}
+
+      <Button href={href} variant="primary" size="lg" iconLeft="whatsapp" external class="cta-btn">
+        {cta.boton}
+      </Button>
+    </div>
+
+    {fotos.length > 0 && <PhotoFrame fotos={fotos} class="cta-media" />}
+  </div>
+</section>
+
+<style>
+  .cta-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.99fr) minmax(0, 1.01fr);
+    column-gap: clamp(1.25rem, 2.2vw, 2rem);
+    align-items: center;
+  }
+
+  .cta-text {
+    grid-column: 1;
+    max-width: 34rem;
+  }
+  .cta-text h2 { margin-block: 0.6rem 0; }
+  .cta-sub {
+    margin-top: var(--space-2);
+    font-size: var(--fs-lg);
+    line-height: 1.65;
+    max-width: 32rem;
+  }
+  .cta-text :global(.cta-btn) { margin-top: clamp(1.5rem, 2.5vw, 2.25rem); }
+
+  .cta-inner :global(.cta-media) { grid-column: 2; }
+
+  @media (max-width: 960px) {
+    .cta-inner { grid-template-columns: 1fr; }
+    .cta-text { max-width: 40rem; }
+    .cta-inner :global(.cta-media) {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: var(--space-4);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .cta-text :global(.cta-btn) { width: 100%; }
+  }
+</style>

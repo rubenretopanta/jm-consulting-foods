@@ -1,0 +1,253 @@
+---
+/**
+ * PhotoFrame.astro — el marco de foto grande de la web.
+ *
+ * Es la pieza que da su forma a la portada: la foto se desvanece por la
+ * izquierda, la corta abajo una curva del color del fondo y, si se pide,
+ * lleva la hoja verde de la marca. Con varias fotos se van cruzando solas y
+ * aparecen los puntitos para saltar entre ellas.
+ *
+ * Vive aquí y no repetido en cada sección porque lo usan la portada y la
+ * llamada a la acción intermedia, y el cliente pidió expresamente que se
+ * vieran iguales. Sobre todo el PERFIL DE LA CURVA: está medido sobre su
+ * referencia y se nota a simple vista si cambia.
+ *
+ * El marco es SIEMPRE horizontal. No darle un alto que dependa de la columna
+ * de al lado: las fotos son apaisadas y en un marco vertical `cover` las
+ * amplía tanto que solo se ve un trozo.
+ */
+import Leaf from './Leaf.astro';
+
+interface Props {
+  fotos: Array<{ imagen: string; texto?: string }>;
+  /** Hoja verde en la esquina. Solo la portada la lleva. */
+  leaf?: boolean;
+  /** Proporción del marco en escritorio y en celular. */
+  ratio?: string;
+  ratioMobile?: string;
+  /** La primera foto de la página se carga cuanto antes; el resto, no. */
+  priority?: boolean;
+  class?: string;
+}
+
+const {
+  fotos,
+  leaf = false,
+  ratio = '3 / 2',
+  ratioMobile = '16 / 10',
+  priority = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div
+  class:list={['frame', className]}
+  data-photo-frame
+  style={`--ratio:${ratio}; --ratio-mobile:${ratioMobile};`}
+>
+  <div class="slides" aria-hidden="true">
+    {fotos.map((foto, i) => (
+      <img
+        class:list={['slide', i === 0 && 'is-on']}
+        src={foto.imagen}
+        alt=""
+        loading={priority && i === 0 ? 'eager' : 'lazy'}
+        fetchpriority={priority && i === 0 ? 'high' : 'low'}
+        decoding="async"
+      />
+    ))}
+  </div>
+
+  {fotos.length > 1 && (
+    <div class="dots">
+      {fotos.map((foto, i) => (
+        <button
+          type="button"
+          class:list={['dot', i === 0 && 'is-on']}
+          data-dot
+          aria-label={foto.texto || `Foto ${i + 1}`}
+          aria-current={i === 0 ? 'true' : 'false'}
+        ></button>
+      ))}
+    </div>
+  )}
+
+  <!-- Curva de abajo. El perfil está medido sobre la referencia del cliente:
+       el blanco es FINO a la izquierda (~22 px) y GRUESO a la derecha (~55 px).
+       No invertirlo: el cliente lo detectó a la primera. -->
+  <svg class="wave" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path
+      d="M0,20 V8.6 C8,11.5 16,12.8 26,12.4 C40,11.8 50,7.5 64,3.2 C76,0.8 88,1.4 100,2.2 V20 Z"
+      fill="var(--wave-fill, #fff)"
+    />
+  </svg>
+
+  {leaf && <Leaf class="leaf" />}
+</div>
+
+<style>
+  .frame {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    /* Sin recorte propio: la hoja tiene que poder asomar. Quien recorta es
+       .slides. */
+  }
+
+  .slides {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    /* El borde izquierdo no se corta: se desvanece hacia el fondo. */
+    -webkit-mask-image: linear-gradient(100deg, transparent 0%, rgba(0, 0, 0, 0.45) 7%, #000 20%);
+    mask-image: linear-gradient(100deg, transparent 0%, rgba(0, 0, 0, 0.45) 7%, #000 20%);
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 900ms ease-in-out;
+  }
+  .slide.is-on { opacity: 1; }
+
+  /* Puntitos: en qué foto vamos. Por encima de la curva. */
+  .dots {
+    position: absolute;
+    left: 50%;
+    bottom: 24%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 0.4rem;
+    padding: 6px 10px;
+    border-radius: var(--radius-full);
+    background: rgba(18, 24, 28, 0.32);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .dot {
+    width: 26px;
+    height: 4px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.5);
+    transition: background var(--t), width var(--t);
+  }
+  .dot:hover { background: rgba(255, 255, 255, 0.85); }
+  .dot.is-on { background: #fff; width: 34px; }
+  .dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  /* La curva no dibuja una franja: es del color del fondo y recorta la foto.
+     19% es el alto que tiene en la referencia respecto a la foto. */
+  .wave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;   /* -1px: evita la costura de un píxel al redondear */
+    width: 100%;
+    height: 19%;
+    z-index: 4;
+    display: block;
+  }
+
+  /* Medidas tomadas de la referencia: la hoja ocupa ~1/5 del ancho de la foto
+     y se apoya sobre la curva, sin llegar al borde. */
+  .frame :global(.leaf) {
+    position: absolute;
+    right: 11%;
+    bottom: 6%;
+    width: 20%;
+    height: auto;
+    z-index: 5;
+  }
+
+  /* ---------- TABLET Y CELULAR ---------- */
+  @media (max-width: 960px) {
+    .frame {
+      aspect-ratio: var(--ratio-mobile);
+      /* Sitio a la derecha para que la hoja asome sin recortarse. */
+      margin-inline-end: clamp(10px, 3vw, 20px);
+    }
+    .slides {
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      /* Aquí la foto es una tarjeta entera: sin desvanecido. */
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+    .dots { bottom: var(--space-2); }
+    /* La curva es de escritorio: sobre una tarjeta redondeada corta raro. */
+    .wave { display: none; }
+    .frame :global(.leaf) {
+      right: clamp(-22px, -4vw, -12px);
+      bottom: clamp(-18px, -3.5vw, -10px);
+      width: clamp(64px, 15vw, 104px);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .frame { aspect-ratio: 4 / 3; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+  }
+</style>
+
+<script>
+  // Con más de una foto, se cruzan solas cada 5 segundos.
+  // - Se detienen mientras la pestaña está oculta o el marco no está a la vista.
+  // - Los puntitos saltan a una foto concreta y pausan el avance un rato.
+  // - Si el visitante pidió menos movimiento, no avanza solo: solo con los puntitos.
+  document.querySelectorAll('[data-photo-frame]').forEach((marco) => {
+    const slides = Array.from(marco.querySelectorAll('.slide'));
+    const dots = Array.from(marco.querySelectorAll('[data-dot]'));
+    if (slides.length < 2) return;
+
+    const INTERVALO = 5000;  // ms que dura cada foto
+    const REANUDAR = 10000;  // ms de pausa tras tocar un puntito
+    const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let actual = 0;
+    let pausadoHasta = 0;
+    let enPantalla = true;
+    let temporizador = 0;
+
+    const mostrar = (i) => {
+      actual = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle('is-on', n === actual));
+      dots.forEach((d, n) => {
+        d.classList.toggle('is-on', n === actual);
+        d.setAttribute('aria-current', n === actual ? 'true' : 'false');
+      });
+    };
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        pausadoHasta = Date.now() + REANUDAR;
+        mostrar(i);
+      });
+    });
+
+    const tick = () => {
+      if (document.hidden || !enPantalla) return;
+      if (Date.now() < pausadoHasta) return;
+      mostrar(actual + 1);
+    };
+
+    const arrancar = () => {
+      clearInterval(temporizador);
+      if (!menosMovimiento.matches) temporizador = setInterval(tick, INTERVALO);
+    };
+    menosMovimiento.addEventListener('change', arrancar);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => { enPantalla = e.isIntersecting; }, { threshold: 0 })
+        .observe(marco);
+    }
+
+    arrancar();
+  });
+</script>

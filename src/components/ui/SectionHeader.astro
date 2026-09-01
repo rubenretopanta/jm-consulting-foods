@@ -1,0 +1,59 @@
+---
+/**
+ * SectionHeader.astro — antetítulo + título + subtítulo.
+ * Una sola pieza para que todas las secciones tengan exactamente el mismo
+ * ritmo tipográfico y el mismo ancho de lectura.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+  onDark?: boolean;
+  /** Nivel del encabezado. La portada usa h1; el resto, h2. */
+  as?: 'h1' | 'h2';
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  align = 'center',
+  onDark = false,
+  as: Tag = 'h2',
+  class: className = '',
+} = Astro.props;
+---
+
+<header class:list={['sec-head', `is-${align}`, onDark && 'on-dark', className]}>
+  {eyebrow && <p class:list={['eyebrow', onDark && 'eyebrow--on-dark']}>{eyebrow}</p>}
+  <Tag>{title}</Tag>
+  {subtitle && <p class="sec-sub">{subtitle}</p>}
+</header>
+
+<style>
+  .sec-head {
+    max-width: 46rem;
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+  }
+  .sec-head.is-center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  /* El antetítulo va pegado al título; el subtítulo, algo más suelto. */
+  .sec-head h1,
+  .sec-head h2 { margin-block: 0.6rem 0; }
+  .sec-sub {
+    margin-top: var(--space-2);
+    font-size: var(--fs-lg);
+    line-height: 1.6;
+    color: var(--color-muted);
+    max-width: 42rem;
+  }
+  .sec-head.is-center .sec-sub { margin-inline: auto; }
+
+  .sec-head.on-dark h1,
+  .sec-head.on-dark h2 { color: var(--color-on-dark); }
+  .sec-head.on-dark .sec-sub { color: var(--color-on-dark-muted); }
+</style>

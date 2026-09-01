@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -17,14 +18,19 @@ const fmt = (d) =>
   d.toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
-  <main class="section">
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.image}>
+  <main id="contenido" class="section">
     <article class="container article">
-      <a class="back" href="/blog/">← Volver al blog</a>
-      <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
-      <h1>{post.data.title}</h1>
-      <p class="lead">{post.data.description}</p>
-      {post.data.image && <img class="cover" src={post.data.image} alt={post.data.title} />}
+      <a class="back" href="/blog/"><Icon name="chevron-left" size={16} /> Volver al blog</a>
+
+      <header class="article-head">
+        <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+        <h1>{post.data.title}</h1>
+        <p class="lead">{post.data.description}</p>
+      </header>
+
+      {post.data.image && <img class="cover" src={post.data.image} alt="" loading="eager" decoding="async" />}
+
       <div class="prose">
         <Content />
       </div>
@@ -33,19 +39,56 @@ const fmt = (d) =>
 </BaseLayout>
 
 <style>
-  .article { max-width: 760px; }
-  .back { color: var(--color-primary); font-weight: var(--fw-semibold); font-size: var(--fs-sm); }
-  .article time { display: block; margin-top: var(--space-3); font-size: var(--fs-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-  .article h1 { margin-block: var(--space-1) var(--space-2); }
-  .article .lead { font-size: var(--fs-lg); margin-bottom: var(--space-3); }
-  .cover { width: 100%; border-radius: var(--radius); margin-bottom: var(--space-4); }
+  /* Ancho de lectura, no ancho de página: alrededor de 70 caracteres por
+     línea es lo que se lee sin cansarse. */
+  .article { max-width: calc(var(--container-text) + var(--gutter) * 2); }
 
-  .prose :global(h2) { font-size: var(--fs-xl); color: var(--color-primary-deep); margin-block: var(--space-4) var(--space-2); }
-  .prose :global(h3) { font-size: var(--fs-lg); color: var(--color-primary-deep); margin-block: var(--space-3) var(--space-1); }
-  .prose :global(p) { margin-bottom: var(--space-2); }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 40px;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    transition: color var(--t), gap var(--t);
+  }
+  .back:hover { color: var(--color-primary-deep); gap: 0.5rem; }
+
+  .article-head { margin-block: var(--space-3) var(--space-4); }
+  .article-head time {
+    display: block;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+  .article-head h1 { font-size: var(--fs-3xl); margin-block: 0.6rem var(--space-2); }
+  .lead { font-size: var(--fs-lg); line-height: 1.65; }
+
+  .cover {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .prose :global(h2) { font-size: var(--fs-xl); margin-block: var(--space-4) var(--space-2); }
+  .prose :global(h3) { font-size: var(--fs-md); margin-block: var(--space-3) var(--space-1); }
+  .prose :global(p) { margin-bottom: var(--space-2); line-height: 1.75; }
   .prose :global(ul) { list-style: disc; padding-left: 1.4rem; margin-bottom: var(--space-2); color: var(--color-muted); }
-  .prose :global(li) { margin-bottom: 0.4rem; }
-  .prose :global(a) { color: var(--color-primary); text-decoration: underline; }
+  .prose :global(li) { margin-bottom: 0.4rem; line-height: 1.7; }
+  .prose :global(a) { color: var(--color-primary); text-decoration: underline; text-underline-offset: 2px; }
+  .prose :global(a:hover) { color: var(--color-primary-deep); }
   .prose :global(strong) { color: var(--color-ink); }
+  .prose :global(blockquote) {
+    margin-block: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-left: 3px solid var(--color-brand-green);
+    background: var(--color-primary-tint);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
   .prose :global(img) { border-radius: var(--radius); margin-block: var(--space-3); }
 </style>

@@ -1,273 +1,172 @@
 ---
-// Hero.astro — portada tipo banner: las fotos del rubro van cambiando solas
-// detrás del título. Las fotos se editan desde el panel («Fotos de la portada»).
+// Hero.astro — portada.
+//
+// La foto NO sangra hasta el borde de la ventana: termina donde termina el
+// contenedor, alineada con el botón de la cabecera. El cliente lo marcó
+// expresamente (2026-09-01) y es el mismo criterio del panel de «Hablemos».
+// Por eso la foto es una columna más de la rejilla y no un elemento
+// posicionado: así el borde derecho coincide solo, sin cálculos.
+//
+// La forma del marco (desvanecido, curva y hoja) vive en ui/PhotoFrame.astro,
+// que comparte con la llamada a la acción intermedia.
 import { SITE, waLink } from '../../data/site.ts';
 import home from '../../data/home.json';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import PhotoFrame from '../ui/PhotoFrame.astro';
+
 const { hero } = home;
 const fotos = hero?.fotos?.filter((f) => f.imagen) ?? [];
+
+// Micro-pruebas bajo los botones. Salen de home.json (editables desde el
+// panel); si no estuvieran, no se dibuja la fila.
+const ICONOS = ['shield-check', 'handshake', 'map-pin'];
+const puntos = (hero?.puntos ?? []).filter((p) => p?.texto);
 ---
 
 <section class="hero" id="inicio">
-  <div class="container">
-    <div class="banner" data-hero-banner>
-      <div class="media">
-        <div class="slides" aria-hidden="true">
-          {fotos.map((foto, i) => (
-            <img
-              class:list={['slide', i === 0 && 'is-on']}
-              src={foto.imagen}
-              alt=""
-              width="1600"
-              height="800"
-              loading={i === 0 ? 'eager' : 'lazy'}
-              fetchpriority={i === 0 ? 'high' : 'low'}
-              decoding="async"
-            />
-          ))}
-          <span class="scrim"></span>
-        </div>
+  <div class="container hero-inner">
+    <!-- ── Mensaje ── -->
+    <div class="hero-text">
+      <p class="eyebrow reveal">{SITE.tagline} · {SITE.city}</p>
 
-        {fotos.length > 1 && (
-          <div class="dots">
-            {fotos.map((foto, i) => (
-              <button
-                type="button"
-                class:list={['dot', i === 0 && 'is-on']}
-                data-dot
-                aria-label={foto.texto || `Foto ${i + 1}`}
-                aria-current={i === 0 ? 'true' : 'false'}
-              ></button>
-            ))}
-          </div>
-        )}
-      </div>
+      <h1 class="reveal" data-delay="1">
+        {hero.tituloLinea1}<br /><span class="hl">{hero.tituloDestacado}</span>
+      </h1>
 
-      <div class="banner-text">
-        <p class="eyebrow">{SITE.tagline} · {SITE.city}</p>
-        <h1>{hero.tituloLinea1}<br /><span class="hl">{hero.tituloDestacado}</span></h1>
-        <p class="lead">{SITE.description}</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href={waLink('Hola J&M, quiero información sobre sus servicios.')}>
-            {hero.botonWhatsapp}
-          </a>
-          <a class="btn btn-ghost" href="#servicios">{hero.botonServicios}</a>
-        </div>
+      <p class="lead reveal" data-delay="2">{SITE.description}</p>
+
+      <div class="hero-cta reveal" data-delay="3">
+        <Button
+          href={waLink('Hola J&M, quiero información sobre sus servicios.')}
+          variant="primary"
+          size="lg"
+          iconLeft="whatsapp"
+          external
+        >
+          {hero.botonWhatsapp}
+        </Button>
+        <Button href="#servicios" variant="outline" size="lg" icon="arrow-right">
+          {hero.botonServicios}
+        </Button>
       </div>
     </div>
+
+    <!-- ── Fotografía ── -->
+    {fotos.length > 0 && <PhotoFrame fotos={fotos} leaf priority class="hero-media" />}
+
+    {puntos.length > 0 && (
+      <ul class="proofs reveal" data-delay="4">
+        {puntos.map((punto, i) => (
+          <li>
+            <Icon name={ICONOS[i % ICONOS.length]} size={19} />
+            <span>{punto.texto}</span>
+          </li>
+        ))}
+      </ul>
+    )}
   </div>
 </section>
 
 <style>
-  /* Poco aire arriba: el banner debe quedar cerca de la cabecera. */
-  .hero { padding-block: var(--space-3) var(--space-4); }
-
-  /* El banner vive dentro del contenedor, con el mismo ancho que el resto
-     de la página. La proporción 2.2:1 deja ver casi toda la foto sin que el
-     banner se coma media pantalla. */
-  .banner {
-    /* Tono del velo que oscurece las fotos, en un solo sitio.
-       --velo-solido es ese mismo tono ya mezclado, para las zonas sin foto. */
-    --velo: 9, 28, 7;
-    --velo-solido: #152811;
+  .hero {
     position: relative;
-    isolation: isolate;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--section-y);
+    /* Lavado verde apenas perceptible en la esquina superior izquierda, como
+       en la referencia. */
+    background: radial-gradient(70% 55% at 0% 0%, rgba(54, 183, 41, 0.06), transparent 70%);
+  }
+
+  .hero-inner {
     display: grid;
-    /* stretch para que la celda de la foto ocupe todo el alto del banner;
-       el texto se centra por su cuenta con align-self. */
-    align-items: stretch;
-    aspect-ratio: 2.2 / 1;
-    min-height: 400px;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    /* El banner no lleva el verde de la marca: su color es el mismo velo
-       oscuro que cubre la foto, en sólido. */
-    background: var(--velo-solido);
+    /* Los dos botones de la portada suman 519 px. La columna de texto no puede
+       bajar de ahí o caen en dos filas, así que las columnas van casi a
+       partes iguales y el hueco entre ellas es el justo. */
+    grid-template-columns: minmax(0, 0.99fr) minmax(0, 1.01fr);
+    column-gap: clamp(1.25rem, 2.2vw, 2rem);
+    align-items: start;
   }
 
-  /* Foto y texto comparten la misma celda: el texto va encima. */
-  .media { grid-area: 1 / 1; position: relative; }
-  .banner-text {
-    grid-area: 1 / 1;
-    position: relative;
-    align-self: center;
-    padding: clamp(1.5rem, 4vw, 3.5rem);
-  }
+  /* ---------- Mensaje ---------- */
+  .hero-text { grid-column: 1; grid-row: 1; max-width: 34rem; }
+  .hero-text h1 { margin-block: var(--space-2) 0; }
+  /* El verde de --color-primary sobre blanco da 5.6:1: se lee sin problema
+     y es el mismo tono del emblema, solo más profundo. */
+  .hl { color: var(--color-primary); }
 
-  /* --- Fotos que se cruzan por transparencia --- */
-  .slides { position: absolute; inset: 0; }
-  .slide {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 900ms ease-in-out;
-  }
-  .slide.is-on { opacity: 1; }
-
-  /* Velo oscuro: sin él el texto blanco no se lee sobre las fotos claras. */
-  .scrim {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(100deg,
-        rgba(var(--velo), 0.86) 0%,
-        rgba(var(--velo), 0.66) 46%,
-        rgba(var(--velo), 0.18) 100%);
-  }
-
-  /* --- Texto --- */
-  .banner-text > * { max-width: 42rem; }
-  .eyebrow { color: var(--color-accent); }
-  .banner h1 { color: #fff; margin-block: var(--space-2) var(--space-3); }
-  .hl { color: var(--color-accent); }
   .lead {
+    margin-top: var(--space-3);
     font-size: var(--fs-lg);
-    max-width: 42ch;
-    color: color-mix(in srgb, #fff 88%, transparent);
+    line-height: 1.65;
+    max-width: 32rem;
   }
 
-  .hero-cta { display: flex; gap: var(--space-2); margin-top: var(--space-4); flex-wrap: wrap; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-weight: var(--fw-semibold); padding: 0.85rem 1.5rem;
-    border-radius: var(--radius-full); border: 1.5px solid transparent;
-    transition: transform var(--transition), background var(--transition), color var(--transition);
-  }
-  .btn-primary { background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-sm); }
-  .btn-primary:hover { background: var(--color-accent-deep); color: #fff; transform: translateY(-2px); }
-  .btn-ghost { border-color: color-mix(in srgb, #fff 55%, transparent); color: #fff; }
-  .btn-ghost:hover { background: color-mix(in srgb, #fff 14%, transparent); transform: translateY(-2px); }
-
-  /* --- Puntitos: en qué foto vamos --- */
-  .dots {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: var(--space-2);
+  .hero-cta {
     display: flex;
-    gap: 0.5rem;
-    z-index: 2;
-  }
-  .dot {
-    width: 34px;
-    height: 4px;
-    border-radius: var(--radius-full);
-    background: color-mix(in srgb, #fff 40%, transparent);
-    cursor: pointer;
-    transition: background var(--transition);
-  }
-  .dot:hover { background: color-mix(in srgb, #fff 70%, transparent); }
-  .dot.is-on { background: var(--color-accent); }
-  .dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
-
-  /* En celular el texto no cabe encima sin recortar la foto a un cuadro
-     vertical (queda con muchísimo zoom): la foto va arriba, en su tarjeta
-     redondeada, y el texto debajo como contenido normal de la página, sobre
-     el crema y en tinta oscura. */
-  @media (max-width: 920px) {
-    .banner {
-      aspect-ratio: auto;
-      min-height: 0;
-      /* la tarjeta pasa a ser solo la foto */
-      background: transparent;
-      border-radius: 0;
-      box-shadow: none;
-      overflow: visible;
-    }
-    /* Alto explícito, no 'aspect-ratio': la celda de la foto solo contiene
-       elementos posicionados (no aportan alto), y varios navegadores de
-       celular la dejaban en cero, con lo que la foto no se veía.
-       'align-self: start' evita además que el estirado del grid mande. */
-    .media {
-      grid-area: 1 / 1;
-      align-self: start;
-      height: 68vw;
-      min-height: 220px;
-      max-height: 400px;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .banner-text {
-      grid-area: 2 / 1;
-      align-self: stretch;
-      background: transparent;
-      padding: var(--space-3) 0 0;
-    }
-    /* Sin velo detrás, el texto va en los colores normales de la página. */
-    .banner h1 { color: var(--color-ink); }
-    .lead { max-width: none; color: var(--color-muted); }
-    /* El ámbar del logo sobre el crema da 1.4:1 (invisible). Estos dos son el
-       mismo ámbar rebajado hasta que se lee: el antetítulo es letra pequeña y
-       necesita 4.5:1; el titular es grande y le basta 3:1. */
-    .eyebrow { color: #8A5200; }
-    .hl { color: #B87200; }
-    .btn-ghost { border-color: var(--color-line); color: var(--color-primary); }
-    .btn-ghost:hover { background: var(--color-primary-soft); }
-    .scrim { background: linear-gradient(180deg, rgba(var(--velo), 0.28) 0%, rgba(var(--velo), 0.10) 100%); }
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: clamp(1.5rem, 2.5vw, 2.25rem);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .slide { transition: none; }
-    .btn:hover { transform: none; }
+  /* Tres micro-pruebas, bajo el mensaje y en su misma columna. */
+  .proofs {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) clamp(1.25rem, 2.5vw, 2.25rem);
+    margin-top: clamp(1.5rem, 2.5vw, 2.25rem);
+    padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+    border-top: 1px solid var(--color-line);
+  }
+  .proofs li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    color: var(--color-ink-soft);
+  }
+  .proofs :global(svg) { color: var(--color-primary); flex: none; }
+
+  /* La foto ocupa la segunda columna y las dos filas del texto. Su borde
+     derecho cae justo donde acaba el contenedor. */
+  .hero-inner :global(.hero-media) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+
+  /* Franja estrecha de escritorio (961–1120 px): la columna de texto se queda
+     en ~460 px y los dos botones a tamaño grande suman 519, así que caían en
+     dos filas. Un punto más compactos y vuelven a entrar en una. */
+  @media (min-width: 961px) and (max-width: 1120px) {
+    .hero-cta :global(.btn) {
+      min-height: 48px;
+      padding-inline: 1.15rem;
+      font-size: var(--fs-sm);
+    }
+  }
+
+  /* ---------- TABLET Y CELULAR ----------
+     Una sola columna, en el orden que pide la lectura:
+     mensaje → botones → foto → pruebas. */
+  @media (max-width: 960px) {
+    .hero { background: none; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-text { grid-column: 1; grid-row: 1; max-width: 40rem; }
+    .hero-inner :global(.hero-media) {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: var(--space-4);
+    }
+    .proofs { grid-column: 1; grid-row: 3; }
+  }
+
+  /* En celular las micro-pruebas se apilan: en una fila quedarían apretadas
+     y con saltos de línea feos. */
+  @media (max-width: 560px) {
+    .proofs { flex-direction: column; gap: 0.7rem; }
+    .hero-cta :global(.btn) { width: 100%; }
   }
 </style>
-
-<script>
-  // Banner de la portada: las fotos se cruzan solas cada 5 segundos.
-  // - Se detiene mientras la pestaña está oculta o el banner no está a la vista.
-  // - Los puntitos saltan a una foto concreta y pausan el avance un rato.
-  // - Si el visitante pidió menos movimiento, no avanza solo: solo con los puntitos.
-  document.querySelectorAll('[data-hero-banner]').forEach((banner) => {
-    const slides = Array.from(banner.querySelectorAll('.slide'));
-    const dots = Array.from(banner.querySelectorAll('[data-dot]'));
-    if (slides.length < 2) return;
-
-    const INTERVALO = 5000;  // ms que dura cada foto
-    const REANUDAR = 10000;  // ms de pausa tras tocar un puntito
-    const menosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-    let actual = 0;
-    let pausadoHasta = 0;
-    let enPantalla = true;
-    let temporizador = 0;
-
-    const mostrar = (i) => {
-      actual = (i + slides.length) % slides.length;
-      slides.forEach((s, n) => s.classList.toggle('is-on', n === actual));
-      dots.forEach((d, n) => {
-        d.classList.toggle('is-on', n === actual);
-        d.setAttribute('aria-current', n === actual ? 'true' : 'false');
-      });
-    };
-
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        pausadoHasta = Date.now() + REANUDAR;
-        mostrar(i);
-      });
-    });
-
-    const tick = () => {
-      if (document.hidden || !enPantalla) return;
-      if (Date.now() < pausadoHasta) return;
-      mostrar(actual + 1);
-    };
-
-    const arrancar = () => {
-      clearInterval(temporizador);
-      if (!menosMovimiento.matches) temporizador = setInterval(tick, INTERVALO);
-    };
-    menosMovimiento.addEventListener('change', arrancar);
-
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(([e]) => { enPantalla = e.isIntersecting; }, { threshold: 0 })
-        .observe(banner);
-    }
-
-    arrancar();
-  });
-</script>

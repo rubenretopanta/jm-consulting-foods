@@ -1,105 +1,66 @@
 ---
-// Services.astro — lee los servicios desde la content collection
+// Services.astro — los servicios, tal como están en la colección de contenido.
+// No se inventa ni se elimina ninguno: solo cambia cómo se presentan.
 import { getCollection } from 'astro:content';
 import home from '../../data/home.json';
+import SectionHeader from '../ui/SectionHeader.astro';
+import ServiceCard from '../ui/ServiceCard.astro';
+
 const { serviciosSeccion } = home;
 
 const services = (await getCollection('services')).sort(
   (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
 );
+
+// Icono por servicio. La clave es el nombre del archivo .md; si el cliente
+// crea uno nuevo desde el panel, cae en el icono genérico de documento.
+const ICONO_POR_SERVICIO: Record<string, string> = {
+  'registro-sanitario': 'file-check',
+  'haccp': 'clipboard-check',
+  'buenas-prácticas-bpm': 'leaf',
+  'saneamiento': 'droplet',
+  'iso': 'award',
+  'capacitaciones': 'graduation',
+};
+
+const iconoDe = (id: string) => ICONO_POR_SERVICIO[id.replace(/\.md$/, '')] ?? 'file-check';
 ---
 
-<section class="services section" id="servicios">
+<section class="services section band" id="servicios">
   <div class="container">
-    <header class="sec-head">
-      <p class="eyebrow">{serviciosSeccion.eyebrow}</p>
-      <h2>{serviciosSeccion.titulo}</h2>
-      <p class="sec-sub">{serviciosSeccion.subtitulo}</p>
-    </header>
+    <SectionHeader
+      eyebrow={serviciosSeccion.eyebrow}
+      title={serviciosSeccion.titulo}
+      subtitle={serviciosSeccion.subtitulo}
+      align="center"
+      class="reveal"
+    />
 
     <div class="cards">
-      {services.map((service) => (
-        <article class="card">
-          {service.data.image && (
-            <img
-              class="card-img"
-              src={service.data.image}
-              alt={service.data.title}
-              loading="lazy"
-              decoding="async"
-            />
-          )}
-          <div class="card-body">
-            <h3>{service.data.title}</h3>
-            <p>{service.data.description}</p>
-            {service.data.bullets && service.data.bullets.length > 0 && (
-              <ul class="bullets">
-                {service.data.bullets.map((b) => <li>{b}</li>)}
-              </ul>
-            )}
-          </div>
-        </article>
+      {services.map((service, i) => (
+        <ServiceCard
+          title={service.data.title}
+          description={service.data.description}
+          image={service.data.image}
+          icon={iconoDe(service.id)}
+          bullets={service.data.bullets ?? []}
+          delay={i % 3}
+        />
       ))}
     </div>
   </div>
 </section>
 
 <style>
-  .services { background: var(--color-bg); }
-  .sec-head { max-width: 620px; margin-bottom: var(--space-4); }
-  .sec-head h2 { margin-block: var(--space-1) var(--space-2); }
-  .sec-sub { font-size: var(--fs-lg); }
   .cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-3);
-  }
-  .card {
-    display: flex;
-    flex-direction: column;
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius);
-    overflow: hidden;
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-  }
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow);
-    border-color: var(--color-primary);
-  }
-  .card-img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-  }
-  .card-body { padding: var(--space-3); }
-  .card h3 { font-size: var(--fs-xl); margin-bottom: var(--space-1); color: var(--color-primary-deep); }
-  .card p { font-size: var(--fs-sm); }
-
-  .bullets {
-    margin-top: var(--space-2);
-    display: grid;
-    gap: 0.4rem;
-  }
-  .bullets li {
-    position: relative;
-    padding-left: 1.15rem;
-    font-size: var(--fs-sm);
-    color: var(--color-muted);
-    line-height: 1.45;
-  }
-  .bullets li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.5em;
-    width: 7px; height: 7px;
-    border-radius: var(--radius-full);
-    background: var(--color-accent);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.2vw, 1.75rem);
+    /* Las tarjetas crecen distinto según el texto: alinearlas arriba evita
+       que una tarjeta corta se estire de forma rara. */
+    align-items: stretch;
   }
 
-  @media (max-width: 920px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .cards { grid-template-columns: 1fr; } }
+  @media (max-width: 960px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
 </style>

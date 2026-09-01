@@ -4,30 +4,37 @@
    Replican los tokens de marca de J&M para que la preview se parezca
    al sitio real (src/styles/tokens.css).
    ============================================================ */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --color-bg:        #F3EFE9;
+  --color-bg:        #FFFFFF;
   --color-surface:   #FFFFFF;
-  --color-ink:       #3A3A3A;
-  --color-muted:     #6B6B67;
-  --color-line:      #E4DED4;
+  --color-band:      #F7F8F7;
+  --color-band-2:    #F1F3F1;
+  --color-ink:       #12181C;
+  --color-ink-soft:  #303A41;
+  --color-muted:     #5A666E;
+  --color-faint:     #8A959C;
+  --color-line:      #E5E9E6;
+  --color-line-2:    #D6DCD8;
   --color-brand-green:    #36B729;
   --color-primary-surface:#28861D;
   --color-primary:        #217619;
   --color-primary-deep:   #1A5D14;
   --color-primary-soft:   #E9F8E7;
+  --color-primary-tint:   #F3FBF2;
   --color-accent:         #FFBE4A;
   --color-accent-deep:    #E69100;
   --color-accent-ink:     #4A3508;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --color-dark:      #101A15;
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
   --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-  --radius-sm: 10px;
+  --radius-sm: 12px;
   --radius:    18px;
   --radius-lg: 24px;
   --radius-full: 999px;
-  --shadow-sm: 0 6px 18px -12px rgba(26, 93, 20, 0.40);
-  --shadow:    0 18px 40px -24px rgba(26, 93, 20, 0.35);
+  --shadow-sm: 0 1px 2px rgba(18, 24, 28, 0.04), 0 8px 20px -14px rgba(18, 24, 28, 0.18);
+  --shadow:    0 2px 6px -2px rgba(18, 24, 28, 0.06), 0 18px 38px -22px rgba(18, 24, 28, 0.22);
 }
 
 * { box-sizing: border-box; }
@@ -41,7 +48,7 @@ body {
 }
 
 .pv { max-width: 900px; margin: 0 auto; }
-.pv h1, .pv h2, .pv h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.1; color: var(--color-ink); margin: 0; }
+.pv h1, .pv h2, .pv h3 { font-family: var(--font-display); font-weight: 700; line-height: 1.16; letter-spacing: -0.025em; color: var(--color-ink); margin: 0; }
 
 .pv-eyebrow {
   font-family: var(--font-body); font-weight: 600; font-size: 0.8rem;
@@ -78,8 +85,8 @@ body {
   display: inline-flex; align-items: center; font-weight: 600;
   padding: 0.8rem 1.4rem; border-radius: var(--radius-full); border: 1.5px solid transparent;
 }
-.pv-btn-primary { background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-sm); }
-.pv-btn-ghost { border-color: var(--color-line); color: var(--color-primary); }
+.pv-btn-primary { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
+.pv-btn-ghost { border-color: var(--color-line-2); color: var(--color-ink); }
 
 /* ---------- SERVICIOS (tarjetas) ---------- */
 .pv-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
@@ -90,7 +97,7 @@ body {
 .pv-card { padding: 0; overflow: hidden; }
 .pv-card-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; }
 .pv-card-body { padding: 22px; }
-.pv-card h3 { font-size: 1.5rem; margin-bottom: 8px; color: var(--color-primary-deep); }
+.pv-card h3 { font-size: 1.25rem; margin-bottom: 8px; color: var(--color-ink); }
 .pv-card p { font-size: 0.9rem; color: var(--color-muted); margin: 0; }
 .pv-bullets { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 6px; }
 .pv-bullets li {
@@ -172,7 +179,7 @@ body {
 }
 
 /* ---------- EMPRESA (pie de página) ---------- */
-.pv-footer { background: var(--color-primary-deep); color: rgba(255,255,255,0.72); border-radius: var(--radius); padding: 30px; }
+.pv-footer { background: var(--color-dark); color: rgba(255,255,255,0.72); border-radius: var(--radius); padding: 30px; }
 .pv-footer .brand { color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; }
 .pv-footer p { color: rgba(255,255,255,0.7); font-size: 0.9rem; max-width: 40ch; }
 .pv-foot-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px 30px; margin-top: 18px; }
@@ -224,3 +231,20 @@ body {
   display: block;
   border-radius: var(--radius-sm);
 }
+
+/* ---------- Puntos de confianza de la portada ---------- */
+.pv-proofs { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 10px 26px; }
+.pv-proofs li { font-size: 0.9rem; font-weight: 500; color: var(--color-ink-soft); }
+.pv-proofs li::before { content: '¹3'; color: var(--color-primary); font-weight: 700; margin-right: 8px; }
+
+/* ---------- CTA intermedio ---------- */
+.pv-cta {
+  display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 0; overflow: hidden;
+  border-radius: var(--radius-lg); background: var(--color-dark); color: #fff; margin: 28px;
+}
+.pv-cta-text { padding: 32px; }
+.pv-cta-text h2 { color: #fff; margin: 8px 0 10px; font-size: 1.9rem; }
+.pv-cta-text p { color: rgba(255,255,255,0.75); margin: 0 0 18px; }
+.pv-cta .pv-eyebrow { color: var(--color-accent); }
+.pv-cta-img { width: 100%; height: 100%; min-height: 180px; object-fit: cover; display: block; }
+@media (max-width: 700px) { .pv-cta { grid-template-columns: 1fr; } }

@@ -1,0 +1,226 @@
+---
+/**
+ * PhotoRail.astro — fila de fotografías con pie y flechas para avanzar.
+ *
+ * Lo usan Capacitaciones y Ferias, así que las dos secciones se ven exactamente
+ * igual: mismo marco, mismo pie, mismas flechas. Lo único que cambia es la
+ * proporción, porque cada juego de fotos tiene la suya y forzarlas a un marco
+ * distinto les cortaría cabezas y pies:
+ *   · capacitaciones 900×1200 → 3/4
+ *   · ferias          760×950 → 4/5
+ *
+ * Las flechas solo aparecen si hay más fotos de las que caben. Sin avance
+ * automático: manda el visitante.
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  fotos: Array<{ imagen: string; texto?: string }>;
+  ratio?: string;      // proporción del marco, tal cual va en aspect-ratio
+  perView?: number;    // cuántas se ven a la vez en escritorio
+  label: string;       // para el lector de pantalla y el alt de reserva
+  ancho?: number;      // medidas reales del archivo, para reservar el hueco
+  alto?: number;
+}
+
+const { fotos, ratio = '3 / 4', perView = 5, label, ancho, alto } = Astro.props;
+---
+
+<div class="rail-wrap" data-rail style={`--ratio:${ratio}; --pv-desktop:${perView};`}>
+  <ul
+    class="rail"
+    data-track
+    tabindex="0"
+    role="region"
+    aria-roledescription="carrusel"
+    aria-label={label}
+  >
+    {fotos.map((foto, i) => (
+      <li class="shot reveal" data-delay={String(i % 5)}>
+        <figure>
+          <div class="frame">
+            <img
+              src={foto.imagen}
+              alt={foto.texto || label}
+              width={ancho}
+              height={alto}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          {foto.texto && <figcaption>{foto.texto}</figcaption>}
+        </figure>
+      </li>
+    ))}
+  </ul>
+
+  <div class="controls" data-controls hidden>
+    <button type="button" class="nav" data-prev aria-label={`Ver fotos anteriores de ${label}`}>
+      <Icon name="chevron-left" size={20} />
+    </button>
+    <button type="button" class="nav" data-next aria-label={`Ver más fotos de ${label}`}>
+      <Icon name="chevron-right" size={20} />
+    </button>
+  </div>
+</div>
+
+<style>
+  .rail-wrap {
+    position: relative;
+    /* --pv-desktop llega como estilo en línea desde la prop, y un estilo en
+       línea gana SIEMPRE a una media query. Por eso lo que varía por ancho es
+       --per-view, que se declara aquí y solo aquí: la prop decide el valor de
+       escritorio y las media queries de abajo mandan en pantallas menores. */
+    --per-view: var(--pv-desktop, 5);
+  }
+
+  .rail {
+    display: flex;
+    gap: clamp(0.75rem, 1.6vw, 1.25rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* Aire para que la elevación del hover y la sombra no se recorten. */
+    padding: 6px 2px 10px;
+    margin-inline: -2px;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail:focus-visible {
+    outline: 3px solid var(--color-brand-green);
+    outline-offset: 4px;
+    border-radius: var(--radius);
+  }
+
+  .shot {
+    flex: 0 0 calc(
+      (100% - (var(--per-view) - 1) * clamp(0.75rem, 1.6vw, 1.25rem)) / var(--per-view)
+    );
+    scroll-snap-align: start;
+  }
+
+  .frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--color-band-2);
+    box-shadow: var(--shadow-sm);
+  }
+  .frame img {
+    width: 100%;
+    aspect-ratio: var(--ratio);
+    object-fit: cover;
+    transition: transform var(--t-slow);
+  }
+  .shot:hover .frame img { transform: scale(1.045); }
+  /* Filete interior: separa la foto del fondo cuando la imagen es clara. */
+  .frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(18, 24, 28, 0.06);
+    pointer-events: none;
+  }
+
+  figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--fs-xs);
+    line-height: 1.45;
+    color: var(--color-muted);
+  }
+
+  /* ---------- Flechas ----------
+     La capa cubre el carril pero deja pasar el dedo y la rueda: solo los
+     botones reciben clics. */
+  .controls { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .controls[hidden] { display: none; }
+  .nav {
+    position: absolute;
+    /* Centradas sobre la foto, no sobre la tarjeta entera: el pie de foto no
+       cuenta, si no quedarían por debajo del centro visual. */
+    top: calc(50% - 1.5rem);
+    transform: translateY(-50%);
+    pointer-events: auto;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-line);
+    background: color-mix(in srgb, #fff 92%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: var(--shadow);
+    color: var(--color-ink);
+    transition: background var(--t), border-color var(--t), color var(--t), opacity var(--t);
+  }
+  .nav[data-prev] { left: calc(var(--space-2) * -1); }
+  .nav[data-next] { right: calc(var(--space-2) * -1); }
+  .nav:hover:not(:disabled) {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  /* En los extremos la flecha sigue a la vista, pero apagada y sin responder. */
+  .nav:disabled { opacity: 0.28; cursor: default; box-shadow: none; }
+
+  @media (max-width: 1024px) { .rail-wrap { --per-view: 3; } }
+  @media (max-width: 720px) {
+    .rail-wrap { --per-view: 2; }
+    /* El carril sangra hasta el borde de la pantalla: así se ve que hay más
+       fotos a los lados. */
+    .rail { padding-inline: var(--gutter); margin-inline: calc(var(--gutter) * -1); }
+    .nav { width: 40px; height: 40px; }
+    .nav[data-prev] { left: 2px; }
+    .nav[data-next] { right: 2px; }
+  }
+  @media (max-width: 480px) { .rail-wrap { --per-view: 1.35; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shot:hover .frame img { transform: none; }
+  }
+</style>
+
+<script>
+  // Carril de fotos: avanza con las flechas o deslizando con el dedo.
+  // Sin movimiento automático — el visitante decide cuándo pasar.
+  document.querySelectorAll('[data-rail]').forEach((rail) => {
+    const track = rail.querySelector('[data-track]');
+    const controls = rail.querySelector('[data-controls]');
+    const prev = rail.querySelector('[data-prev]');
+    const next = rail.querySelector('[data-next]');
+    if (!track || !controls || !prev || !next) return;
+
+    const tope = () => track.scrollWidth - track.clientWidth;
+
+    // Estado de las flechas: se esconden del todo si todo cabe en pantalla,
+    // y se apagan al llegar a cada extremo.
+    const sync = () => {
+      const max = tope();
+      controls.hidden = max <= 1;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= max - 1;
+    };
+
+    // Una "página" es lo que se ve: se avanza un bloque entero de fotos.
+    const pagina = (dir) => {
+      const foto = track.querySelector('.shot');
+      const hueco = parseFloat(getComputedStyle(track).columnGap) || 0;
+      const ancho = foto ? foto.getBoundingClientRect().width + hueco : track.clientWidth;
+      const porVista = Math.max(1, Math.floor(track.clientWidth / ancho));
+      track.scrollBy({ left: dir * ancho * porVista, behavior: 'smooth' });
+    };
+
+    prev.addEventListener('click', () => pagina(-1));
+    next.addEventListener('click', () => pagina(1));
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    // El ancho real cambia cuando terminan de cargar las fotos: recalcular.
+    window.addEventListener('load', sync);
+
+    sync();
+  });
+</script>

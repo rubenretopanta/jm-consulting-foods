@@ -1,0 +1,31 @@
+---
+/**
+ * Leaf.astro — la hoja verde de la portada.
+ *
+ * Es un adorno de marca, no parte del logo: no lo sustituye ni lo recolorea.
+ * Va en dos tonos del verde del emblema (#36B729) partidos por el nervio,
+ * que es lo que le da volumen sin necesidad de degradados ni sombras.
+ *
+ * Se usa dos veces en la portada (una para escritorio y otra para celular,
+ * porque en cada caso cuelga de un elemento distinto), y por eso la forma
+ * vive aquí y no repetida en el CSS.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 120 120"
+  xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  focusable="false"
+>
+  <!-- Mitad de arriba: el tono claro. La línea recta entre punta y base es
+       el nervio, y de ahí sale el efecto de hoja doblada. -->
+  <path d="M8,112 C14,58 46,18 112,8 L8,112 Z" fill="#6BD35F" />
+  <!-- Mitad de abajo: el verde exacto del emblema. -->
+  <path d="M112,8 C102,74 62,106 8,112 L112,8 Z" fill="#36B729" />
+</svg>
