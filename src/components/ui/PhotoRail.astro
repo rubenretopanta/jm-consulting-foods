@@ -168,16 +168,21 @@ const { fotos, ratio = '3 / 4', perView = 5, label, ancho, alto } = Astro.props;
   .nav:disabled { opacity: 0.28; cursor: default; box-shadow: none; }
 
   @media (max-width: 1024px) { .rail-wrap { --per-view: 3; } }
+
+  /* En celular, UNA foto y entera. Antes se veían dos a medias (o una y el
+     asomo de la siguiente) y el cliente lo pidió así expresamente: a este
+     ancho media foto no se lee, y dos medias no se leen ninguna.
+     Que hay más fotos se sabe por las flechas, que aquí siempre están. */
   @media (max-width: 720px) {
-    .rail-wrap { --per-view: 2; }
-    /* El carril sangra hasta el borde de la pantalla: así se ve que hay más
-       fotos a los lados. */
-    .rail { padding-inline: var(--gutter); margin-inline: calc(var(--gutter) * -1); }
+    .rail-wrap { --per-view: 1; }
+    /* Sin sangrado al borde de la pantalla: con él asomaban unos 6 px de la
+       foto siguiente por el lateral. La foto ocupa justo el ancho del texto
+       de la sección y no se ve nada más. */
+    .rail { padding-inline: 0; margin-inline: 0; }
     .nav { width: 40px; height: 40px; }
     .nav[data-prev] { left: 2px; }
     .nav[data-next] { right: 2px; }
   }
-  @media (max-width: 480px) { .rail-wrap { --per-view: 1.35; } }
 
   @media (prefers-reduced-motion: reduce) {
     .shot:hover .frame img { transform: none; }
