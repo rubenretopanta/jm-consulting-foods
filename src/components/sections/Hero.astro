@@ -71,10 +71,31 @@ const puntos = (hero?.puntos ?? []).filter((p) => p?.texto);
 <style>
   .hero {
     position: relative;
+    isolation: isolate;
     padding-block: clamp(1.5rem, 3vw, 2.5rem) var(--section-y);
-    /* Lavado verde apenas perceptible en la esquina superior izquierda, como
-       en la referencia. */
+  }
+
+  /* Lavado verde apenas perceptible en la esquina superior izquierda, como
+     en la referencia. Igual que las franjas grises de base.css, se pinta
+     dentro del ancho del contenedor y no hasta el borde de la ventana: en
+     pantallas anchas el verde se derramaba por el margen izquierdo. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: min(var(--container), 100%);
+    border-radius: var(--radius-xl);
     background: radial-gradient(70% 55% at 0% 0%, rgba(54, 183, 41, 0.06), transparent 70%);
+    z-index: -1;
+  }
+
+  /* Mismo motivo que en base.css: si el panel ya llega al borde de la
+     pantalla, redondearlo deja muescas. */
+  @media (max-width: 1180px) {
+    .hero::before { border-radius: 0; }
   }
 
   .hero-inner {
@@ -152,7 +173,7 @@ const puntos = (hero?.puntos ?? []).filter((p) => p?.texto);
      Una sola columna, en el orden que pide la lectura:
      mensaje → botones → foto → pruebas. */
   @media (max-width: 960px) {
-    .hero { background: none; }
+    .hero::before { display: none; }
     .hero-inner { grid-template-columns: 1fr; }
     .hero-text { grid-column: 1; grid-row: 1; max-width: 40rem; }
     .hero-inner :global(.hero-media) {

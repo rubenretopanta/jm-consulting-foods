@@ -123,9 +123,43 @@ strong { color: var(--color-ink); font-weight: var(--fw-semibold); }
 .section { padding-block: var(--section-y); }
 .section--tight { padding-block: calc(var(--section-y) * 0.62); }
 
-/* Franja: cambia el fondo de una sección sin dibujar bordes. */
-.band   { background: var(--color-band); }
-.band-2 { background: var(--color-band-2); }
+/* Franja: cambia el fondo de una sección sin dibujar bordes.
+   El color NO sangra hasta el borde de la ventana. Se pinta como un panel
+   del ancho del contenedor, así que empieza y termina donde empieza y
+   termina el contenido del resto de la página: en pantallas anchas el gris
+   ya no se derrama por los márgenes.
+   Va en un pseudoelemento y no en la propia sección porque la sección tiene
+   que seguir ocupando todo el ancho para que la rejilla de dentro no se
+   descoloque. `isolation: isolate` es obligatorio: sin él, el z-index
+   negativo colaría el panel por detrás del fondo del body y no se vería. */
+.band,
+.band-2 {
+  position: relative;
+  isolation: isolate;
+}
+.band::before,
+.band-2::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: min(var(--container), 100%);
+  border-radius: var(--radius-xl);
+  z-index: -1;
+}
+.band::before   { background: var(--color-band); }
+.band-2::before { background: var(--color-band-2); }
+
+/* Por debajo del ancho del contenedor (--container, 1180 px) el panel ya
+   ocupa todo el ancho disponible: redondear ahí las esquinas dejaría cuatro
+   muescas blancas contra el borde de la pantalla. En celular la franja va
+   de lado a lado, como hasta ahora. */
+@media (max-width: 1180px) {
+  .band::before,
+  .band-2::before { border-radius: 0; }
+}
 
 /* Antetítulo verde en versalitas. Sobre fondo oscuro pasa a ámbar
    con .eyebrow--on-dark. */
