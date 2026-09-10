@@ -21,6 +21,18 @@
         "texto": "Supervisión de la línea de embotellado en planta"
       },
       {
+        "imagen": "/images/portada/seleccion-vegetales.jpg",
+        "texto": "Selección y acondicionado de vegetales en línea de proceso"
+      },
+      {
+        "imagen": "/images/portada/envasado-bandejas.jpg",
+        "texto": "Envasado de bandejas en línea de producción"
+      },
+      {
+        "imagen": "/images/portada/maduracion-jamones.jpg",
+        "texto": "Cámara de maduración de jamones"
+      },
+      {
         "imagen": "/images/portada/embotellado-bebidas.jpg",
         "texto": "Línea de embotellado en planta de bebidas"
       },
@@ -35,10 +47,6 @@
       {
         "imagen": "/images/fotos/linea-produccion.jpg",
         "texto": "Línea de producción de conservas"
-      },
-      {
-        "imagen": "/images/fotos/laboratorio-analisis.jpg",
-        "texto": "Ensayos de laboratorio para control de calidad"
       }
     ]
   },
