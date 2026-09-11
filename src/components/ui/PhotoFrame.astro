@@ -140,13 +140,17 @@ const {
   .dot:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
   /* La curva no dibuja una franja: es del color del fondo y recorta la foto.
-     19% es el alto que tiene en la referencia respecto a la foto. */
+     19% es el alto que tiene en la referencia respecto a la foto.
+     Sobresale 2 px por cada lado: si mide justo el ancho de la foto y ese
+     ancho cae en medio píxel, el borde se suaviza y asoma por debajo una
+     raya vertical de la foto (el cliente la marcó el 2026-09-11). */
   .wave {
     position: absolute;
-    left: 0;
-    right: 0;
+    left: -2px;
+    right: -2px;
     bottom: -1px;   /* -1px: evita la costura de un píxel al redondear */
-    width: 100%;
+    width: calc(100% + 4px);
+    max-width: none;   /* base.css limita los svg al 100% y anularía el ensanche */
     height: 19%;
     z-index: 4;
     display: block;
