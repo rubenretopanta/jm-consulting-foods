@@ -63,9 +63,9 @@ const redes = [
     </div>
 
     <!-- Columna 2: navegación -->
-    <nav class="col" aria-labelledby="foot-nav">
+    <nav class="col col-nav" aria-labelledby="foot-nav">
       <h2 class="col-title" id="foot-nav">Enlaces rápidos</h2>
-      <ul class="col-list">
+      <ul class="col-list nav-list">
         {enlaces.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
     </nav>
@@ -244,8 +244,27 @@ const redes = [
 
   /* ---------- CELULAR ---------- */
   @media (max-width: 560px) {
-    .foot-top { grid-template-columns: 1fr; gap: var(--space-4); }
+    /* Marca y enlaces rápidos ocupan todo el ancho; servicios y contacto
+       comparten fila, así arrancan a la misma altura. */
+    .foot-top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4) var(--space-2);
+    }
+    .col-brand,
+    .col-nav { grid-column: 1 / -1; }
     .brand-mark { height: 40px; }
     .foot-bottom { justify-content: flex-start; }
+    /* Con una sola columna, los enlaces rápidos se estiraban en una lista
+       larguísima: a dos columnas ocupan la mitad de alto y se leen mejor. */
+    .nav-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-3);
+    }
+    /* Media columna deja poco ancho: el correo y la dirección se leen mejor
+       con el icono arriba de la primera línea que centrado en el bloque. */
+    .contact-list a,
+    .contact-list .plain { align-items: flex-start; line-height: 1.5; }
+    .contact-list a :global(svg),
+    .contact-list .plain :global(svg) { margin-top: 0.55em; }
   }
 </style>
