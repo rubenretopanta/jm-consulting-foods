@@ -1,0 +1,105 @@
+---
+// CursoBarra.astro — barra de anuncio del curso online, justo bajo la
+// cabecera y antes de la portada. Campaña temporal: al terminar el curso se
+// quita esta pieza y CursoDestacado.astro de index.astro, y nada más cambia.
+---
+
+<aside class="promo" aria-label="Anuncio del próximo curso">
+  <div class="container">
+    <div class="promo-inner">
+      <p class="promo-text">
+        <!-- El «·» va pegado a la palabra anterior (&nbsp;) y la fecha no se
+             parte: en celular las líneas nunca empiezan por un separador. -->
+        CURSO ONLINE&nbsp;<span class="sep" aria-hidden="true">·</span>
+        ESTUDIO DE VIDA ÚTIL DE LOS ALIMENTOS&nbsp;<span class="sep" aria-hidden="true">·</span>
+        <span class="nowrap">15 Y 17 DE SEPTIEMBRE</span>
+      </p>
+      <a href="#curso" class="promo-cta">
+        <span>Ver curso</span>
+        <span class="promo-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .promo {
+    padding-top: 0.5rem;
+    animation: promo-in 0.55s var(--ease) both;
+  }
+
+  /* Panel del ancho del contenedor, como las franjas del resto de la web:
+     el verde no se derrama hasta el borde de la ventana. Verde de botón
+     (--color-primary): con texto blanco da 5.6:1. */
+  .promo-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem clamp(1rem, 2vw, 1.5rem);
+    min-height: 46px;
+    padding: 0.4rem 0.5rem 0.4rem 1.25rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-primary);
+  }
+
+  .promo-text {
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    color: #fff;
+    text-align: center;
+  }
+  .sep { margin-right: 0.35em; color: rgba(255, 255, 255, 0.6); }
+  .nowrap { white-space: nowrap; }
+
+  .promo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: none;
+    min-height: 34px;
+    padding: 0.35rem 0.95rem;
+    border-radius: var(--radius-full);
+    background: #fff;
+    color: var(--color-primary-deep);
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-semibold);
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: background var(--t), box-shadow var(--t);
+  }
+  .promo-arrow { transition: transform var(--t); }
+  .promo-cta:hover { background: var(--color-primary-soft); box-shadow: var(--shadow-sm); }
+  .promo-cta:hover .promo-arrow { transform: translateX(3px); }
+  .promo-cta:focus-visible { outline-color: #fff; }
+
+  /* El logo y «Inicio» llevan a #inicio (la portada), que ahora queda debajo
+     de esta barra: el salto la dejaba escondida tras la cabecera fija.
+     Un margen de anclaje enorme hace que el navegador se detenga en lo alto
+     de la página (no puede subir más), así la barra siempre queda a la vista.
+     Vive aquí para que desaparezca junto con la barra. */
+  :global(#inicio) { scroll-margin-top: 100vh; }
+
+  @keyframes promo-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Celular: el texto ocupa todo el ancho (dos líneas) y el botón va debajo,
+     centrado y con alto cómodo para el pulgar. */
+  @media (max-width: 720px) {
+    .promo { animation-duration: 0.4s; }
+    .promo-inner {
+      flex-direction: column;
+      padding: 0.7rem 1rem 0.75rem;
+    }
+    .promo-text { font-size: 0.6875rem; letter-spacing: 0.06em; text-wrap: balance; }
+    .promo-cta { min-height: 40px; padding-inline: 1.15rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .promo { animation: none; }
+    .promo-cta:hover .promo-arrow { transform: none; }
+  }
+</style>

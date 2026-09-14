@@ -1,0 +1,170 @@
+---
+// CursoDestacado.astro — campaña temporal del curso online, justo después de
+// la portada. El afiche es la pieza original del cliente (1080×1080) y se
+// muestra tal cual: sin recortes ni recreaciones en HTML.
+//
+// "Inscribirme" usa el mismo WhatsApp de toda la web (site.json), que además
+// es el número impreso en el afiche.
+import { waLink } from '../../data/site.ts';
+import Button from '../ui/Button.astro';
+
+const inscripcion = waLink(
+  'Hola J&M, quiero inscribirme en el curso online "Estudio de Vida Útil de los Alimentos" (15 y 17 de septiembre).'
+);
+---
+
+<section class="course" id="curso" aria-labelledby="curso-titulo">
+  <div class="container">
+    <div class="course-panel">
+      <div class="course-text">
+        <p class="eyebrow reveal">Próximo curso</p>
+
+        <h2 id="curso-titulo" class="reveal" data-delay="1">
+          Estudio de Vida Útil<br />de los Alimentos
+        </h2>
+
+        <p class="course-type reveal" data-delay="2">Curso taller online</p>
+
+        <ul class="course-meta reveal" data-delay="2">
+          <li>15 y 17 de septiembre</li>
+          <li>7:00 p.m. – 10:00 p.m.</li>
+        </ul>
+
+        <div class="course-cta reveal" data-delay="3">
+          <Button href={inscripcion} variant="primary" size="lg" iconLeft="whatsapp" external>
+            Inscribirme
+          </Button>
+          <Button href="#curso-afiche" variant="outline" size="lg">
+            Ver información
+          </Button>
+        </div>
+      </div>
+
+      <figure class="course-poster reveal" id="curso-afiche" data-delay="1">
+        <img
+          src="/images/cursos/vida-util-alimentos.jpg"
+          width="1080"
+          height="1080"
+          decoding="async"
+          alt="Afiche del curso taller online en vivo por Google Meet «Estudio de vida útil de los alimentos». Clase 01: martes 15 de setiembre, de 7 a 10 p.m. Clase 02: jueves 17 de setiembre, de 7 a 10 p.m. Docente: Ing. Mirella Chacón, especialista en desarrollo de productos. Regístrate por WhatsApp al +51 960 973 971. Costo: S/ 80, precio no incluye IGV."
+        />
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .course { padding-bottom: var(--section-y); }
+
+  /* Panel del ancho del contenedor con un lavado verde muy suave: basta para
+     que se lea como campaña destacada sin salirse de la paleta. */
+  .course-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: clamp(2rem, 4vw, 4rem);
+    padding: clamp(2rem, 4.5vw, 3.75rem);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    background: var(--color-primary-tint);
+  }
+
+  .course-text h2 {
+    margin-top: 0.6rem;
+    font-size: var(--fs-display);
+    line-height: var(--lh-tight);
+  }
+
+  .course-type {
+    margin-top: var(--space-2);
+    font-size: var(--fs-xl);
+    font-weight: var(--fw-medium);
+    color: var(--color-ink-soft);
+  }
+
+  .course-meta {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-line-2);
+  }
+  .course-meta li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: var(--fs-lg);
+    font-weight: var(--fw-semibold);
+    color: var(--color-ink);
+  }
+  /* El verde literal del logo, solo como detalle. */
+  .course-meta li::before {
+    content: '';
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-brand-green);
+  }
+
+  .course-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  .course-cta :global(.btn--outline) { background: #fff; }
+  .course-cta :global(.btn--outline:hover) { background: var(--color-primary-tint); }
+
+  /* ---------- Afiche ----------
+     Proporción original (width/height del <img> + height: auto de base.css):
+     nunca se deforma ni se recorta. */
+  .course-poster {
+    justify-self: end;
+    width: 100%;
+    max-width: 560px;
+    scroll-margin-top: calc(var(--header-h) + var(--space-2));
+  }
+  .course-poster img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.6s var(--ease), box-shadow 0.6s var(--ease);
+  }
+
+  /* Entrada del afiche: fundido con un desplazamiento lateral mínimo, en vez
+     del desplazamiento vertical del resto de .reveal. */
+  :global(.js) .course-poster.reveal { transform: translateX(22px); }
+  :global(.js) .course-poster.reveal.is-in { transform: none; }
+
+  /* Hover apenas perceptible, solo con ratón y en escritorio. */
+  @media (hover: hover) and (min-width: 961px) {
+    .course-poster:hover img {
+      transform: scale(1.015);
+      box-shadow: 0 8px 20px -8px rgba(18, 24, 28, 0.1), 0 48px 80px -40px rgba(18, 24, 28, 0.34);
+    }
+  }
+
+  /* ---------- TABLET Y CELULAR ----------
+     Una columna: información → botones → afiche. */
+  @media (max-width: 960px) {
+    .course-panel { grid-template-columns: 1fr; }
+    .course-poster { justify-self: center; max-width: 600px; }
+    /* Movimiento más corto en pantallas táctiles. */
+    :global(.js) .course-poster.reveal { transform: translateY(10px); }
+    :global(.js) .course-panel .reveal:not(.course-poster) { transform: translateY(10px); }
+    :global(.js) .course-panel .reveal.is-in:not(.course-poster) { transform: none; }
+  }
+
+  @media (max-width: 560px) {
+    .course-panel { padding: 1.75rem 1.15rem 1.15rem; border-radius: var(--radius-lg); }
+    .course-poster img { border-radius: var(--radius); }
+    .course-cta :global(.btn) { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .course-poster.reveal,
+    :global(.js) .course-panel .reveal:not(.course-poster) { opacity: 1; transform: none; transition: none; }
+    .course-poster img { transition: none; }
+  }
+</style>
