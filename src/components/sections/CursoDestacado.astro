@@ -1,7 +1,8 @@
 ---
 // CursoDestacado.astro — campaña temporal del curso online, justo después de
-// la portada. El afiche es la pieza original del cliente (1080×1080) y se
-// muestra tal cual: sin recortes ni recreaciones en HTML.
+// la portada. El afiche se recortó de una captura de historia que envió el
+// cliente (738×737, sin original a mayor resolución) y se muestra tal cual:
+// sin recreaciones en HTML. Si llega el archivo original, sustituirlo.
 //
 // "Inscribirme" usa el mismo WhatsApp de toda la web (site.json), que además
 // es el número impreso en el afiche.
@@ -9,7 +10,7 @@ import { waLink } from '../../data/site.ts';
 import Button from '../ui/Button.astro';
 
 const inscripcion = waLink(
-  'Hola J&M, quiero inscribirme en el curso online "Estudio de Vida Útil de los Alimentos" (15 y 17 de septiembre).'
+  'Hola J&M, quiero inscribirme en el curso online "Etiquetado de Alimentos" (29 y 30 de septiembre).'
 );
 ---
 
@@ -20,13 +21,13 @@ const inscripcion = waLink(
         <p class="eyebrow reveal">Próximo curso</p>
 
         <h2 id="curso-titulo" class="reveal" data-delay="1">
-          Estudio de Vida Útil<br />de los Alimentos
+          Etiquetado<br />de Alimentos
         </h2>
 
         <p class="course-type reveal" data-delay="2">Curso taller online</p>
 
         <ul class="course-meta reveal" data-delay="2">
-          <li>15 y 17 de septiembre</li>
+          <li>29 y 30 de septiembre</li>
           <li>7:00 p.m. – 10:00 p.m.</li>
         </ul>
 
@@ -42,11 +43,11 @@ const inscripcion = waLink(
 
       <figure class="course-poster reveal" id="curso-afiche" data-delay="1">
         <img
-          src="/images/cursos/vida-util-alimentos.jpg"
-          width="1080"
-          height="1080"
+          src="/images/cursos/etiquetado-alimentos.jpg"
+          width="738"
+          height="737"
           decoding="async"
-          alt="Afiche del curso taller online en vivo por Google Meet «Estudio de vida útil de los alimentos». Clase 01: martes 15 de setiembre, de 7 a 10 p.m. Clase 02: jueves 17 de setiembre, de 7 a 10 p.m. Docente: Ing. Mirella Chacón, especialista en desarrollo de productos. Regístrate por WhatsApp al +51 960 973 971. Costo: S/ 80, precio no incluye IGV."
+          alt="Afiche del curso taller online en vivo por Google Meet «Etiquetado de alimentos». Clase 01: martes 29 de setiembre, de 7 a 10 p.m. Clase 02: miércoles 30 de setiembre, de 7 a 10 p.m. Docente: Ing. Isabel Guerrero, magíster en Ciencia y Tecnología de Alimentos. Regístrate por WhatsApp al +51 960 973 971. Costo: S/ 80, precio no incluye IGV."
         />
       </figure>
     </div>
