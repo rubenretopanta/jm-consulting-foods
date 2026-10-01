@@ -1,13 +1,17 @@
 /* ============================================================
-   Widget «subir-imagen» para Decap CMS.
-   Un solo botón que abre el explorador de archivos de la
-   computadora y sube la foto directo a Cloudinary, sin la ventana
-   de la biblioteca ni inicio de sesión en Cloudinary.
+   Subida de imágenes del panel, sin la ventana de Cloudinary.
 
-   Usa el preset sin firma «jm_panel» (creado por API): solo acepta
-   jpg/png/webp, guarda en la carpeta jm-panel/ y limita las fotos a
-   2400 px. En el campo se guarda la URL https de Cloudinary, igual
-   que hacía el widget «image», así que el sitio no cambia.
+   1) Widget «subir-imagen»: un botón que abre el explorador de
+      archivos y sube la foto directo a Cloudinary. Lo usan todos los
+      campos de foto del config.yml.
+   2) Biblioteca «subir-directo»: reemplaza a la de Cloudinary en el
+      resto del panel (imágenes dentro del texto del blog y de los
+      servicios). Al pedir una imagen se abre también el explorador.
+
+   Ambos usan el preset sin firma «jm_panel» (creado por API): solo
+   acepta jpg/png/webp, guarda en la carpeta jm-panel/ y limita las
+   fotos a 2400 px. Se guarda la URL https de Cloudinary, igual que
+   antes, así que el sitio no cambia.
    ============================================================ */
 (function () {
   var h = window.h;
@@ -19,6 +23,46 @@
   var MAX_MB = 10; // límite por archivo del plan gratis de Cloudinary
   var TIPOS = ['image/jpeg', 'image/png', 'image/webp'];
 
+  // --- Lo común: validar y subir. Devuelve una promesa con la URL o
+  //     rechaza con un mensaje listo para mostrar al cliente. ---
+  function subir(file) {
+    if (TIPOS.indexOf(file.type) === -1) {
+      return Promise.reject('Ese archivo no es una imagen válida. Usa una foto JPG, PNG o WEBP.');
+    }
+    if (file.size > MAX_MB * 1024 * 1024) {
+      return Promise.reject('La imagen pesa más de ' + MAX_MB + ' MB. Usa una versión más liviana.');
+    }
+    var datos = new FormData();
+    datos.append('file', file);
+    datos.append('upload_preset', PRESET);
+    return fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/image/upload', { method: 'POST', body: datos })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res.secure_url) throw new Error();
+        return res.secure_url;
+      })
+      .catch(function () {
+        throw 'No se pudo subir la imagen. Revisa tu conexión a internet e inténtalo otra vez.';
+      });
+  }
+
+  function crearInput(onFile) {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = TIPOS.join(',');
+    input.style.display = 'none';
+    input.addEventListener('change', function () {
+      var file = input.files && input.files[0];
+      input.value = ''; // permite volver a elegir el mismo archivo
+      if (file) onFile(file);
+    });
+    document.body.appendChild(input);
+    return input;
+  }
+
+  // ==========================================================
+  //  1) WIDGET «subir-imagen»
+  // ==========================================================
   var Control = createClass({
     getInitialState: function () {
       return { subiendo: false, error: '' };
@@ -39,36 +83,13 @@
     elegido: function (ev) {
       var self = this;
       var file = ev.target.files && ev.target.files[0];
-      ev.target.value = ''; // permite volver a elegir el mismo archivo
+      ev.target.value = '';
       if (!file) return;
-
-      if (TIPOS.indexOf(file.type) === -1) {
-        self.setState({ error: 'Ese archivo no es una imagen válida. Usa una foto JPG, PNG o WEBP.' });
-        return;
-      }
-      if (file.size > MAX_MB * 1024 * 1024) {
-        self.setState({ error: 'La imagen pesa más de ' + MAX_MB + ' MB. Usa una versión más liviana.' });
-        return;
-      }
-
-      var datos = new FormData();
-      datos.append('file', file);
-      datos.append('upload_preset', PRESET);
       self.setState({ subiendo: true, error: '' });
-
-      fetch('https://api.cloudinary.com/v1_1/' + CLOUD + '/image/upload', { method: 'POST', body: datos })
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-          if (!res.secure_url) throw new Error(res.error && res.error.message);
-          self.setState({ subiendo: false });
-          self.props.onChange(res.secure_url);
-        })
-        .catch(function () {
-          self.setState({
-            subiendo: false,
-            error: 'No se pudo subir la imagen. Revisa tu conexión a internet e inténtalo otra vez.'
-          });
-        });
+      subir(file).then(
+        function (url) { self.setState({ subiendo: false }); self.props.onChange(url); },
+        function (msg) { self.setState({ subiendo: false, error: msg }); }
+      );
     },
 
     render: function () {
@@ -98,7 +119,7 @@
         h('input', {
           key: 'file',
           type: 'file',
-          accept: 'image/jpeg,image/png,image/webp',
+          accept: TIPOS.join(','),
           style: { display: 'none' },
           ref: function (el) { self.input = el; },
           onChange: this.elegido
@@ -121,8 +142,51 @@
     '.si-btn:hover{background:#1A5D14}',
     '.si-btn:disabled{background:#8a959c;cursor:wait}',
     '.si-quitar{padding:0;border:0;background:none;color:#c0392b;font-size:14px;text-decoration:underline;cursor:pointer}',
-    '.si-error{margin:10px 0 0;color:#c0392b;font-size:14px;font-weight:600}'
+    '.si-error{margin:10px 0 0;color:#c0392b;font-size:14px;font-weight:600}',
+    // Aviso flotante de la biblioteca mientras sube una imagen del texto.
+    '.si-aviso{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:99999;padding:12px 22px;border-radius:999px;background:#12181C;color:#fff;font:600 15px/1.3 system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)}'
   ].join('');
 
   CMS.registerWidget('subir-imagen', Control, Preview);
+
+  // ==========================================================
+  //  2) BIBLIOTECA «subir-directo»
+  //  Decap llama a show() cuando el cliente pide una imagen (por
+  //  ejemplo, el bloque «Imagen» del texto del blog). En vez de la
+  //  ventana de Cloudinary, se abre el explorador de archivos.
+  // ==========================================================
+  CMS.registerMediaLibrary({
+    name: 'subir-directo',
+    init: function (opts) {
+      var handleInsert = opts.handleInsert;
+      var aviso = null;
+
+      function avisar(texto) {
+        if (!aviso) {
+          var css = document.createElement('style');
+          css.textContent = CSS;
+          document.head.appendChild(css);
+          aviso = document.createElement('div');
+          aviso.className = 'si-aviso';
+          document.body.appendChild(aviso);
+        }
+        aviso.textContent = texto;
+        aviso.style.display = texto ? 'block' : 'none';
+      }
+
+      var input = crearInput(function (file) {
+        avisar('Subiendo imagen…');
+        subir(file).then(
+          function (url) { avisar(''); handleInsert(url); },
+          function (msg) { avisar(''); window.alert(msg); }
+        );
+      });
+
+      return Promise.resolve({
+        show: function () { input.click(); },
+        hide: function () {},
+        enableStandalone: function () { return false; }
+      });
+    }
+  });
 })();

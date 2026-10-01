@@ -27,13 +27,13 @@ site_url: https://jm-consulting-foods.netlify.app
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-# --- Biblioteca de imágenes: CLOUDINARY ---
-# api_key es pública (no es secreta). El API Secret NO va aquí, va en el .env.
+# --- Biblioteca de imágenes: subida directa a CLOUDINARY ---
+# «subir-directo» está en public/admin/subir-imagen.js: al pedir una imagen
+# (p. ej. dentro del texto del blog) abre el explorador de archivos y sube a
+# Cloudinary (cloud aox8u9aa, preset sin firma jm_panel). Sin la ventana de
+# la biblioteca de Cloudinary ni inicio de sesión. El API Secret va en el .env.
 media_library:
-  name: cloudinary
-  config:
-    cloud_name: aox8u9aa
-    api_key: "835665922119437"
+  name: subir-directo
 
 collections:
   # ----------------------------------------------------------
