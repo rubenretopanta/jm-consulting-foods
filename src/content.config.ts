@@ -34,4 +34,20 @@ const clientes = defineCollection({
   }),
 });
 
-export const collections = { services, blog, clientes };
+// Cursos: campaña del «Próximo curso» (barra bajo la cabecera + sección tras
+// la portada). Se muestra uno solo: ver src/data/curso.ts.
+const cursos = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/cursos' }),
+  schema: z.object({
+    titulo: z.string(),                // nombre del curso
+    tipo: z.string(),                  // ej. «Curso taller online»
+    fechas: z.string(),                // texto libre: «7 y 8 de octubre»
+    horario: z.string().optional(),    // texto libre: «7:00 p.m. – 10:00 p.m.»
+    fechaInicio: z.coerce.date(),      // solo para elegir el más reciente
+    afiche: z.string(),                // URL de Cloudinary o ruta local
+    descripcionAfiche: z.string().optional(), // texto alternativo del afiche
+    mostrar: z.boolean().default(true),
+  }),
+});
+
+export const collections = { services, blog, clientes, cursos };

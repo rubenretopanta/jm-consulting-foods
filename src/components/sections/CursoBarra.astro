@@ -1,18 +1,23 @@
 ---
-// CursoBarra.astro — barra de anuncio del curso online, justo bajo la
-// cabecera y antes de la portada. Campaña temporal: al terminar el curso se
-// quita esta pieza y CursoDestacado.astro de index.astro, y nada más cambia.
+// CursoBarra.astro — barra de anuncio del curso, justo bajo la cabecera y
+// antes de la portada. Lee el mismo curso que CursoDestacado.astro (colección
+// «Cursos» del panel); sin curso visible, no se renderiza.
+import { getCursoActivo } from '../../data/curso.ts';
+
+const curso = await getCursoActivo();
+const may = (t: string) => t.toLocaleUpperCase('es-PE');
 ---
 
+{curso && (
 <aside class="promo" aria-label="Anuncio del próximo curso">
   <div class="container">
     <div class="promo-inner">
       <p class="promo-text">
         <!-- El «·» va pegado a la palabra anterior (&nbsp;) y la fecha no se
              parte: en celular las líneas nunca empiezan por un separador. -->
-        CURSO ONLINE&nbsp;<span class="sep" aria-hidden="true">·</span>
-        ENVASES Y EMBALAJES DE ALIMENTOS&nbsp;<span class="sep" aria-hidden="true">·</span>
-        <span class="nowrap">7 Y 8 DE OCTUBRE</span>
+        {may(curso.tipo)}&nbsp;<span class="sep" aria-hidden="true">·</span>
+        {may(curso.titulo)}&nbsp;<span class="sep" aria-hidden="true">·</span>
+        <span class="nowrap">{may(curso.fechas)}</span>
       </p>
       <a href="#curso" class="promo-cta">
         <span>Ver curso</span>
@@ -21,6 +26,7 @@
     </div>
   </div>
 </aside>
+)}
 
 <style>
   .promo {

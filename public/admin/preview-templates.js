@@ -336,10 +336,51 @@
     }
   });
 
+  // ==========================================================
+  //  CURSOS (barra verde + sección «Próximo curso»)
+  // ==========================================================
+  var CursoPreview = createClass({
+    render: function () {
+      var e = this.props.entry;
+      var afiche = val(e, ['afiche']);
+      var img = afiche ? this.props.getAsset(afiche) : null;
+      var horario = val(e, ['horario']);
+      var visible = e.getIn(['data', 'mostrar']) !== false;
+      function may(t) { return String(t || '').toLocaleUpperCase('es-PE'); }
+      return el('div', 'pv', [
+        h('div', { key: 'wrap', className: 'pv-section' }, [
+          el('div', 'pv-note', visible
+            ? 'Así se verá el curso en la página de inicio:'
+            : 'Este curso está OCULTO («Mostrar en la web» desactivado): no aparecerá en el sitio.'),
+          h('div', { key: 'bar', className: 'pv-course-bar' }, [
+            h('span', { key: 't' }, [may(val(e, ['tipo'])), may(val(e, ['titulo'])), may(val(e, ['fechas']))].join(' · ')),
+            h('span', { key: 'b', className: 'pv-course-bar-btn' }, 'Ver curso →')
+          ]),
+          h('div', { key: 'panel', className: 'pv-course' }, [
+            h('div', { key: 'txt' }, [
+              h('p', { key: 'e', className: 'pv-eyebrow' }, 'Próximo curso'),
+              h('h2', { key: 'h' }, val(e, ['titulo'])),
+              h('p', { key: 'ty', className: 'pv-course-type' }, val(e, ['tipo'])),
+              h('ul', { key: 'm', className: 'pv-course-meta' }, [
+                h('li', { key: 'f' }, val(e, ['fechas'])),
+                horario ? h('li', { key: 'ho' }, horario) : null
+              ]),
+              h('span', { key: 'cta', className: 'pv-course-btn' }, 'Inscribirme')
+            ]),
+            img
+              ? h('img', { key: 'img', className: 'pv-course-poster', src: img.toString(), alt: '' })
+              : h('div', { key: 'ph', className: 'pv-course-poster pv-course-empty' }, 'Aquí va el afiche')
+          ])
+        ])
+      ]);
+    }
+  });
+
   // --- Registrar todas las plantillas ---
   CMS.registerPreviewTemplate('inicio', InicioPreview);
   CMS.registerPreviewTemplate('servicios', ServicioPreview);
   CMS.registerPreviewTemplate('blog', BlogPreview);
   CMS.registerPreviewTemplate('clientes', ClientePreview);
+  CMS.registerPreviewTemplate('cursos', CursoPreview);
   CMS.registerPreviewTemplate('empresa', EmpresaPreview);
 })();

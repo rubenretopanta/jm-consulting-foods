@@ -248,3 +248,38 @@ body {
 .pv-cta .pv-eyebrow { color: var(--color-accent); }
 .pv-cta-img { width: 100%; height: 100%; min-height: 180px; object-fit: cover; display: block; }
 @media (max-width: 700px) { .pv-cta { grid-template-columns: 1fr; } }
+
+/* ---------- CURSOS ---------- */
+.pv-course-bar {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 16px;
+  margin-top: 16px; padding: 8px 10px 8px 18px; border-radius: var(--radius-sm);
+  background: var(--color-primary); color: #fff;
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-align: center;
+}
+.pv-course-bar-btn {
+  padding: 5px 14px; border-radius: var(--radius-full); background: #fff;
+  color: var(--color-primary-deep); font-size: 0.85rem; letter-spacing: 0;
+}
+.pv-course {
+  display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 28px; align-items: center;
+  margin-top: 16px; padding: 28px; border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg); background: var(--color-primary-tint);
+}
+.pv-course h2 { font-size: 2.2rem; margin: 8px 0 0; text-wrap: balance; }
+.pv-course-type { font-size: 1.15rem; font-weight: 500; color: var(--color-ink-soft); margin: 12px 0 0; }
+.pv-course-meta { list-style: none; margin: 16px 0 0; padding: 16px 0 0; border-top: 1px solid var(--color-line-2); }
+.pv-course-meta li { font-weight: 600; font-size: 1.05rem; margin: 4px 0; }
+.pv-course-meta li::before {
+  content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 10px;
+  border-radius: 50%; background: var(--color-brand-green); vertical-align: middle;
+}
+.pv-course-btn {
+  display: inline-block; margin-top: 22px; padding: 12px 22px; border-radius: var(--radius-full);
+  background: var(--color-primary); color: #fff; font-weight: 600;
+}
+.pv-course-poster { width: 100%; height: auto; display: block; border-radius: var(--radius); box-shadow: var(--shadow); }
+.pv-course-empty {
+  aspect-ratio: 1; display: grid; place-items: center; box-shadow: none;
+  border: 2px dashed var(--color-line-2); color: var(--color-faint); background: #fff;
+}
+@media (max-width: 640px) { .pv-course { grid-template-columns: 1fr; } }
