@@ -103,7 +103,7 @@ collections:
                 widget: "list"
                 hint: "Las fotos del banner. Van cambiando solas cada 5 segundos, en este orden. Recomendado: fotos horizontales y anchas (mínimo 1600 px). Si dejas una sola, el banner se queda quieto con esa."
                 fields:
-                  - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de fondo del banner (se sube a Cloudinary)." }
+                  - { label: "Foto", name: "imagen", widget: "subir-imagen", hint: "La foto de fondo del banner (se sube a Cloudinary)." }
                   - { label: "Descripción de la foto", name: "texto", widget: "string", required: false, hint: "Qué se ve en la foto. No se muestra en pantalla: sirve para los lectores de pantalla y para Google." }
 
           - label: "Proceso"
@@ -140,7 +140,7 @@ collections:
               - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título." }
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección de beneficios." }
               - { label: "Subtítulo", name: "subtitulo", widget: "text", hint: "Frase de apoyo debajo del título." }
-              - { label: "Foto", name: "imagen", widget: "image", required: false, hint: "Foto que acompaña la lista, al lado derecho. Opcional." }
+              - { label: "Foto", name: "imagen", widget: "subir-imagen", required: false, hint: "Foto que acompaña la lista, al lado derecho. Opcional." }
               - label: "Lista de beneficios"
                 name: "lista"
                 widget: "list"
@@ -154,12 +154,12 @@ collections:
             fields:
               - { label: "Antetítulo", name: "eyebrow", widget: "string", hint: "Texto pequeño en verde y mayúsculas, encima del título de la sección." }
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande de la sección Nosotros." }
-              - { label: "Foto del equipo", name: "foto", widget: "image", required: false, hint: "Foto grande del equipo, al lado izquierdo de la sección. Si la dejas vacía, no se muestra." }
+              - { label: "Foto del equipo", name: "foto", widget: "subir-imagen", required: false, hint: "Foto grande del equipo, al lado izquierdo de la sección. Si la dejas vacía, no se muestra." }
               - { label: "Quiénes somos", name: "quienesSomos", widget: "text", hint: "Párrafo que presenta al equipo. Aparece al lado de la foto." }
               - { label: "Título de la misión", name: "misionTitulo", widget: "string", hint: "Etiqueta del recuadro verde claro. Normalmente: Misión" }
               - { label: "Misión", name: "mision", widget: "text", required: false, hint: "Texto de la misión, dentro del recuadro verde claro. Si lo dejas vacío, el recuadro no se muestra." }
               - { label: "Iniciales (avatar)", name: "consultoraIniciales", widget: "string", hint: "1 o 2 letras que se muestran en el círculo amarillo (avatar). Solo se usan si NO hay foto de la consultora. Ej: IG" }
-              - { label: "Foto de la consultora", name: "consultoraFoto", widget: "image", required: false, hint: "Foto de la consultora, en el círculo de la tarjeta verde. Recomendado: imagen cuadrada. Si la dejas vacía, se muestran las iniciales." }
+              - { label: "Foto de la consultora", name: "consultoraFoto", widget: "subir-imagen", required: false, hint: "Foto de la consultora, en el círculo de la tarjeta verde. Recomendado: imagen cuadrada. Si la dejas vacía, se muestran las iniciales." }
               - { label: "Nombre de la consultora", name: "consultoraNombre", widget: "string", hint: "Nombre que aparece en la tarjeta verde de la consultora." }
               - { label: "Grado (ej. Mag.)", name: "consultoraGrado", widget: "string", hint: "Grado académico entre paréntesis, se muestra al lado del nombre en letra más tenue. Ej: (Mag.)" }
               - { label: "Rol", name: "consultoraRol", widget: "string", hint: "Cargo o rol, en amarillo debajo del nombre. Ej: Consultora principal" }
@@ -182,7 +182,7 @@ collections:
               - { label: "Título", name: "titulo", widget: "string", hint: "Título grande del bloque." }
               - { label: "Subtítulo", name: "subtitulo", widget: "text", required: false, hint: "Frase corta de apoyo debajo del título." }
               - { label: "Texto del botón", name: "boton", widget: "string", hint: "Texto del botón verde. Abre WhatsApp con el número de la empresa: no hace falta escribir ningún número aquí." }
-              - { label: "Foto", name: "imagen", widget: "image", required: false, hint: "Foto que acompaña al bloque, a la derecha (arriba en celular). Recomendado: horizontal y ancha. Si la dejas vacía, el bloque se muestra solo con el texto." }
+              - { label: "Foto", name: "imagen", widget: "subir-imagen", required: false, hint: "Foto que acompaña al bloque, a la derecha (arriba en celular). Recomendado: horizontal y ancha. Si la dejas vacía, el bloque se muestra solo con el texto." }
 
           - label: "Sectores"
             name: "sectores"
@@ -211,7 +211,7 @@ collections:
                 widget: "list"
                 hint: "Las fotos del carrusel, en este orden. Pasan solas cada 3 segundos: se ven 3 a la vez en computadora y una en celular. Puedes agregar, quitar o reordenar. Recomendado: fotos verticales."
                 fields:
-                  - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de la capacitación (se sube a Cloudinary)." }
+                  - { label: "Foto", name: "imagen", widget: "subir-imagen", hint: "La foto de la capacitación (se sube a Cloudinary)." }
                   - { label: "Pie de foto", name: "texto", widget: "string", required: false, hint: "Texto corto debajo de la foto. Opcional: si lo dejas vacío, la foto se muestra sola." }
 
           - label: "Encabezado de Clientes"
@@ -237,7 +237,7 @@ collections:
                 widget: "list"
                 hint: "Cada foto se muestra como una tarjeta. Puedes agregar, quitar o reordenar. Recomendado: fotos verticales."
                 fields:
-                  - { label: "Foto", name: "imagen", widget: "image", hint: "La foto de la feria o evento (se sube a Cloudinary)." }
+                  - { label: "Foto", name: "imagen", widget: "subir-imagen", hint: "La foto de la feria o evento (se sube a Cloudinary)." }
                   - { label: "Pie de foto", name: "texto", widget: "string", required: false, hint: "Texto corto debajo de la foto. Opcional: si lo dejas vacío, la foto se muestra sola." }
 
           - label: "Contacto"
@@ -267,7 +267,7 @@ collections:
     fields:
       - { label: "Título", name: "title", widget: "string", hint: "Nombre del servicio. Es el título de la tarjeta (en verde)." }
       - { label: "Descripción", name: "description", widget: "text", hint: "Texto corto que explica el servicio, dentro de la tarjeta." }
-      - { label: "Foto", name: "image", widget: "image", required: false, hint: "Foto que aparece arriba de la tarjeta. Si la dejas vacía, la tarjeta se muestra solo con texto." }
+      - { label: "Foto", name: "image", widget: "subir-imagen", required: false, hint: "Foto que aparece arriba de la tarjeta. Si la dejas vacía, la tarjeta se muestra solo con texto." }
       - label: "Qué incluye"
         name: "bullets"
         widget: "list"
@@ -289,7 +289,7 @@ collections:
     editor: { preview: true }
     fields:
       - { label: "Nombre", name: "name", widget: "string", hint: "Nombre del cliente o de la empresa. Se muestra debajo de la foto en la sección Clientes." }
-      - { label: "Foto o logo", name: "image", widget: "image", required: false, hint: "Foto del cliente o su logo (se sube a Cloudinary). Se muestra en un círculo. Recomendado: imagen cuadrada." }
+      - { label: "Foto o logo", name: "image", widget: "subir-imagen", required: false, hint: "Foto del cliente o su logo (se sube a Cloudinary). Se muestra en un círculo. Recomendado: imagen cuadrada." }
       - { label: "Rubro o descripción", name: "description", widget: "string", required: false, hint: "Texto corto opcional debajo del nombre. Ej: Panadería · Lima" }
       - { label: "Orden", name: "order", widget: "number", value_type: "int", required: false, hint: "Controla la posición. Menor número = aparece primero." }
       - { label: "Borrador (no mostrar aún)", name: "draft", widget: "boolean", default: false, required: false, hint: "Actívalo para guardar el cliente SIN mostrarlo todavía en el sitio." }
@@ -317,7 +317,7 @@ collections:
       - { label: "Fechas (como se leen)", name: "fechas", widget: "string", hint: "Las fechas de las clases tal como quieres que se lean. Ej: 7 y 8 de octubre" }
       - { label: "Horario", name: "horario", widget: "string", required: false, hint: "Ej: 7:00 p.m. – 10:00 p.m. Si lo dejas vacío, no se muestra." }
       - { label: "Fecha de la primera clase", name: "fechaInicio", widget: "datetime", date_format: "DD/MM/YYYY", format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "Elige el día de la primera clase en el calendario. No se muestra en la web: sirve para que, si hay varios cursos visibles, salga el más reciente." }
-      - { label: "Afiche", name: "afiche", widget: "image", hint: "La imagen del afiche (cuadrada o vertical). Se muestra completa, sin recortes. Sube el archivo original, no una captura de pantalla, para que se vea nítido." }
+      - { label: "Afiche", name: "afiche", widget: "subir-imagen", hint: "Haz clic en «Subir imagen» y elige el afiche desde tu computadora (JPG o PNG). Se muestra completo, sin recortes. Usa el archivo original, no una captura de pantalla, para que se vea nítido." }
       - { label: "Datos del afiche (texto)", name: "descripcionAfiche", widget: "text", required: false, hint: "Escribe lo que dice el afiche: docente, días, horario, costo. No se ve en pantalla, pero lo leen Google y las personas con lectores de pantalla." }
       - { label: "Mostrar en la web", name: "mostrar", widget: "boolean", default: true, hint: "Desactívalo para ocultar el curso sin borrarlo." }
 
@@ -335,6 +335,6 @@ collections:
       - { label: "Título", name: "title", widget: "string", hint: "Título del artículo. Aparece grande arriba del artículo y en el listado del blog." }
       - { label: "Resumen", name: "description", widget: "text", hint: "Frase corta que resume el artículo. Se muestra debajo del título y en el listado del blog." }
       - { label: "Fecha", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, hint: "Fecha de publicación del artículo." }
-      - { label: "Foto de portada", name: "image", widget: "image", required: false, hint: "Imagen principal del artículo (se sube a Cloudinary). Opcional: si la dejas vacía, el artículo se muestra sin foto." }
+      - { label: "Foto de portada", name: "image", widget: "subir-imagen", required: false, hint: "Imagen principal del artículo (se sube a Cloudinary). Opcional: si la dejas vacía, el artículo se muestra sin foto." }
       - { label: "Borrador (no publicar aún)", name: "draft", widget: "boolean", default: false, required: false, hint: "Actívalo para guardar el artículo SIN publicarlo todavía en el sitio." }
       - { label: "Contenido", name: "body", widget: "markdown", hint: "El cuerpo del artículo. Puedes usar títulos, negritas, listas e imágenes." }
