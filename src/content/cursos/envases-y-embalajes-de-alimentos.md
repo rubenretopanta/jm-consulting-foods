@@ -1,5 +1,5 @@
 ---
-titulo: Envases y Embalajes de Alimentos
+titulo: Envases y Embalajes de Alimentos María y Mateo y Juan
 tipo: Curso taller online
 fechas: 7 y 8 de octubre
 horario: 7:00 p.m. – 10:00 p.m.
