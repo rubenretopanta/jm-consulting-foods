@@ -296,13 +296,13 @@ collections:
 
   # ----------------------------------------------------------
   # 5) CURSOS (barra de anuncio + sección «Próximo curso» del inicio)
-  #    Se muestra uno solo: el visible con la fecha de inicio más reciente.
-  #    Sin cursos visibles, la barra y la sección desaparecen.
+  #    Se muestra uno solo: el visible y vigente que empieza antes.
+  #    Pasado su último día, cada curso desaparece solo de la web.
   # ----------------------------------------------------------
   - name: "cursos"
     label: "Cursos"
     label_singular: "Curso"
-    description: "El curso aparece arriba en la página de inicio (barra verde y sección «Próximo curso»). Si hay varios marcados como visibles, solo se muestra el de fecha de inicio más reciente. Cuando un curso termine, elimínalo."
+    description: "El curso aparece arriba en la página de inicio (barra verde y sección «Próximo curso»). Al terminar su último día desaparece solo de la web, no hace falta borrarlo. Puedes dejar varios cursos programados: se muestra el que empieza antes y, cuando termina, sale el siguiente."
     folder: "src/content/cursos"
     create: true
     delete: true
@@ -316,7 +316,8 @@ collections:
       - { label: "Tipo de curso", name: "tipo", widget: "string", default: "Curso taller online", hint: "Aparece debajo del nombre y al inicio de la barra verde. Ej: Curso taller online" }
       - { label: "Fechas (como se leen)", name: "fechas", widget: "string", hint: "Las fechas de las clases tal como quieres que se lean. Ej: 7 y 8 de octubre" }
       - { label: "Horario", name: "horario", widget: "string", required: false, hint: "Ej: 7:00 p.m. – 10:00 p.m. Si lo dejas vacío, no se muestra." }
-      - { label: "Fecha de la primera clase", name: "fechaInicio", widget: "datetime", date_format: "DD/MM/YYYY", format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "Elige el día de la primera clase en el calendario. No se muestra en la web: sirve para que, si hay varios cursos visibles, salga el más reciente." }
+      - { label: "Fecha de la primera clase", name: "fechaInicio", widget: "datetime", date_format: "DD/MM/YYYY", format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "Elige el día de la primera clase en el calendario. No se muestra en la web: sirve para ordenar los cursos programados." }
+      - { label: "Fecha de la última clase", name: "fechaFin", widget: "datetime", date_format: "DD/MM/YYYY", format: "YYYY-MM-DD", time_format: false, picker_utc: true, required: false, hint: "Elige el día de la última clase. Al terminar ese día (hora de Perú) el curso desaparece solo de la web. Si el curso es de un solo día, déjalo vacío." }
       - { label: "Afiche", name: "afiche", widget: "subir-imagen", hint: "Haz clic en «Subir imagen» y elige el afiche desde tu computadora (JPG o PNG). Se muestra completo, sin recortes. Usa el archivo original, no una captura de pantalla, para que se vea nítido." }
       - { label: "Datos del afiche (texto)", name: "descripcionAfiche", widget: "text", required: false, hint: "Escribe lo que dice el afiche: docente, días, horario, costo. No se ve en pantalla, pero lo leen Google y las personas con lectores de pantalla." }
       - { label: "Mostrar en la web", name: "mostrar", widget: "boolean", default: true, hint: "Desactívalo para ocultar el curso sin borrarlo." }

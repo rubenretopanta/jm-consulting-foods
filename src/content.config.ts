@@ -43,7 +43,8 @@ const cursos = defineCollection({
     tipo: z.string(),                  // ej. «Curso taller online»
     fechas: z.string(),                // texto libre: «7 y 8 de octubre»
     horario: z.string().optional(),    // texto libre: «7:00 p.m. – 10:00 p.m.»
-    fechaInicio: z.coerce.date(),      // solo para elegir el más reciente
+    fechaInicio: z.coerce.date(),      // ordena los cursos programados
+    fechaFin: z.coerce.date().optional(), // último día; pasado este, el curso se oculta solo
     afiche: z.string(),                // URL de Cloudinary o ruta local
     descripcionAfiche: z.string().optional(), // texto alternativo del afiche
     mostrar: z.boolean().default(true),

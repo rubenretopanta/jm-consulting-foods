@@ -2,14 +2,14 @@
 // CursoBarra.astro — barra de anuncio del curso, justo bajo la cabecera y
 // antes de la portada. Lee el mismo curso que CursoDestacado.astro (colección
 // «Cursos» del panel); sin curso visible, no se renderiza.
-import { getCursoActivo } from '../../data/curso.ts';
+import { getCursoActivo, ultimoDia } from '../../data/curso.ts';
 
 const curso = await getCursoActivo();
 const may = (t: string) => t.toLocaleUpperCase('es-PE');
 ---
 
-{curso && (
-<aside class="promo" aria-label="Anuncio del próximo curso">
+{curso && (<>
+<aside class="promo" aria-label="Anuncio del próximo curso" data-curso-hasta={ultimoDia(curso)}>
   <div class="container">
     <div class="promo-inner">
       <p class="promo-text">
@@ -26,7 +26,13 @@ const may = (t: string) => t.toLocaleUpperCase('es-PE');
     </div>
   </div>
 </aside>
-)}
+<!-- Si el curso terminó y el sitio aún no se reconstruyó, se quita al cargar. -->
+<script is:inline>
+  (function (el) {
+    if (Date.now() > Date.parse(el.dataset.cursoHasta + 'T23:59:59.999-05:00')) el.remove();
+  })(document.currentScript.previousElementSibling);
+</script>
+</>)}
 
 <style>
   .promo {

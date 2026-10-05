@@ -1,0 +1,23 @@
+# Reconstruye el sitio en Netlify cada día a las 00:05 de Lima, para que los
+# cursos cuyo último día ya pasó salgan del HTML (ver src/data/curso.ts).
+# Necesita el secreto NETLIFY_BUILD_HOOK con la URL de un build hook de Netlify.
+name: Rebuild diario
+
+on:
+  schedule:
+    - cron: '5 5 * * *'   # 05:05 UTC = 00:05 en Lima (UTC−5)
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar build en Netlify
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::warning::Falta el secreto NETLIFY_BUILD_HOOK; no se reconstruyó el sitio."
+            exit 0
+          fi
+          curl -fsS -X POST -d '{}' "$HOOK"

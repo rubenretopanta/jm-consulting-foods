@@ -7,7 +7,7 @@
 //
 // "Inscribirme" usa el mismo WhatsApp de toda la web (site.json).
 import { waLink } from '../../data/site.ts';
-import { getCursoActivo, urlAfiche } from '../../data/curso.ts';
+import { getCursoActivo, ultimoDia, urlAfiche } from '../../data/curso.ts';
 import Button from '../ui/Button.astro';
 
 const curso = await getCursoActivo();
@@ -19,8 +19,8 @@ const alt = curso
   : '';
 ---
 
-{curso && (
-<section class="course" id="curso" aria-labelledby="curso-titulo">
+{curso && (<>
+<section class="course" id="curso" aria-labelledby="curso-titulo" data-curso-hasta={ultimoDia(curso)}>
   <div class="container">
     <div class="course-panel">
       <div class="course-text">
@@ -51,7 +51,13 @@ const alt = curso
     </div>
   </div>
 </section>
-)}
+<!-- Si el curso terminó y el sitio aún no se reconstruyó, se quita al cargar. -->
+<script is:inline>
+  (function (el) {
+    if (Date.now() > Date.parse(el.dataset.cursoHasta + 'T23:59:59.999-05:00')) el.remove();
+  })(document.currentScript.previousElementSibling);
+</script>
+</>)}
 
 <style>
   .course { padding-bottom: var(--section-y); }
