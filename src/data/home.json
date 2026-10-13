@@ -1,59 +1,10 @@
 {
-  "hero": {
-    "tituloLinea1": "Tu negocio de alimentos,",
-    "tituloDestacado": "en regla y certificado.",
-    "botonWhatsapp": "Conversemos por WhatsApp",
-    "botonServicios": "Ver servicios",
-    "puntos": [
-      {
-        "texto": "Especialistas en calidad e inocuidad alimentaria"
-      },
-      {
-        "texto": "Asesoría personalizada según tu rubro"
-      },
-      {
-        "texto": "Lima, Perú"
-      }
-    ],
-    "fotos": [
-      {
-        "imagen": "/images/portada/supervision-linea-embotellado.jpg",
-        "texto": "Supervisión de la línea de embotellado en planta"
-      },
-      {
-        "imagen": "/images/portada/seleccion-vegetales.jpg",
-        "texto": "Selección y acondicionado de vegetales en línea de proceso"
-      },
-      {
-        "imagen": "/images/portada/envasado-bandejas.jpg",
-        "texto": "Envasado de bandejas en línea de producción"
-      },
-      {
-        "imagen": "/images/portada/maduracion-jamones.jpg",
-        "texto": "Cámara de maduración de jamones"
-      },
-      {
-        "imagen": "/images/portada/embotellado-bebidas.jpg",
-        "texto": "Línea de embotellado en planta de bebidas"
-      },
-      {
-        "imagen": "/images/portada/planta-procesamiento.jpg",
-        "texto": "Sala de proceso en planta de alimentos"
-      },
-      {
-        "imagen": "/images/fotos/planta-inspeccion.jpg",
-        "texto": "Control de proceso en planta"
-      },
-      {
-        "imagen": "/images/fotos/linea-produccion.jpg",
-        "texto": "Línea de producción de conservas"
-      }
-    ]
-  },
-  "serviciosSeccion": {
-    "eyebrow": "Lo que hacemos",
-    "titulo": "Servicios que ponen tu operación a la altura de la norma",
-    "subtitulo": "Soluciones adaptadas al rubro de tu empresa, desde el diagnóstico hasta la certificación."
+  "ctaIntermedio": {
+    "eyebrow": "¿Necesitas orientación?",
+    "titulo": "Cuéntanos qué necesita tu empresa",
+    "subtitulo": "Recibe una propuesta personalizada, sin compromiso.",
+    "boton": "Hablar por WhatsApp",
+    "imagen": "/images/fotos/capacitacion-aula.jpg"
   },
   "beneficios": {
     "eyebrow": "Por qué implementarlo",
@@ -70,35 +21,30 @@
       "Promover el cumplimiento con los requisitos de la legislación."
     ]
   },
-  "nosotros": {
-    "eyebrow": "Quiénes somos",
-    "titulo": "Asesoría personalizada, según el rubro de tu empresa",
-    "foto": "/images/fotos/equipo.jpg",
-    "quienesSomos": "Somos un equipo de profesionales multidisciplinarios, especializados en normativas nacionales e internacionales con enfoque en calidad e inocuidad alimentaria.",
-    "misionTitulo": "Misión",
-    "mision": "Convertirnos en su socio estratégico para solucionar problemas relacionados en mantener la inocuidad alimentaria, garantizando confianza en el consumidor final.",
-    "consultoraIniciales": "IG",
-    "consultoraFoto": "/images/fotos/consultora.jpg",
-    "consultoraNombre": "Ing. Isabel Guerrero",
-    "consultoraGrado": "(Mag.)",
-    "consultoraRol": "Consultora principal",
-    "consultoraBio": "Te asesora directamente una especialista en gestión de la calidad e inocuidad alimentaria, con conocimiento de la normativa peruana vigente y trato cercano con cada cliente.",
-    "diferenciadores": [
+  "ferias": {
+    "eyebrow": "Dónde nos encuentras",
+    "titulo": "Presentes en ferias y ruedas de negocio",
+    "subtitulo": "Acompañamos a productores y empresas de alimentos en los espacios donde su producto se muestra al mercado.",
+    "fotos": [
       {
-        "titulo": "Acompañamiento real",
-        "texto": "No te entregamos solo documentos: te guiamos hasta que logras tu objetivo."
+        "imagen": "/images/ferias/feria-superalimentos.jpg",
+        "texto": "En feria, con un productor de superalimentos peruanos"
       },
       {
-        "titulo": "Soluciones a tu medida",
-        "texto": "Adaptamos cada sistema al tamaño y la realidad de tu negocio."
+        "imagen": "/images/ferias/feria-asesoria-stand.jpg",
+        "texto": "Asesoría en el stand, producto en mano"
       },
       {
-        "titulo": "Cumplimiento garantizado",
-        "texto": "Trabajamos en base a la normativa de DIGESA y estándares internacionales."
+        "imagen": "/images/ferias/feria-alimentos-andinos.jpg",
+        "texto": "Acompañando a una empresa de alimentos andinos"
       },
       {
-        "titulo": "Empresa formal y verificable",
-        "texto": "RUC 20607994359 · activa, habida y registrada como MYPE."
+        "imagen": "/images/ferias/feria-cafe.jpg",
+        "texto": "Con productores de café peruano"
+      },
+      {
+        "imagen": "/images/ferias/feria-productos-naturales.jpg",
+        "texto": "Con una empresa de productos naturales"
       }
     ]
   },
@@ -129,12 +75,19 @@
       }
     ]
   },
-  "ctaIntermedio": {
-    "eyebrow": "¿Necesitas orientación?",
-    "titulo": "Cuéntanos qué necesita tu empresa",
-    "subtitulo": "Recibe una propuesta personalizada, sin compromiso.",
-    "boton": "Hablar por WhatsApp",
-    "imagen": "/images/fotos/capacitacion-aula.jpg"
+  "contacto": {
+    "eyebrow": "Hablemos",
+    "titulo": "Cuéntanos qué necesita tu negocio",
+    "subtitulo": "Te respondemos con una propuesta a tu medida, sin compromiso.",
+    "opcionesServicio": [
+      "Registro Sanitario (DIGESA)",
+      "Plan HACCP",
+      "Buenas Prácticas (BPM)",
+      "Higiene y Saneamiento (PHS)",
+      "Normas ISO 9001 / 22000",
+      "Capacitaciones",
+      "Aún no estoy seguro/a"
+    ]
   },
   "sectores": {
     "eyebrow": "A quiénes ayudamos",
@@ -206,45 +159,92 @@
     "subtitulo": "Algunas de las empresas de alimentos que han confiado en nosotros para implementar y certificar sus sistemas de calidad.",
     "conteoLabel": ""
   },
-  "ferias": {
-    "eyebrow": "Dónde nos encuentras",
-    "titulo": "Presentes en ferias y ruedas de negocio",
-    "subtitulo": "Acompañamos a productores y empresas de alimentos en los espacios donde su producto se muestra al mercado.",
+  "serviciosSeccion": {
+    "eyebrow": "Lo que hacemos",
+    "titulo": "Servicios que ponen tu operación a la altura de la norma",
+    "subtitulo": "Soluciones adaptadas al rubro de tu empresa, desde el diagnóstico hasta la certificación."
+  },
+  "hero": {
+    "tituloLinea1": "Tu negocio de alimentos, ruben",
+    "tituloDestacado": "en regla y certificado.",
+    "botonWhatsapp": "Conversemos por WhatsApp",
+    "botonServicios": "Ver servicios",
+    "puntos": [
+      {
+        "texto": "Especialistas en calidad e inocuidad alimentaria"
+      },
+      {
+        "texto": "Asesoría personalizada según tu rubro"
+      },
+      {
+        "texto": "Lima, Perú"
+      }
+    ],
     "fotos": [
       {
-        "imagen": "/images/ferias/feria-superalimentos.jpg",
-        "texto": "En feria, con un productor de superalimentos peruanos"
+        "imagen": "/images/portada/supervision-linea-embotellado.jpg",
+        "texto": "Supervisión de la línea de embotellado en planta"
       },
       {
-        "imagen": "/images/ferias/feria-asesoria-stand.jpg",
-        "texto": "Asesoría en el stand, producto en mano"
+        "imagen": "/images/portada/seleccion-vegetales.jpg",
+        "texto": "Selección y acondicionado de vegetales en línea de proceso"
       },
       {
-        "imagen": "/images/ferias/feria-alimentos-andinos.jpg",
-        "texto": "Acompañando a una empresa de alimentos andinos"
+        "imagen": "/images/portada/envasado-bandejas.jpg",
+        "texto": "Envasado de bandejas en línea de producción"
       },
       {
-        "imagen": "/images/ferias/feria-cafe.jpg",
-        "texto": "Con productores de café peruano"
+        "imagen": "/images/portada/maduracion-jamones.jpg",
+        "texto": "Cámara de maduración de jamones"
       },
       {
-        "imagen": "/images/ferias/feria-productos-naturales.jpg",
-        "texto": "Con una empresa de productos naturales"
+        "imagen": "/images/portada/embotellado-bebidas.jpg",
+        "texto": "Línea de embotellado en planta de bebidas"
+      },
+      {
+        "imagen": "/images/portada/planta-procesamiento.jpg",
+        "texto": "Sala de proceso en planta de alimentos"
+      },
+      {
+        "imagen": "/images/fotos/planta-inspeccion.jpg",
+        "texto": "Control de proceso en planta"
+      },
+      {
+        "imagen": "/images/fotos/linea-produccion.jpg",
+        "texto": "Línea de producción de conservas"
       }
     ]
   },
-  "contacto": {
-    "eyebrow": "Hablemos",
-    "titulo": "Cuéntanos qué necesita tu negocio",
-    "subtitulo": "Te respondemos con una propuesta a tu medida, sin compromiso.",
-    "opcionesServicio": [
-      "Registro Sanitario (DIGESA)",
-      "Plan HACCP",
-      "Buenas Prácticas (BPM)",
-      "Higiene y Saneamiento (PHS)",
-      "Normas ISO 9001 / 22000",
-      "Capacitaciones",
-      "Aún no estoy seguro/a"
-    ]
+  "nosotros": {
+    "foto": "/images/fotos/equipo.jpg",
+    "eyebrow": "Quiénes somos",
+    "misionTitulo": "Misión",
+    "consultoraGrado": "(Mag.)",
+    "consultoraIniciales": "IG",
+    "mision": "Convertirnos en su socio estratégico para solucionar problemas relacionados en mantener la inocuidad alimentaria, garantizando confianza en el consumidor final.",
+    "diferenciadores": [
+      {
+        "titulo": "Acompañamiento real",
+        "texto": "No te entregamos solo documentos: te guiamos hasta que logras tu objetivo."
+      },
+      {
+        "titulo": "Soluciones a tu medida",
+        "texto": "Adaptamos cada sistema al tamaño y la realidad de tu negocio."
+      },
+      {
+        "titulo": "Cumplimiento garantizado",
+        "texto": "Trabajamos en base a la normativa de DIGESA y estándares internacionales."
+      },
+      {
+        "titulo": "Empresa formal y verificable",
+        "texto": "RUC 20607994359 · activa, habida y registrada como MYPE."
+      }
+    ],
+    "consultoraBio": "Te asesora directamente una especialista en gestión de la calidad e inocuidad alimentaria, con conocimiento de la normativa peruana vigente y trato cercano con cada cliente.",
+    "consultoraFoto": "/images/fotos/consultora.jpg",
+    "quienesSomos": "Somos un equipo de profesionales multidisciplinarios, especializados en normativas nacionales e internacionales con enfoque en calidad e inocuidad alimentaria.",
+    "titulo": "Asesoría personalizada, según el rubro de tu empresa",
+    "consultoraNombre": "Ing. Isabel Guerrero",
+    "consultoraRol": "Consultora principal"
   }
 }
